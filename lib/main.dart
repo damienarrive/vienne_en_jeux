@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+// import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+const MaterialColor white = MaterialColor(
+  0xFFFFFFFF,
+  <int, Color>{
+    50: Color(0xFFFFFFFF),
+    100: Color(0xFFFFFFFF),
+    200: Color(0xFFFFFFFF),
+    300: Color(0xFFFFFFFF),
+    400: Color(0xFFFFFFFF),
+    500: Color(0xFFFFFFFF),
+    600: Color(0xFFFFFFFF),
+    700: Color(0xFFFFFFFF),
+    800: Color(0xFFFFFFFF),
+    900: Color(0xFFFFFFFF),
+  },
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,8 +28,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Eje test le zizi caca',
+      title: 'Accueil',
       theme: ThemeData(
+        textTheme: Theme.of(context)
+            .textTheme
+            .apply(bodyColor: Colors.black, displayColor: Colors.black),
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -22,94 +42,59 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: white,
+        scaffoldBackgroundColor: const Color(0xFF375E7E),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page test GIT'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      // home: const MyHomePage(title: 'HomePage'),
+      home: Scaffold(
+        appBar: AppBar(
+            title: const Text('Accueil'),
+            elevation: 0,
+            leading: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.menu, color: Colors.black))),
+        body: Column(
+          children: [
+            Container(
+              alignment: Alignment.bottomCenter,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // children: const [
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Image(
+                    image: AssetImage('images/banniere_avec_logos.png'),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(50.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    // Text('Vienne en jeux', textAlign: TextAlign.left),
+                    child: const Text(
+                      """L'application Vienne en Jeux vous propose de participer à des challenges de marche / de course. Ces challenges se déroulent sur des périodes courtes. \nL'application comptabilise le nombre de pas grâce à l'application HealthKit. \n\nPour participer, créer un compte et rendez-vous dans l'onglet Challenges puis cliquez sur Challenge de marche.""",
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
