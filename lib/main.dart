@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 // import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 void main() {
@@ -23,8 +24,6 @@ const MaterialColor white = MaterialColor(
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,14 +44,38 @@ class MyApp extends StatelessWidget {
         primarySwatch: white,
         scaffoldBackgroundColor: const Color(0xFF375E7E),
       ),
-      // home: const MyHomePage(title: 'HomePage'),
+      home: MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Accueil',
+      theme: ThemeData(
+        textTheme: Theme.of(context)
+            .textTheme
+            .apply(bodyColor: Colors.black, displayColor: Colors.black),
+        // This is the theme of your application.
+        primarySwatch: white,
+        scaffoldBackgroundColor: const Color(0xFF375E7E),
+      ),
       home: Scaffold(
+        drawer: NavigationDrawerWidget(),
         appBar: AppBar(
-            title: const Text('Accueil'),
-            elevation: 0,
-            leading: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.menu, color: Colors.black))),
+          title: const Text('Accueil'),
+          elevation: 0,
+        ),
         body: Column(
           children: [
             Container(
