@@ -21,12 +21,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               leading: const Icon(Icons.house, color: Colors.black),
               title: const Text('Accueil'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.pushNamed(context, '/');
+                //Corriger plus tard : peut-etre problemes pour fermer la page précédente ?
               },
             ),
             ExpansionTile(
-              textColor: Colors.grey,
+              textColor: Colors.black,
               childrenPadding: EdgeInsets.only(left: 30),
               title: Text("Challenges"),
               children: <Widget>[
@@ -42,7 +42,7 @@ class NavigationDrawerWidget extends StatelessWidget {
               ],
             ),
             ExpansionTile(
-              textColor: Colors.grey,
+              textColor: Colors.black,
               childrenPadding: const EdgeInsets.only(left: 30),
               title: Text("Informations légales"),
               children: <Widget>[
@@ -50,24 +50,21 @@ class NavigationDrawerWidget extends StatelessWidget {
                   leading: const Icon(Icons.info),
                   title: const Text("Conditions d'utilisation"),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    Navigator.pushNamed(context, '/CGU');
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.info),
                   title: const Text("Politique de confidentialité"),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    Navigator.pushNamed(context, '/PolitiqueConf');
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.info),
                   title: const Text("Mentions légales"),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    Navigator.pushNamed(context, '/MentionsLegales');
                   },
                 ),
               ],
