@@ -30,7 +30,8 @@ class _PagePolitiqueConfState extends State<PagePolitiqueConf> {
   ## 2. Responsable de traitement des données
 
   CDOS de la Vienne\n
-  Organisme à but non lucratif\n 6 Allée Jean Monnet, 86000 Poitiers\n
+  Organisme à but non lucratif\n
+  6 Allée Jean Monnet, 86000 Poitiers
 
 
   ## 3. Données que nous collectons

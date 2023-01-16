@@ -35,8 +35,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                       const Icon(Icons.directions_run, color: Colors.black),
                   title: const Text('Challenge de marche'),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    Navigator.pushNamed(context, '/Challenges');
                   },
                 ),
               ],
