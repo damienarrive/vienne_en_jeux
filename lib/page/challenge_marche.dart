@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vienne_en_jeux/page/challenge_interface.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class ChallengeMarche extends StatefulWidget {
@@ -136,7 +137,12 @@ Widget build(BuildContext context) {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: MaterialButton(
-                            onPressed: () { },
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ChallengeInterface()),
+                              );
+                            },
                             child: Text("Titre Challenge"),
                             textColor: Colors.white,
                           ),
