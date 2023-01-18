@@ -94,7 +94,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               children: [
                 TextFormField(
                   decoration: const InputDecoration(
-                    hintText: 'Adresse mail',
+                    hintText: 'Adresse mail*',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -106,7 +106,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 
                 TextFormField(
                   decoration: const InputDecoration(
-                    hintText: 'Mot de passe',
+                    hintText: 'Mot de passe*',
 
                   ),
                   validator: (value) {
