@@ -42,6 +42,21 @@ class NavigationDrawerWidget extends StatelessWidget {
             ),
             ExpansionTile(
               textColor: Colors.black,
+              childrenPadding: EdgeInsets.only(left: 30),
+              title: Text("Connexion"),
+              children: <Widget>[
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Connexion'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Connexion');
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              textColor: Colors.black,
               childrenPadding: const EdgeInsets.only(left: 30),
               title: Text("Informations légales"),
               children: <Widget>[
