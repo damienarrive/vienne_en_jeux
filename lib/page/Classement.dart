@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
+import 'package:vienne_en_jeux/page/challenge_interface.dart';
 
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
+
   // ignore: library_private_types_in_public_api
   _HomeState createState() => _HomeState();
 }
@@ -49,6 +51,31 @@ class _HomeState extends State<Home> {
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+          Container(
+          alignment: Alignment.topLeft,
+    margin: const EdgeInsets.all(10.0),
+    child: Material(
+    color: const Color(0xFF375E7E),
+    child: Container(
+    child: Ink(
+    decoration: const ShapeDecoration(
+    color: Colors.white70,
+    shape: CircleBorder(),
+    ),
+    child: IconButton(
+    icon: const Icon(Icons.arrow_back ),
+    color: const Color(0xFF375E7E),
+    onPressed: () {
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const ChallengeInterface()),
+    );
+    },
+    ),
+    ),
+    ),
+    ),
+          ),
             Container(
               margin: const EdgeInsets.all(10.10),
               padding:
@@ -75,6 +102,8 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
 
