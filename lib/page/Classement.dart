@@ -3,16 +3,16 @@ import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/challenge_interface.dart';
 
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class Classement extends StatefulWidget {
+  const Classement({Key? key}) : super(key: key);
 
   @override
 
   // ignore: library_private_types_in_public_api
-  _HomeState createState() => _HomeState();
+  _ClassementState createState() => _ClassementState();
 }
 
-class _HomeState extends State<Home> {
+class _ClassementState extends State<Classement> {
   //final titleController = TextEditingController();
   //String text = "No Value Entered";
  test() {
