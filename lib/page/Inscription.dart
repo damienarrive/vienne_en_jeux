@@ -183,12 +183,81 @@ class MyCustomFormState extends State<MyCustomForm> {
                 padding:
                 const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-
                   onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('* sont des champs obligatoire'),
+                          content: Text(
+                              "En cliquant sur créer un compte ci-dessous, vous acceptez les conditions génèrales d'utilisation et la politique de confidentialité."
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text('Retour',
+                              style: TextStyle(color: Colors.blue,)
+                    ),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            TextButton(
+                                child: Text('Créer un compte',
+                                    style: TextStyle(color: Colors.blue,)
+                                ),
+                            onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),
+                    );
+                    Container(
+                      margin: const EdgeInsets.all(50.0),
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.fromLTRB(50, 0, 30, 10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Processing Data')),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF375E7E), // Background color
+                                foregroundColor: Colors.white, // Text Color (Foreground color)
+                              ),
+                              child: const Text('retour'),
+                            ),
+
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Processing Data')),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF375E7E), // Background color
+                                foregroundColor: Colors.white, // Text Color (Foreground color)
+                              ),
+                              child: const Text('Changer de mot de passe'),
+                            ),
+
+                          )
+                        ],
+                      ),
+                    );
+
                     if (_formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
                       );
