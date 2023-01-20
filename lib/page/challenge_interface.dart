@@ -52,7 +52,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         shape: CircleBorder(),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.abc_rounded),
+                        icon: const Icon(Icons.question_mark, size: 30),
                         color: const Color(0xFF375E7E),
                         onPressed: () {},
                       ),
@@ -93,7 +93,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         shape: CircleBorder(),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.mail),
+                        icon: const Icon(Icons.card_giftcard, size: 30),
                         color: const Color(0xFF375E7E),
                         onPressed: () {},
                       ),
@@ -121,7 +121,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         shape: CircleBorder(),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.abc_rounded),
+                        icon: const Icon(Icons.people_outlined, size: 30),
                         color: const Color(0xFF375E7E),
                         onPressed: () {},
                       ),
@@ -143,7 +143,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         shape: CircleBorder(),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.mail),
+                        icon: const Icon(Icons.refresh, size: 30),
                         color: const Color(0xFF375E7E),
                         onPressed: () {},
                       ),
@@ -171,7 +171,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         shape: CircleBorder(),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.abc_rounded),
+                        icon: const Icon(Icons.format_list_bulleted, size: 30),
                         color: const Color(0xFF375E7E),
                         onPressed: () {},
                       ),
@@ -181,6 +181,112 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
               ),
 
             ],
+          ),
+
+          Container(
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: Container(
+                margin: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      child : Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.all(5.0),
+                              child: const Text(
+                                "[Titre Challenge]",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(5.0),
+                              child: const Text(
+                                "Du [Date début] au [Date fin] inclus.",
+                                style: TextStyle(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          Container(
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: Container(
+                margin: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      child : Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.all(7.0),
+                              child: const Text(
+                                "VOTRE ÉQUIPE EST COMPLÈTE !",
+                                style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(7.0),
+                              child: const Text(
+                                "Équipe : [Nb points] pts",
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(3.0),
+                              child: const Text(
+                                "Vous ([Nom user]) avez fait [Nb points] pts.",
+                                style: TextStyle(),
+                              ),
+                            ),
+                            //BOUCLER POUR CHAQUE ÉQUIPIER
+                            Container(
+                              margin: const EdgeInsets.all(3.0),
+                              child: const Text(
+                                "[Nom user équipier] a fait [Nb points] pts.",
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(3.0),
+                              child: const Text(
+                                "Bonus de l'équipe : [Nb points] pts.",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
 
 
