@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
-class Cinscription extends StatefulWidget {
-  const Cinscription({super.key});
+class Inscription extends StatefulWidget {
+  const Inscription({super.key});
 
   @override
-  _CinscriptionState createState() => _CinscriptionState();
+  _InscriptionState createState() => _InscriptionState();
 }
 
-class _CinscriptionState extends State<Cinscription> {
+class _InscriptionState extends State<Inscription> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
-        title: const Text('Cinscription'),
+        title: const Text('Inscription'),
         elevation: 0,
       ),
       body: Column(
@@ -62,7 +62,9 @@ class MyCustomFormState extends State<MyCustomForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.all(50.0),
+              width: 300,
+              height: 150,
+            margin: const EdgeInsets.all(10.0),
             padding:
             const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             decoration: BoxDecoration(
@@ -97,9 +99,11 @@ class MyCustomFormState extends State<MyCustomForm> {
           )
           ),
           Container(
-            margin: const EdgeInsets.all(50.0),
+            width: 900,
+            height: 800,
+            margin: const EdgeInsets.all(0.0),
             padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+             EdgeInsets.fromLTRB(20, 0, 30, 60),
             decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -176,8 +180,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding:
+                const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
+
                   onPressed: () {
                     // Validate returns true if the form is valid, or false otherwise.
                     if (_formKey.currentState!.validate()) {
