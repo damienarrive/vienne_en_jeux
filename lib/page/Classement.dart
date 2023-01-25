@@ -16,8 +16,16 @@ class Classement extends StatefulWidget {
 
 class _ClassementState extends State<Classement> {
 
-  getData()async{
-    String theUrl = "http://172.20.10.7/my-app/getData.php";
+  getDataClassement()async{
+    String theUrl = "http://172.20.10.7/my-app/getDataClassement.php";
+    //String theUrl = "http://localhost/my-app/getData.php";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
+  getDataMonClassement()async{
+    String theUrl = "http://172.20.10.7/my-app/getDataMonClassement.php?id=21";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
@@ -73,45 +81,12 @@ class _ClassementState extends State<Classement> {
               textAlign: TextAlign.center,
             ),
           ),
-          Container(
-            margin: const EdgeInsets.all(10.10),
-            padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child:
-                    const Text(
-                      "Rank       ",
-                      textAlign: TextAlign.center,
-                    ),
-                ),
-                Container(
-                  child:
-                    const Text(
-                    "Nom     ",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Container(
-                  child:
-                    const Text(
-                    "Score       ",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-          ),
 
-          FutureBuilder(
-            future: getData(),
+
+
+        Expanded(
+            child: FutureBuilder(
+            future: getDataClassement(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.connectionState == ConnectionState.done) {
                 if(snapshot.hasError){
@@ -120,28 +95,21 @@ class _ClassementState extends State<Classement> {
                   );
                 }
                 List snap = snapshot.data;
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-
-                    itemCount: snap.length,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                return Container(
+                      margin: const EdgeInsets.all(10.10),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
                         children: [
-                          Container(
-                            child:
-                            Text("${snap[index]['id_athlete']}", textAlign: TextAlign.center),
-                          ),
-                          Container(
-                            child:
-                            Text("${snap[index]['prenom_athlete']}", textAlign: TextAlign.center),
-                          ),
+                          DataTable(columns: _createColumns(), rows: _createRows(snap))
                         ],
-                      );
-                    },
-                );
+                      ),
+                    );
 
               }
               else{
@@ -151,9 +119,115 @@ class _ClassementState extends State<Classement> {
               }
             },
           ),
+    ),
+
+        FutureBuilder(
+        future: getDataMonClassement(),
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            if(snapshot.connectionState == ConnectionState.done) {
+              if(snapshot.hasError){
+                return Center(
+                  child: Text("ERROR fetching data"),
+                );
+              }
+              List snap = snapshot.data;
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: const EdgeInsets.all(10.10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(10.10),
+                        child: const Text("Mon équipe", textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 50,
+                            child: Text("${snap[0]['classement']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                          ),
+
+                          SizedBox(
+                            width: 80,
+                            child: Text("${snap[0]['nom_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            child: Text("${snap[0]['score_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+            else{
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+
+
+
         ],
       ),
     );
   }
+
+  List<DataColumn> _createColumns(){
+    return [
+      DataColumn(label: Text(
+          'Rang', textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+      )),
+      DataColumn(label: Text(
+          'Nom', textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+      )),
+      DataColumn(label: Text(
+          'Score', textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+      )),
+    ];
+  }
+
+  List<DataRow> _createRows(snap){
+    List<DataRow> ligneTab = [];
+      for(var i=0; i<snap.length; i++) {
+        var ligne = DataRow(cells: [
+          DataCell(
+            SizedBox(
+              width: 50,
+              child: Text("${snap[i]['classement']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+            ),
+          ),
+          DataCell(
+              SizedBox(
+                width: 80,
+                child: Text("${snap[i]['nom_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+              ),
+          ),
+          DataCell(
+              SizedBox(
+                width: 50,
+                child: Text("${snap[i]['score_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+              ),
+          ),
+        ]);
+        ligneTab.add(ligne);
+      }
+      return ligneTab;
+  }
+
 
 }
