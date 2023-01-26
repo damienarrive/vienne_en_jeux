@@ -10,6 +10,14 @@ class Inscription extends StatefulWidget {
 
 class _InscriptionState extends State<Inscription> {
 
+  //getData()async{
+    //String theUrl = "http://127.0.0.1/my-app/getData.php";
+    //String theUrl = "http://localhost/my-app/getData.php";
+  //var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+  //var responseBody = json.decode(res.body);
+  //return responseBody;
+  //}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +72,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           Container(
               width: 300,
               height: 150,
-            margin: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(5),
             padding:
             const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             decoration: BoxDecoration(
@@ -79,7 +87,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 textAlign: TextAlign.justify,
               ),
                   Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 0.0),
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -101,12 +109,11 @@ class MyCustomFormState extends State<MyCustomForm> {
           Container(
             width: 900,
             height: 800,
-            margin: const EdgeInsets.all(0.0),
-            padding:
-             EdgeInsets.fromLTRB(20, 0, 30, 60),
+            margin: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(30),
             ),
             child: Column(
             children: [
@@ -181,7 +188,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 16.0),
+                const EdgeInsets.symmetric(vertical: 5),
                 child: ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -208,9 +215,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                         ),
                     );
                     Container(
-                      margin: const EdgeInsets.all(50.0),
+                      margin: const EdgeInsets.all(20.0),
                       padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -218,7 +225,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                       child: Row(
                         children: [
                           Container(
-                            padding: EdgeInsets.fromLTRB(50, 0, 30, 10),
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
@@ -264,6 +271,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     }
                   },
                   child: const Text('Sauvegarder'),
+
                 ),
               ),
             ],

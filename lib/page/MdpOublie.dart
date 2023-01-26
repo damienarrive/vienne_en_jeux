@@ -65,9 +65,9 @@ class MyCustomFormState extends State<MyCustomForm> {
           Container(
             width: 600,
             height: 300,
-            margin: const EdgeInsets.all(50.0),
+            margin: const EdgeInsets.all(40.0),
             padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -111,9 +111,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                   },
                 ),
                 Container(
-                    margin: const EdgeInsets.all(50.0),
+                    margin: const EdgeInsets.all(0.0),
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                     decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -121,7 +121,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                           child: Row(
                                children: [
                                  Container(
-                                   padding: EdgeInsets.fromLTRB(50, 0, 30, 10),
+                                   padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
                                         child: ElevatedButton(
                                                 onPressed: () {
                                                 if (_formKey.currentState!.validate()) {
@@ -139,7 +139,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 
                                                 ),
                                  Container(
-                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                                    child: ElevatedButton(
                                      onPressed: () {
                                        if (_formKey.currentState!.validate()) {
