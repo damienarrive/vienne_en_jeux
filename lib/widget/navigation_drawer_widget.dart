@@ -42,6 +42,51 @@ class NavigationDrawerWidget extends StatelessWidget {
             ),
             ExpansionTile(
               textColor: Colors.black,
+              childrenPadding: EdgeInsets.only(left: 30),
+              title: Text("podometer"),
+              children: <Widget>[
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('podometer'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Podometer');
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              textColor: Colors.black,
+              childrenPadding: EdgeInsets.only(left: 30),
+              title: Text("Inscription"),
+              children: <Widget>[
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Inscription'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Inscription');
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              textColor: Colors.black,
+              childrenPadding: EdgeInsets.only(left: 30),
+              title: Text("MdpOublie"),
+              children: <Widget>[
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('MdpOublie'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/MdpOublie');
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              textColor: Colors.black,
               childrenPadding: const EdgeInsets.only(left: 30),
               title: Text("Informations légales"),
               children: <Widget>[
