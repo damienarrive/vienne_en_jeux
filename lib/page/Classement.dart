@@ -1,44 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/challenge_interface.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
+class Classement extends StatefulWidget {
+  const Classement({Key? key}) : super(key: key);
   @override
-
   // ignore: library_private_types_in_public_api
-  _HomeState createState() => _HomeState();
+  _ClassementState createState() => _ClassementState();
 }
 
-class _HomeState extends State<Home> {
-  //final titleController = TextEditingController();
-  //String text = "No Value Entered";
- test() {
-  Map myMap = {
-    'Les Jones': 123,
-    'Fuck You': 6754,
-    'On marche pas nous': 45678
-  };
-  myMap.forEach((key, value) {
-    print('$key,$value');
-  });
+class _ClassementState extends State<Classement> {
 
-}
-
-  Map<String, dynamic> myMap = {
-    'Les Jones': 123,
-    'Fuck You': 6754,
-    'On marche pas nous': 45678
-  };
-
-
-  //void _setText() {
-   // setState(() {
-   //   text = titleController.text;
-   // });
- // }
+  getData()async{
+    String theUrl = "http://172.20.10.7/my-app/getData.php";
+    //String theUrl = "http://localhost/my-app/getData.php";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,177 +33,127 @@ class _HomeState extends State<Home> {
         elevation: 0,
       ),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Container(
-          alignment: Alignment.topLeft,
-    margin: const EdgeInsets.all(10.0),
-    child: Material(
-    color: const Color(0xFF375E7E),
-    child: Container(
-    child: Ink(
-    decoration: const ShapeDecoration(
-    color: Colors.white70,
-    shape: CircleBorder(),
-    ),
-    child: IconButton(
-    icon: const Icon(Icons.arrow_back ),
-    color: const Color(0xFF375E7E),
-    onPressed: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-    );
-    },
-    ),
-    ),
-    ),
-    ),
+            alignment: Alignment.topLeft,
+            margin: const EdgeInsets.all(10.0),
+            child: Material(
+              color: const Color(0xFF375E7E),
+              child: Container(
+                child: Ink(
+                  decoration: const ShapeDecoration(
+                    color: Colors.white70,
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back ),
+                    color: const Color(0xFF375E7E),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ChallengeInterface()),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
-            Container(
-              margin: const EdgeInsets.all(10.10),
-              padding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Text(
-                "Ce classement est mis à jour toutes les heures                                 ",
-                textAlign: TextAlign.center,
-
-              ),
-
-
+          Container(
+            margin: const EdgeInsets.all(10.10),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
             ),
-            Container(
-
-              margin: const EdgeInsets.all(10.10),
-              padding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-
-    child:
-    const Text(
-    "Rank       ",
-    textAlign: TextAlign.center,
-    ),
+            child: const Text(
+              "Ce classement est mis à jour toutes les heures                                 ",
+              textAlign: TextAlign.center,
             ),
-            Container(
-              child:
-              const Text(
-                "Nom     ",
-                textAlign: TextAlign.center,
-              ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(10.10),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
             ),
-            Container(
-              child:
-              const Text(
-                "Score       ",
-                textAlign: TextAlign.center,
-              ),
-
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child:
+                    const Text(
+                      "Rank       ",
+                      textAlign: TextAlign.center,
+                    ),
+                ),
+                Container(
+                  child:
+                    const Text(
+                    "Nom     ",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  child:
+                    const Text(
+                    "Score       ",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
-              Container(
-                child: test(),
-              )
-    ]
-    )
+          ),
 
+          FutureBuilder(
+            future: getData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              if(snapshot.connectionState == ConnectionState.done) {
+                if(snapshot.hasError){
+                  return Center(
+                    child: Text("ERROR fetching data"),
+                  );
+                }
+                List snap = snapshot.data;
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
 
+                    itemCount: snap.length,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child:
+                            Text("${snap[index]['id_athlete']}", textAlign: TextAlign.center),
+                          ),
+                          Container(
+                            child:
+                            Text("${snap[index]['prenom_athlete']}", textAlign: TextAlign.center),
+                          ),
+                        ],
+                      );
+                    },
+                );
 
-
-              ),
-
-]
-            ),
-
-
-
-      );
-
+              }
+              else{
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
   }
 
-
-  }
-
-
-
-
-  //Widget build(BuildContext context) {
-//  return Scaffold(
-//    appBar: AppBar(
-//     title: const Text('Classement'),
-//     backgroundColor: Colors.green,
-//    ),
-//     body: Column(
-//      children: [
-//        Padding(
-//          padding: const EdgeInsets.all(15),
-//         child: TextField(
-//           decoration: const InputDecoration(labelText: 'Title'),
-//          controller: titleController,
-//        ),
-//      ),
-//     const SizedBox(
-//         height: 8,
-//      ),
-//     ElevatedButton(
-//         onPressed: _setText,
-//        style: ButtonStyle(
-//            elevation: MaterialStateProperty.all(8),
-//             backgroundColor: MaterialStateProperty.all(Colors.green)),
-//         child: const Text('Submit')),
-
-
-          // RaisedButton is deprecated and should not be used
-          // Use ElevatedButton instead
-
-          // RaisedButton(
-          //   onPressed: _setText,
-          //   child: Text('Submit'),
-          //   elevation: 8,
-          // ),
-//       const SizedBox(
-//       height: 20,
-//    ),
-
-//    Expanded(
-//     child: Column(
-//     mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//   Container(
-//   margin: const EdgeInsets.all(50.0),
-//   padding:
-//  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-//  decoration: BoxDecoration(
-//   color: Colors.white,
-//  borderRadius: BorderRadius.circular(20),
-//   ),
-
-//     child:
-//      const Text(
-//             "Le challenge de marche vous met au défi de réaliser le maximum de pas (marche ou course) sur une période donnée, seul ou en équipe. \nPour participer, il vous faut ouvrir un compte, vous connecter sur Vienne en Jeux, et vous inscrire au Challenge. \nPour fonctionner, Vienne en Jeux utilise les informations sur le nombre de pas récoltés par l'application Santé de votre téléphone. Vous devrez pour cela autoriser Vienne en Jeux à lire ces données dans l'application Santé.\n \nVienne en Jeux n'utilise aucune autre donnée personnelle de l'application Santé ou de toute autre application présente sur votre téléphone",
-//           textAlign: TextAlign.justify,
-// ),
-//       ),
-// ],
-// ),
-
-
-//  ),
-
-//  ],
-//   )
-// );
-
-//  }
-//}
+}

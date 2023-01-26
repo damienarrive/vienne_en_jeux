@@ -4,10 +4,14 @@ import 'package:vienne_en_jeux/page/mentions_legales.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/condition_generales_utilisation.dart';
+//<<<<<<< master
+import 'package:vienne_en_jeux/page/connexion.dart';
+=======
 import 'package:vienne_en_jeux/page/MdpOublie.dart';
 import 'package:vienne_en_jeux/page/Inscription.dart';
 import 'package:vienne_en_jeux/page/pedometer.dart';
 
+//>>>>>>> Chat
 // import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 void main() {
@@ -47,6 +51,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MainPage(),
         '/Challenges': (context) => ChallengeMarche(),
+        '/Connexion': (context) => Connexion(),
         '/CGU': (context) => PageCGU(),
         '/PolitiqueConf': (context) => PagePolitiqueConf(),
         '/MentionsLegales': (context) => PageMentionsLegales(),

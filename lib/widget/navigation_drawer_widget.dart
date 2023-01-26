@@ -43,11 +43,20 @@ class NavigationDrawerWidget extends StatelessWidget {
             ExpansionTile(
               textColor: Colors.black,
               childrenPadding: EdgeInsets.only(left: 30),
+//<<<<<<< master
+              title: Text("Connexion"),
+=======
               title: Text("podometer"),
+//>>>>>>> Chat
               children: <Widget>[
                 ListTile(
                   leading:
                   const Icon(Icons.directions_run, color: Colors.black),
+//<<<<<<< master
+                  title: const Text('Connexion'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Connexion');
+=======
                   title: const Text('podometer'),
                   onTap: () {
                     Navigator.pushNamed(context, '/Podometer');
@@ -81,6 +90,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                   title: const Text('MdpOublie'),
                   onTap: () {
                     Navigator.pushNamed(context, '/MdpOublie');
+//>>>>>>> Chat
                   },
                 ),
               ],
