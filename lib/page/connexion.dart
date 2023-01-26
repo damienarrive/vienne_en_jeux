@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class Connexion extends StatefulWidget {
@@ -9,6 +13,7 @@ class Connexion extends StatefulWidget {
 }
 
 class _ConnexionState extends State<Connexion> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +66,8 @@ class _ConnexionState extends State<Connexion> {
   }
 }
 
+
+
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm({super.key});
 
@@ -72,6 +79,28 @@ class MyCustomForm extends StatefulWidget {
 
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  Future login() async {
+    var url_login = "http://172.20.10.4/api_conn_vienneenjeux/login.php";
+    var response = await http.post(url_login, body: {
+      "mail_user" : username.text,
+      "mdp_user" : password.text,
+    });
+
+    var data = json.decode(response.body);
+    if(data == "success") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Connexion')),
+      );
+    }
+    else { //if data == "error"
+      Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +121,14 @@ class MyCustomFormState extends State<MyCustomForm> {
 
             child: Column(
               children: [
+
+/*                Container(
+                  margin: EdgeInsets.only(top:30),
+                  padding: EdgeInsets.only(top:10),
+                  child: error? errmsg(errormsg): Container()
+                ),*/
                 TextFormField(
+                  controller: username,
                   decoration: const InputDecoration(
                     hintText: 'Adresse mail*',
                   ),
@@ -105,6 +141,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
 
                 TextFormField(
+                  controller: password,
+                  obscureText: true,
                   decoration: const InputDecoration(
                     hintText: 'Mot de passe*',
 
@@ -122,9 +160,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        /*ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Connexion')),
-                        );
+                        );*/
+                        login();
                       }
                     },
                     style: ElevatedButton.styleFrom(
