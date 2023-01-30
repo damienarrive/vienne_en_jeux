@@ -4,7 +4,6 @@ import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/challenge_interface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
 
 
 class Classement extends StatefulWidget {
@@ -25,7 +24,16 @@ class _ClassementState extends State<Classement> {
   }
 
   getDataMonClassement()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataMonClassement.php?id=21";
+    String theUrl = "http://172.20.10.7/my-app/getDataMonClassement.php?id=50";
+    //String theUrl = "http://localhost/my-app/getData.php";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
+  //pour vérifier si utilisateur dans équipe
+  getDataChallengeInterface()async{
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=1&iduser=50";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
@@ -119,10 +127,10 @@ class _ClassementState extends State<Classement> {
               }
             },
           ),
-    ),
+        ),
 
         FutureBuilder(
-        future: getDataMonClassement(),
+          future: getDataChallengeInterface(),
           builder: (BuildContext context, AsyncSnapshot snapshot){
             if(snapshot.connectionState == ConnectionState.done) {
               if(snapshot.hasError){
@@ -130,44 +138,67 @@ class _ClassementState extends State<Classement> {
                   child: Text("ERROR fetching data"),
                 );
               }
-              List snap = snapshot.data;
-              return Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: const EdgeInsets.all(10.10),
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(10.10),
-                        child: const Text("Mon équipe", textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 50,
-                            child: Text("${snap[0]['classement']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+              List verif = snapshot.data;
+              if(verif[0]['id_equipe_marche'].length != 0) {
+                return FutureBuilder(
+                  future: getDataMonClassement(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot){
+                    if(snapshot.connectionState == ConnectionState.done) {
+                      if(snapshot.hasError){
+                        return Center(
+                          child: Text("ERROR fetching data"),
+                        );
+                      }
+                      List snap = snapshot.data;
+                      return Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: const EdgeInsets.all(10.10),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(10.10),
+                                child: const Text("Mon équipe", textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    child: Text("${snap[0]['classement']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                                  ),
 
-                          SizedBox(
-                            width: 80,
-                            child: Text("${snap[0]['nom_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                                  SizedBox(
+                                    width: 80,
+                                    child: Text("${snap[0]['nom_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                    child: Text("${snap[0]['score_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
-                          SizedBox(
-                            width: 50,
-                            child: Text("${snap[0]['score_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
+                        ),
+                      );
+                    }
+                    else{
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                );
+              }
+              else{
+                return Container();
+              }
             }
             else{
               return Center(
@@ -176,9 +207,6 @@ class _ClassementState extends State<Classement> {
             }
           },
         ),
-
-
-
         ],
       ),
     );
