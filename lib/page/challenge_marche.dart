@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:vienne_en_jeux/page/challenge_interface.dart';
-import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -37,7 +35,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
   setDataChallengeInscription(ligne) async {
     String theUrl = "http://172.20.10.7/my-app/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=19";
     //String theUrl = "http://172.20.10.7/my-app/setDataChallengeInscription.php";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
   }
 
   @override
@@ -83,9 +81,9 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                     icon: const Icon(Icons.question_mark),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(builder: (context) => const ChallengeMarcheAide()),
+                        '/Challenge_Aide',
                       );
                     },
                   ),
@@ -326,10 +324,10 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
           if(snap[0]['count'] == "1") {
             return MaterialButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(builder: (
-                      context) => const ChallengeInterface()),
+                  '/Challenge_Interface',
+                  arguments: [ligne['id_defi_marche'], 21],
                 );
               },
               child: Text("${ligne['nom_defi_marche']}"),

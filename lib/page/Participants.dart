@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
-import 'package:vienne_en_jeux/page/challenge_interface.dart';
-
 
 class ChallengeParticipants extends StatefulWidget {
   const ChallengeParticipants({super.key});
@@ -55,10 +53,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
                     icon: const Icon(Icons.arrow_back ),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -102,10 +97,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
                       ),
                       child: MaterialButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                          );
+                          Navigator.pop(context);
                         },
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -124,10 +116,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
                       ),
                       child: MaterialButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                          );
+                          Navigator.pop(context);
                         },
                         child: Align(
                           alignment: Alignment.centerLeft,

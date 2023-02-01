@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:vienne_en_jeux/page/challenge_interface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -66,10 +65,7 @@ class _ClassementState extends State<Classement> {
                     icon: const Icon(Icons.arrow_back ),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),

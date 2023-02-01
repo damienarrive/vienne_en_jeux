@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:vienne_en_jeux/page/challenge_interface.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,9 +23,7 @@ class _BonusState extends State<Bonus> {
 
   setDataRecupBonusPalier(ligne)async{
     String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?true=true&iddefi=1&iduser=21&idbonus=${ligne['id_bonus_marche']}";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
-    var responseBody = json.decode(res.body);
-    return responseBody;
+    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
   }
 
   getDataBonusConnexion()async{
@@ -44,9 +41,7 @@ class _BonusState extends State<Bonus> {
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
     String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?val=1&iddefi=1&iduser=21&date='$formattedDate'";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
-    var responseBody = json.decode(res.body);
-    return responseBody;
+    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
   }
 
   @override
@@ -89,10 +84,7 @@ class _BonusState extends State<Bonus> {
                     icon: const Icon(Icons.arrow_back ),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),

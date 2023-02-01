@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vienne_en_jeux/page/bonus.dart';
-import 'package:vienne_en_jeux/page/Classement.dart';
-import 'package:vienne_en_jeux/page/Participants.dart';
-import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -15,16 +11,16 @@ class ChallengeInterface extends StatefulWidget {
   _ChallengeInterfaceState createState() => _ChallengeInterfaceState();
 }
 
-  getDataChallengeInterface()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=1&iduser=21";
+  getDataChallengeInterface(iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
-  getDataChallengeInterface_Equipe()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface_Equipe.php?iddefi=1&iduser=21";
+  getDataChallengeInterface_Equipe(iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface_Equipe.php?iddefi=$iddefi&iduser=$iduser";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
@@ -34,6 +30,9 @@ class ChallengeInterface extends StatefulWidget {
 class _ChallengeInterfaceState extends State<ChallengeInterface> {
   @override
   Widget build(BuildContext context) {
+
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
@@ -74,10 +73,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                     icon: const Icon(Icons.arrow_back ),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChallengeMarche()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -86,7 +82,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
           ),
 
         FutureBuilder(
-          future: getDataChallengeInterface(),
+          future: getDataChallengeInterface(args[0], args[1]),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -157,7 +153,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                               Container(
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: affichagePoint(snap[0]),
+                                  child: affichagePoint(snap[0], args[0], args[1]),
                                 ),
                               ),
                             ],
@@ -193,7 +189,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         ),
 
                         Flexible(
-                          child:  rechercheJoueur(snap[0], ),
+                          child:  rechercheJoueur(snap[0], args[0], args[1]),
                         ),
 
                         //BOUTON AIDE
@@ -213,10 +209,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                                       Icons.card_giftcard, size: 30),
                                   color: const Color(0xFF375E7E),
                                   onPressed: () {
-                                    Navigator.push(
+                                    Navigator.pushNamed(
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Bonus()),
+                                      '/Bonus',
+                                      arguments: [args[0], args[1]],
                                     );
                                   },
                                 ),
@@ -248,10 +244,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                                       Icons.people_outlined, size: 30),
                                   color: const Color(0xFF375E7E),
                                   onPressed: () {
-                                    Navigator.push(
+                                    Navigator.pushNamed(
                                       context,
-                                      MaterialPageRoute(builder: (
-                                          context) => const ChallengeParticipants()),
+                                      '/Participants',
+                                      arguments: [args[0], args[1]],
                                     );
                                   },
                                 ),
@@ -277,7 +273,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                                   color: const Color(0xFF375E7E),
                                   onPressed: () {
                                     setState(() {
-                                      getDataChallengeInterface();
+                                      getDataChallengeInterface(args[0], args[1]);
                                     });
                                   },
                                 ),
@@ -309,10 +305,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                                       Icons.format_list_bulleted, size: 30),
                                   color: const Color(0xFF375E7E),
                                   onPressed: () {
-                                    Navigator.push(
+                                    Navigator.pushNamed(
                                       context,
-                                      MaterialPageRoute(builder: (
-                                          context) => const Classement()),
+                                      '/Classement',
+                                      arguments: [args[0], args[1]],
                                     );
                                   },
                                 ),
@@ -337,10 +333,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
     );
   }
 
-  affichagePoint(ligne) {
+  affichagePoint(ligne, iddefi, iduser) {
     if(ligne['id_equipe_marche'].length != 0){
       return FutureBuilder(
-          future: getDataChallengeInterface_Equipe(),
+          future: getDataChallengeInterface_Equipe(iddefi, iduser),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
@@ -445,10 +441,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
     );
   }
 
-  rechercheJoueur(ligne){
+  rechercheJoueur(ligne, iddefi, iduser){
     if(ligne['id_equipe_marche'].length != 0){
       return FutureBuilder(
-          future: getDataChallengeInterface_Equipe(),
+          future: getDataChallengeInterface_Equipe(iddefi, iduser),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
