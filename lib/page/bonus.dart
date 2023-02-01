@@ -17,14 +17,13 @@ class _BonusState extends State<Bonus> {
 
   getDataBonusPalier()async{
     String theUrl = "http://172.20.10.7/my-app/getDataBonusPalier.php?iduser=21&iddefi=1";
-    //String theUrl = "http://localhost/my-app/getDataBonusPalier.php?iduser=21&iddefi=1";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   setDataRecupBonusPalier(ligne)async{
-    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?iddefi=1&iduser=21&idbonus=${ligne['id_bonus_marche']}";
+    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?true=true&iddefi=1&iduser=21&idbonus=${ligne['id_bonus_marche']}";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -44,7 +43,7 @@ class _BonusState extends State<Bonus> {
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
-    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?iddefi=1&iduser=21&date='$formattedDate'";
+    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?val=1&iddefi=1&iduser=21&date='$formattedDate'";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;

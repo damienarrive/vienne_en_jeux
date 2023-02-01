@@ -16,7 +16,7 @@ class ChallengeInterface extends StatefulWidget {
 }
 
   getDataChallengeInterface()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=1&iduser=50";
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=1&iduser=21";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
@@ -24,7 +24,7 @@ class ChallengeInterface extends StatefulWidget {
   }
 
   getDataChallengeInterface_Equipe()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface_Equipe.php?iddefi=1&iduser=50";
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface_Equipe.php?iddefi=1&iduser=21";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
