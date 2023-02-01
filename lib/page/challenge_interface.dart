@@ -371,7 +371,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                     margin: const EdgeInsets.all(3.0),
                     child: Text(
                       "Vous (${ligne['login_user']}) avez fait ${ligne['nbre_pas']} pas.",
-                      style: TextStyle(),
+                      style: TextStyle(fontSize: 18),
                     ),
                   ),
                   Container(
@@ -400,7 +400,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
           Container(
             margin: const EdgeInsets.all(7.0),
             child: const Text(
-              "VOUS ÊTES INSCRITS DANS AUCUNE ÉQUIPE !",
+              "VOUS ÊTES INSCRIT DANS AUCUNE ÉQUIPE !",
               style: TextStyle(color: Colors.grey,
                   fontWeight: FontWeight.bold),
             ),
@@ -418,7 +418,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
             margin: const EdgeInsets.all(3.0),
             child: Text(
               "Vous (${ligne['login_user']}) avez fait ${ligne['nbre_pas']} pas.",
-              style: TextStyle(),
+              style: TextStyle(fontSize: 18),
             ),
           ),
           Container(

@@ -14,38 +14,41 @@ class Bonus extends StatefulWidget {
 
 class _BonusState extends State<Bonus> {
 
-  getDataBonusPalier()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataBonusPalier.php?iduser=21&iddefi=1";
+  getDataBonusPalier(iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataBonusPalier.php?iduser=$iduser&iddefi=$iddefi";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
-  setDataRecupBonusPalier(ligne)async{
-    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?true=true&iddefi=1&iduser=21&idbonus=${ligne['id_bonus_marche']}";
+  setDataRecupBonusPalier(ligne, iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=${ligne['id_bonus_marche']}";
     await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
   }
 
-  getDataBonusConnexion()async{
+  getDataBonusConnexion(iddefi, iduser)async{
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
-    String theUrl = "http://172.20.10.7/my-app/getDataBonusConnexion.php?iduser=21&iddefi=1&date='$formattedDate'";
+    String theUrl = "http://172.20.10.7/my-app/getDataBonusConnexion.php?iduser=$iduser&iddefi=$iddefi&date='$formattedDate'";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
-  setDataRecupBonusConnexion(ligne)async{
+  setDataRecupBonusConnexion(ligne, iddefi, iduser)async{
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
-    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?val=1&iddefi=1&iduser=21&date='$formattedDate'";
+    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?val=1&iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
     await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
@@ -93,7 +96,7 @@ class _BonusState extends State<Bonus> {
           ),
 
           FutureBuilder(
-            future: getDataBonusConnexion(),
+            future: getDataBonusConnexion(args[0], args[1]),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               if(snapshot.connectionState == ConnectionState.done) {
                 if(snapshot.hasError){
@@ -109,7 +112,7 @@ class _BonusState extends State<Bonus> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: leBonus(snap[0], false),
+                  child: leBonus(snap[0], false, args[0], args[1]),
                 );
               }
               else{
@@ -122,7 +125,7 @@ class _BonusState extends State<Bonus> {
 
           Expanded(
             child: FutureBuilder(
-              future: getDataBonusPalier(),
+              future: getDataBonusPalier(args[0], args[1]),
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 if(snapshot.connectionState == ConnectionState.done) {
                   if(snapshot.hasError){
@@ -143,7 +146,7 @@ class _BonusState extends State<Bonus> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: leBonus(snap[index], true),
+                          child: leBonus(snap[index], true, args[0], args[1]),
                         );
                       },
                   );
@@ -161,7 +164,7 @@ class _BonusState extends State<Bonus> {
     );
   }
 
-  leBonus(ligne, palier) {
+  leBonus(ligne, palier, iddefi, iduser) {
     return Container(
       margin: const EdgeInsets.all(0.0),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
@@ -170,12 +173,12 @@ class _BonusState extends State<Bonus> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
-        children: afficheBonus(ligne, palier),
+        children: afficheBonus(ligne, palier, iddefi, iduser),
       ),
     );
   }
 
-  afficheBonus(ligne, palier){
+  afficheBonus(ligne, palier, iddefi, iduser){
     if(palier){
       return [
         Text(
@@ -196,7 +199,7 @@ class _BonusState extends State<Bonus> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
-          child: boutonRecuperer(ligne, palier),
+          child: boutonRecuperer(ligne, palier, iddefi, iduser),
         ),
       ];
     }
@@ -222,7 +225,7 @@ class _BonusState extends State<Bonus> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
-          child: boutonRecuperer(ligne, palier),
+          child: boutonRecuperer(ligne, palier, iddefi, iduser),
         ),
       ];
     }
@@ -239,7 +242,7 @@ class _BonusState extends State<Bonus> {
     }
   }
 
-  boutonRecuperer(ligne, palier) {
+  boutonRecuperer(ligne, palier, iddefi, iduser) {
     if (palier) {
       var nbPas = int.parse(ligne['nbre_pas']);
       var palierPas = int.parse(ligne['palier_pas']);
@@ -253,7 +256,7 @@ class _BonusState extends State<Bonus> {
             showDialog(
               context: context,
               builder: (BuildContext context) =>
-                  _buildPopupDialog(context, ligne, palier),
+                  _buildPopupDialog(context, ligne, palier, iddefi, iduser),
             );
           },
           child: const Text('Récupérer'),
@@ -281,7 +284,7 @@ class _BonusState extends State<Bonus> {
             showDialog(
               context: context,
               builder: (BuildContext context) =>
-                  _buildPopupDialog(context, ligne, palier),
+                  _buildPopupDialog(context, ligne, palier, iddefi, iduser),
             );
           },
           child: const Text('Récupérer'),
@@ -300,7 +303,7 @@ class _BonusState extends State<Bonus> {
     }
   }
 
-  Widget _buildPopupDialog(BuildContext context, ligne, palier) {
+  Widget _buildPopupDialog(BuildContext context, ligne, palier, iddefi, iduser) {
     return AlertDialog(
       title: const Text('Succès !'),
       content: Column(
@@ -319,15 +322,15 @@ class _BonusState extends State<Bonus> {
           onPressed: () {
             Navigator.of(context).pop();
             if(palier){
-              setDataRecupBonusPalier(ligne);
+              setDataRecupBonusPalier(ligne, iddefi, iduser);
               setState(() {
-                getDataBonusPalier();
+                getDataBonusPalier(iddefi, iduser);
               });
             }
             else{
-              setDataRecupBonusConnexion(ligne);
+              setDataRecupBonusConnexion(ligne, iddefi, iduser);
               setState(() {
-                getDataBonusConnexion();
+                getDataBonusConnexion(iddefi, iduser);
               });
             }
           },

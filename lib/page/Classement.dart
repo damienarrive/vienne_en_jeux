@@ -22,8 +22,8 @@ class _ClassementState extends State<Classement> {
     return responseBody;
   }
 
-  getDataMonClassement()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataMonClassement.php?id=21";
+  getDataMonClassement(iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataMonClassement.php?id=$iduser";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
@@ -31,8 +31,8 @@ class _ClassementState extends State<Classement> {
   }
 
   //pour vérifier si utilisateur dans équipe
-  getDataChallengeInterface()async{
-    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=1&iduser=21";
+  getDataChallengeInterface(iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
     //String theUrl = "http://localhost/my-app/getData.php";
     var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
@@ -41,6 +41,9 @@ class _ClassementState extends State<Classement> {
 
   @override
   Widget build(BuildContext context) {
+
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
@@ -126,7 +129,7 @@ class _ClassementState extends State<Classement> {
         ),
 
         FutureBuilder(
-          future: getDataChallengeInterface(),
+          future: getDataChallengeInterface(args[0], args[1]),
           builder: (BuildContext context, AsyncSnapshot snapshot){
             if(snapshot.connectionState == ConnectionState.done) {
               if(snapshot.hasError){
@@ -137,7 +140,7 @@ class _ClassementState extends State<Classement> {
               List verif = snapshot.data;
               if(verif[0]['id_equipe_marche'].length != 0) {
                 return FutureBuilder(
-                  future: getDataMonClassement(),
+                  future: getDataMonClassement(args[1]),
                   builder: (BuildContext context, AsyncSnapshot snapshot){
                     if(snapshot.connectionState == ConnectionState.done) {
                       if(snapshot.hasError){
