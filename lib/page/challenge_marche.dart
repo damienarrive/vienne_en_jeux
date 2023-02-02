@@ -327,7 +327,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                 Navigator.pushNamed(
                   context,
                   '/Challenge_Interface',
-                  arguments: [ligne['id_defi_marche'], 50],
+                  arguments: [ligne['id_defi_marche'], 21],
                 );
               },
               child: Text("${ligne['nom_defi_marche']}"),
