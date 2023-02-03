@@ -38,6 +38,14 @@ class NavigationDrawerWidget extends StatelessWidget {
                     Navigator.pushNamed(context, '/Challenges');
                   },
                 ),
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Bonus'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Bonus');
+                  },
+                ),
               ],
             ),
             ExpansionTile(

@@ -84,20 +84,27 @@ class MyCustomFormState extends State<MyCustomForm> {
   TextEditingController password = TextEditingController();
 
   Future login() async {
-    var url_login = "http://172.20.10.4/api_conn_vienneenjeux/login.php";
-    var response = await http.post(url_login, body: {
+    var urlLogin = "http://172.20.10.4/api_conn_vienneenjeux/login.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
       "mail_user" : username.text,
       "mdp_user" : password.text,
     });
 
-    var data = json.decode(response.body);
-    if(data == "success") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Connexion')),
-      );
-    }
-    else { //if data == "error"
-      Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");
+    try {
+      var data = json.decode(response.body);
+      print(response.body);
+
+      if (data == "success") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Connexion')),
+        );
+      }
+      else { //if data == "error"
+        Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");
+      }
+    }// end try
+    catch(e){
+      print(e);
     }
   }
 

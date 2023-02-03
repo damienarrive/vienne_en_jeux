@@ -13,12 +13,12 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: NavigationDrawerWidget(),
-        appBar: AppBar(
-          title: const Text('Challenges de marche'),
-          elevation: 0,
-        ),
-        body: Column(
+      drawer: NavigationDrawerWidget(),
+      appBar: AppBar(
+        title: const Text('Challenges de marche'),
+        elevation: 0,
+      ),
+      body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -45,7 +45,7 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
                   ),
                 ),
               ),
-        ),
+            ),
             Container(
               margin: const EdgeInsets.all(50.0),
               padding:
@@ -59,9 +59,9 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
                 textAlign: TextAlign.justify,
               ),
             ),
-]
-              ),
-            );
+          ]
+      ),
+    );
 
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vienne_en_jeux/page/Inscription.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class MdpOublie extends StatefulWidget {
@@ -65,9 +66,9 @@ class MyCustomFormState extends State<MyCustomForm> {
           Container(
             width: 600,
             height: 300,
-            margin: const EdgeInsets.all(50.0),
+            margin: const EdgeInsets.all(40.0),
             padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -111,59 +112,66 @@ class MyCustomFormState extends State<MyCustomForm> {
                   },
                 ),
                 Container(
-                    margin: const EdgeInsets.all(50.0),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    decoration: BoxDecoration(
+                  margin: const EdgeInsets.all(30.0),
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    ),
-                          child: Row(
-                               children: [
-                                 Container(
-                                   padding: EdgeInsets.fromLTRB(50, 0, 30, 10),
-                                        child: ElevatedButton(
-                                                onPressed: () {
-                                                if (_formKey.currentState!.validate()) {
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text('Processing Data')),
-                                                );
-                                                }
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(0xFF375E7E), // Background color
-                                                foregroundColor: Colors.white, // Text Color (Foreground color)
-                                                ),
-                                                child: const Text('retour'),
-                                                ),
-
-                                                ),
-                                 Container(
-                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                   child: ElevatedButton(
-                                     onPressed: () {
-                                       if (_formKey.currentState!.validate()) {
-                                         ScaffoldMessenger.of(context).showSnackBar(
-                                           const SnackBar(content: Text('Processing Data')),
-                                         );
-                                       }
-                                     },
-                                     style: ElevatedButton.styleFrom(
-                                       backgroundColor: Color(0xFF375E7E), // Background color
-                                       foregroundColor: Colors.white, // Text Color (Foreground color)
-                                     ),
-                                     child: const Text('Changer de mot de passe'),
-                                   ),
-
-                                 )
-                          ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: const EdgeInsets.all(10.0),
+                        child: Material(
+                          color: Colors.white70,
+                          child: Container(
+                            child: Ink(
+                              decoration: const ShapeDecoration(
+                                color: Colors.white70,
+                                shape: CircleBorder(),
+                              ),
+                              child: IconButton(
+                                icon: const Icon(Icons.arrow_back ),
+                                color: const Color(0xFF375E7E),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const Inscription()),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                          )
-                  ],
-                ),
-                ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(100, 0, 0, 5),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Processing Data')),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF375E7E), // Background color
+                            foregroundColor: Colors.white, // Text Color (Foreground color)
+                          ),
+                          child: const Text('Changer de mot de passe'),
+                        ),
+
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 }
