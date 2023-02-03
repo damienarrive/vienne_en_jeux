@@ -26,17 +26,33 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
   }
 
   getDataChallengeInscription(ligne) async {
-    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=19";
+    String theUrl = "http://172.20.10.7/my-app/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=50";
     var res = await http.get(Uri.encodeFull(theUrl), headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   setDataChallengeInscription(ligne) async {
-    String theUrl = "http://172.20.10.7/my-app/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=19";
+    String theUrl = "http://172.20.10.7/my-app/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=50";
     //String theUrl = "http://172.20.10.7/my-app/setDataChallengeInscription.php";
     await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
   }
+
+  /*
+  //récupère les données des challenges en statut 'Termine'
+  getDataAncienChallenge() async {
+    String theUrl = "http://172.16.234.122/myApp/getDataAncienChallenge.php";
+    var res = await http.get(Uri.encodeFull(theUrl), headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+  getVerifAncienChallenge() async {
+    String theUrl = "http://172.16.234.122/myApp/getVerifAncienChallenge.php";
+    var res = await http.get(
+        Uri.encodeFull(theUrl), headers: {"Accept": "application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+   */
 
   @override
   Widget build(BuildContext context) {
@@ -261,7 +277,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
           }
           else{
             return Container(
-              child: const Text("caca"),
+              child: const Text("Pas de challenge en cours"),
             );
           }
         }
@@ -327,7 +343,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                 Navigator.pushNamed(
                   context,
                   '/Challenge_Interface',
-                  arguments: [ligne['id_defi_marche'], 21],
+                  arguments: [ligne['id_defi_marche'], 50],
                 );
               },
               child: Text("${ligne['nom_defi_marche']}"),
@@ -363,5 +379,133 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
       style: TextStyle(fontSize: 15),
     );
   }
+
+  /*
+  afficheAncienChallenges(){
+    return FutureBuilder(
+      future: getVerifAncienChallenge(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("ERROR fetching data"),
+            );
+          }
+          List verif = snapshot.data;
+          if (verif[0]['count'] == "1") {
+            return FutureBuilder(
+              future: getDataAncienChallenge(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("ERROR fetching data"),
+                    );
+                  }
+                  List snap = snapshot.data;
+                  return Column(
+                    children: [
+                      Container(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Dernier challenge",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 17),
+                              ),
+                              // Container(
+                              //   child: afficheInscription(snap[0]),
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF375E7E),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: afficheBoutonChallengeEnCours(snap[0]),
+                      ),
+                      Container(
+                        child: afficheDateAncien(snap[0]['date_fin_marche']),
+                      ),
+                    ],
+                  );
+                }
+                else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            );
+          }
+          else{
+            return Container(
+              child: const Text("caca"),
+            );
+          }
+        }
+        else{
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+
+  }
+  afficheBoutonAncienChallenge(ligne){
+    return FutureBuilder(
+      future: getDataChallengeInscription(ligne),
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        if(snapshot.connectionState == ConnectionState.done) {
+          if(snapshot.hasError){
+            return Center(
+              child: Text("ERROR fetching data"),
+            );
+          }
+          List snap = snapshot.data;
+          if(snap[0]['count'] == "1") {
+            return MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/Challenge_Interface',
+                  arguments: [ligne['id_defi_marche'], 21],
+                );
+              },
+              child: Text("${ligne['nom_defi_marche']}"),
+              textColor: Colors.white,
+            );
+          }
+          else{
+            return MaterialButton(
+              onPressed: () {
+                setDataChallengeInscription(ligne);
+                setState(() {
+                  getDataChallengeEnCours();
+                });
+              },
+              child: Text("S'insrire à ${ligne['nom_defi_marche']}"),
+              textColor: Colors.white,
+            );
+          }
+        }
+        else{
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+   */
 
 }
