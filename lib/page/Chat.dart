@@ -15,7 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 
-Début du chat, peu d'erreur restante.
+// Début du chat, peu d'erreur restante.
 
 
 void main() {
@@ -51,14 +51,14 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Chat(
-      messages: _messages,
-      onAttachmentPressed: _handleAttachmentPressed,
-      onMessageTap: _handleMessageTap,
-      onPreviewDataFetched: _handlePreviewDataFetched,
-      onSendPressed: _handleSendPressed,
-      showUserAvatars: true,
-      showUserNames: true,
-      user: _user,
+      // messages: _messages,
+      // onAttachmentPressed: _handleAttachmentPressed,
+      // onMessageTap: _handleMessageTap,
+      // onPreviewDataFetched: _handlePreviewDataFetched,
+      // onSendPressed: _handleSendPressed,
+      // showUserAvatars: true,
+      // showUserNames: true,
+      // user: _user,
     ),
   );
 

@@ -43,6 +43,18 @@ dependencies:
   flutter_markdown: ^0.6.13
   syncfusion_flutter_datagrid: ^20.4.44
   convert: ^3.1.1
+  percent_indicator: ^4.2.2
+  font_awesome_flutter: ^10.3.0
+  pedometer: ^3.0.0
+  getwidget: ^3.0.1
+  file_picker: ^5.2.5
+  flutter_chat_types: ^3.6.0
+  flutter_chat_ui: ^1.6.6
+  image_picker: ^0.8.6+1
+  mime: ^1.0.4
+  open_filex: ^4.3.2
+  path_provider: ^2.0.12
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
