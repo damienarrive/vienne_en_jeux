@@ -61,6 +61,22 @@ class NavigationDrawerWidget extends StatelessWidget {
                     Navigator.pushNamed(context, '/Connexion');
                   },
                 ),
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Inscription'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Inscription');
+                  },
+                ),
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Inscription professeur'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/InscriptionProf');
+                  },
+                ),
               ],
             ),
             ExpansionTile(

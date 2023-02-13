@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/page/bonus.dart';
-import 'package:vienne_en_jeux/page/Classement.dart';
-import 'package:vienne_en_jeux/page/Participants.dart';
+import 'package:vienne_en_jeux/page/classement.dart';
+import 'package:vienne_en_jeux/page/participants.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 

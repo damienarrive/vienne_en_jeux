@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'dart:convert' as JSON;
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class Connexion extends StatefulWidget {
@@ -84,20 +84,21 @@ class MyCustomFormState extends State<MyCustomForm> {
   TextEditingController password = TextEditingController();
 
   Future login() async {
-    var urlLogin = "http://172.20.10.4/api_conn_vienneenjeux/login.php";
+    var urlLogin = "http://192.168.1.230/myApp/login.php";
     var response = await http.post(Uri.parse(urlLogin), body: {
       "mail_user" : username.text,
       "mdp_user" : password.text,
     });
 
     try {
-      var data = json.decode(response.body);
-      print(response.body);
+      var data = JSON.jsonDecode(response.body);
+      print(data);
 
-      if (data == "success") {
+      if (data['message'] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Connexion')),
         );
+
       }
       else { //if data == "error"
         Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");

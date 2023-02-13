@@ -30,8 +30,8 @@ class _PodometerState extends State<Podometer> {
 //méthode pour update la ligne 'nbre_pas' de la table 'marcher'
 
   setDataPodometer() async {
-    String theUrl = "http://192.168.28.231/myApp/setDataPodometer.php?test=48745&iddefi=1&iduser=21";
-    await http.get(Uri.encodeFull(theUrl), headers: {"Accept": "application/json"});
+    String theUrl = "http://127.0.0.1/myApp/setDataPodometer.php?nbpas=48745&iddefi=1&iduser=21";
+    await http.get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
     // var responseBody = json.decode(res.body);
     // return responseBody;
   }

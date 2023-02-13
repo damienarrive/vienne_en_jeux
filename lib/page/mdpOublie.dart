@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vienne_en_jeux/page/Inscription.dart';
+import 'package:vienne_en_jeux/page/inscription_user.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class MdpOublie extends StatefulWidget {

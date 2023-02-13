@@ -17,9 +17,9 @@ class Classement extends StatefulWidget {
 class _ClassementState extends State<Classement> {
 
   getData()async{
-    String theUrl = "http://172.20.10.4/api_conn_vienneenjeux/getData.php";
+    String theUrl = "http://127.0.0.1/myApp/getData.php";
     //String theUrl = "http://localhost/my-app/getData.php";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }

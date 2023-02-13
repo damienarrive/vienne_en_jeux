@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vienne_en_jeux/page/bonus.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
+import 'package:vienne_en_jeux/page/inscription_prof.dart';
+import 'package:vienne_en_jeux/page/inscription_user.dart';
 import 'package:vienne_en_jeux/page/mentions_legales.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
@@ -44,7 +47,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MainPage(),
         '/Challenges': (context) => ChallengeMarche(),
+        '/Bonus' : (context) => Bonus(),
         '/Connexion': (context) => Connexion(),
+        '/Inscription': (context) => Inscription(),
+        '/InscriptionProf': (context) => InscriptionProf(),
         '/CGU': (context) => PageCGU(),
         '/PolitiqueConf': (context) => PagePolitiqueConf(),
         '/MentionsLegales': (context) => PageMentionsLegales(),
