@@ -20,6 +20,13 @@ class ChallengeParticipants extends StatefulWidget {
     return responseBody;
   }
 
+  getDataNomEquipe(idequipe)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataNomEquipe.php?idequipe=$idequipe";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
 class _ChallengeParticipantsState extends State<ChallengeParticipants> {
   @override
   Widget build(BuildContext context) {
@@ -226,9 +233,29 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
     return ligneTab;
   }
 
-  afficheEquipe(equipe){
-    if(equipe.length > 0) {
-      return Text(equipe, textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true);
+  afficheEquipe(idequipe){
+    if(idequipe.length > 0) {
+      return FutureBuilder(
+        future: getDataNomEquipe(idequipe),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("ERROR fetching data"),
+              );
+            }
+            List snap = snapshot.data;
+            return Center(
+              child: Text("${snap[0]['nom_equipe']}"),
+            );
+          }
+          else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      );
     }
     else{
       return Text("Aucune équie", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true);
