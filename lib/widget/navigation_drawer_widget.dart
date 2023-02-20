@@ -72,9 +72,9 @@ class NavigationDrawerWidget extends StatelessWidget {
                 ListTile(
                   leading:
                   const Icon(Icons.directions_run, color: Colors.black),
-                  title: const Text('Inscription professeur'),
+                  title: const Text('Podomètre'),
                   onTap: () {
-                    Navigator.pushNamed(context, '/InscriptionProf');
+                    Navigator.pushNamed(context, '/Podometre');
                   },
                 ),
               ],

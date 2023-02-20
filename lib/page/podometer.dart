@@ -7,9 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 
 class Podometer extends StatefulWidget {
   @override
@@ -19,37 +17,13 @@ class Podometer extends StatefulWidget {
 class _PodometerState extends State<Podometer> {
 
 
-
-  int test = 44;
-
-  String greeting = "";
-  late Timer _timer;
-
-
-
-//méthode pour update la ligne 'nbre_pas' de la table 'marcher'
-
-  setDataPodometer() async {
-    String theUrl = "http://127.0.0.1/myApp/setDataPodometer.php?nbpas=48745&iddefi=1&iduser=21";
-    await http.get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
-    // var responseBody = json.decode(res.body);
-    // return responseBody;
-  }
-
   late Stream<StepCount> _stepCountStream;
   late Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?',
-      _steps = '?';
+  String _status = '?', _steps = '?';
 
   @override
-
   void initState() {
     super.initState();
-//méthode qui permet d'update'les données toutes les 3 secondes
-    Timer.periodic(Duration(seconds: 3), (timer) {
-
-      setDataPodometer();
-    });
     initPlatformState();
   }
 
@@ -92,22 +66,6 @@ class _PodometerState extends State<Podometer> {
     _stepCountStream.listen(onStepCount).onError(onStepCountError);
 
     if (!mounted) return;
-  }
-
-  boutonRecuperer() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF375E7E), // Background color
-        foregroundColor: Colors.white, // Text Color (Foreground color)
-      ),
-      onPressed: () {
-
-        print('CACACACA');
-
-        setDataPodometer();
-      }, child: const Text('Récupéré'),
-
-    );
   }
 
   @override
@@ -156,63 +114,11 @@ class _PodometerState extends State<Podometer> {
                     ? TextStyle(fontSize: 30)
                     : TextStyle(fontSize: 20, color: Colors.red),
               ),
-
-            ),
-            Center(
-              child: boutonRecuperer(),
             )
           ],
-
         ),
-
       ),
-
     );
-  }
-
-}
-class Automatic extends StatefulWidget {
-  @override
-  _AutomaticState createState() => _AutomaticState();
-}
-class _AutomaticState extends State<Automatic> {
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      print("Yeah, this line is printed after 3 second");
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        drawer: NavigationDrawerWidget(),
-        appBar: AppBar(
-          title: const Text('Challenge Interface'),
-          elevation: 0,
-        ),
-        body: Column(
-            children: [
-
-              //BANNIERE
-              Container(
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Image(
-                      image: AssetImage('images/banniere_mobile.png'),
-                    ),
-                  ],
-                ),
-              )
-            ]
-        )
-    );
-
 
   }
 }

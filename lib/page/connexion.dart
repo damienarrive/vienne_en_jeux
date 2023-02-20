@@ -186,8 +186,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
+                        Navigator.pushNamed(context, '/Inscription');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF375E7E), // Background color
@@ -200,8 +199,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF375E7E), // Background color
@@ -214,8 +211,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF375E7E), // Background color

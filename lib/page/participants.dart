@@ -55,10 +55,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
                     icon: const Icon(Icons.arrow_back ),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
