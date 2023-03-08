@@ -6,12 +6,12 @@ import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/condition_generales_utilisation.dart';
 import 'package:vienne_en_jeux/page/connexion.dart';
-import 'package:vienne_en_jeux/page/pedometer.dart';
 import 'package:vienne_en_jeux/page/challenge_interface.dart';
 import 'package:vienne_en_jeux/page/bonus.dart';
 import 'package:vienne_en_jeux/page/Classement.dart';
 import 'package:vienne_en_jeux/page/Participants.dart';
 import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
+import 'package:vienne_en_jeux/page/Inscription.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,10 +51,10 @@ class MyApp extends StatelessWidget {
         '/': (context) => MainPage(),
         '/Challenges': (context) => ChallengeMarche(),
         '/Connexion': (context) => Connexion(),
+        '/Inscription': (context) => Inscription(),
         '/CGU': (context) => PageCGU(),
         '/PolitiqueConf': (context) => PagePolitiqueConf(),
         '/MentionsLegales': (context) => PageMentionsLegales(),
-        '/pedometer': (context) => Podometer(),
         '/Challenge_Aide': (context) => ChallengeMarcheAide(),
         '/Challenge_Interface': (context) => ChallengeInterface(),
         '/Bonus': (context) => Bonus(),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class Connexion extends StatefulWidget {
@@ -9,6 +13,7 @@ class Connexion extends StatefulWidget {
 }
 
 class _ConnexionState extends State<Connexion> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,7 @@ class _ConnexionState extends State<Connexion> {
             ),
           ),
           const MyCustomForm()
-      /*    Expanded(
+          /*    Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -61,6 +66,8 @@ class _ConnexionState extends State<Connexion> {
   }
 }
 
+
+
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm({super.key});
 
@@ -73,6 +80,36 @@ class MyCustomForm extends StatefulWidget {
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  Future login() async {
+    var urlLogin = "http://172.20.10.7/my-app/login.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
+      "mail_user" : username.text,
+      "mdp_user" : password.text,
+    });
+
+    try {
+      var data = JSON.jsonDecode(response.body);
+      print(data);
+
+      if (data['message'] == "success") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Connexion')),
+        );
+
+      }
+      else { //if data == "error"
+        Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");
+      }
+    }// end try
+    catch(e){
+      print(e);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -82,103 +119,111 @@ class MyCustomFormState extends State<MyCustomForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.all(50.0),
-            padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
+              margin: const EdgeInsets.all(50.0),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
 
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'Adresse mail*',
+              child: Column(
+                children: [
+
+/*                Container(
+                  margin: EdgeInsets.only(top:30),
+                  padding: EdgeInsets.only(top:10),
+                  child: error? errmsg(errormsg): Container()
+                ),*/
+                  TextFormField(
+                    controller: username,
+                    decoration: const InputDecoration(
+                      hintText: 'Adresse mail*',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir votre adresse mail';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez saisir votre adresse mail';
-                    }
-                    return null;
-                  },
-                ),
 
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'Mot de passe*',
+                  TextFormField(
+                    controller: password,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Mot de passe*',
 
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir votre mot de passe';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez saisir votre mot de passe';
-                    }
-                    return null;
-                  },
-                ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          /*ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Connexion')),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF375E7E), // Background color
-                      foregroundColor: Colors.white, // Text Color (Foreground color)
+                        );*/
+                          login();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF375E7E), // Background color
+                        foregroundColor: Colors.white, // Text Color (Foreground color)
+                      ),
+                      child: const Text('Connexion'),
                     ),
-                    child: const Text('Connexion'),
                   ),
-                ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF375E7E), // Background color
-                      foregroundColor: Colors.white, // Text Color (Foreground color)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/Inscription',
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF375E7E), // Background color
+                        foregroundColor: Colors.white, // Text Color (Foreground color)
+                      ),
+                      child: const Text('M\'inscrire'),
                     ),
-                    child: const Text('M\'inscrire'),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF375E7E), // Background color
-                      foregroundColor: Colors.white, // Text Color (Foreground color)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF375E7E), // Background color
+                        foregroundColor: Colors.white, // Text Color (Foreground color)
+                      ),
+                      child: const Text('Mot de passe oublié ?'),
                     ),
-                    child: const Text('Mot de passe oublié ?'),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF375E7E), // Background color
-                      foregroundColor: Colors.white, // Text Color (Foreground color)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF375E7E), // Background color
+                        foregroundColor: Colors.white, // Text Color (Foreground color)
+                      ),
+                      child: const Text('Valider mon compte'),
                     ),
-                    child: const Text('Valider mon compte'),
                   ),
-                ),
-              ],
-            )
+                ],
+              )
           )
         ],
       ),

@@ -27,6 +27,14 @@ class ChallengeInterface extends StatefulWidget {
     return responseBody;
   }
 
+  getDataNbParticipants(iddefi)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataNbParticipants.php?iddefi=$iddefi";
+    //String theUrl = "http://localhost/my-app/getData.php";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
 class _ChallengeInterfaceState extends State<ChallengeInterface> {
   @override
   Widget build(BuildContext context) {
@@ -94,74 +102,6 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
               return
                 Column(
                   children: [
-                    Container(
-                      child: FractionallySizedBox(
-                        widthFactor: 1,
-                        child: Container(
-                          margin: const EdgeInsets.all(5.0),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "${snap[0]['nom_defi_marche']}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.all(5.0),
-                                        child: afficheDate(snap[0]),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      child: FractionallySizedBox(
-                        widthFactor: 1,
-                        child: Container(
-                          margin: const EdgeInsets.all(5.0),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: affichagePoint(snap[0], args[0], args[1]),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -317,6 +257,73 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                           ),
                         ),
                       ],
+                    ),
+                    Container(
+                      child: FractionallySizedBox(
+                        widthFactor: 1,
+                        child: Container(
+                          margin: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "${snap[0]['nom_defi_marche']}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: afficheDate(snap[0]),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      child: FractionallySizedBox(
+                        widthFactor: 1,
+                        child: Container(
+                          margin: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: affichagePoint(snap[0], args[0], args[1]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 );
@@ -489,12 +496,68 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
         child: Flexible(
           child: const TextField(
             decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(),
-              labelText: 'Recherche joueur',
+              hintText: 'Recherche joueur',
             ),
           ),
         ),
       );
+        /*
+        FutureBuilder(
+        future: getDataNbParticipants(iddefi),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("ERROR fetching data"),
+              );
+            }
+            List snap = snapshot.data;
+            return Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Flexible(
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(),
+                        hintText: 'Recherche joueur',
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: ListView.builder(
+                      itemCount: snap.length,
+                      itemBuilder: (context, index) {
+                        final result = snap[index];
+
+                        return ListTile(
+                          //TODO : https://www.google.com/search?q=flutter+search+bar+with+listview&rlz=1C1GCEA_enFR1006FR1006&oq=flutter+search+bar+wi&aqs=chrome.1.69i57j0i512l2j0i22i30i625l4j0i22i30j0i22i30i625j0i22i30.10228j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7MX4Y7qjKrKVxc8Pt_-csA0_27
+                        );
+                      },
+                    ),
+                )
+              ],
+            );
+          }
+          else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      );
+      */
+
     }
   }
 

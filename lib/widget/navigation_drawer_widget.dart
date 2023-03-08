@@ -25,6 +25,13 @@ class NavigationDrawerWidget extends StatelessWidget {
                 //Corriger plus tard : peut-etre problemes pour fermer la page précédente ?
               },
             ),
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text("Podomètre"),
+          onTap: () {
+            Navigator.pushNamed(context, '/pedometer');
+          },
+        ),
             ExpansionTile(
               textColor: Colors.black,
               childrenPadding: EdgeInsets.only(left: 30),

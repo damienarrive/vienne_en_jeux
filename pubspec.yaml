@@ -43,6 +43,7 @@ dependencies:
   flutter_markdown: ^0.6.13
   syncfusion_flutter_datagrid: ^20.4.44
   convert: ^3.1.1
+  fluttertoast: ^8.2.1
 
 dev_dependencies:
   flutter_test:
