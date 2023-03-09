@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:vienne_en_jeux/page/challenge_marche.dart';
 
 class ChallengeMarcheAide extends StatefulWidget {
   const ChallengeMarcheAide({super.key});
@@ -36,10 +35,7 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
                       icon: const Icon(Icons.arrow_back ),
                       color: const Color(0xFF375E7E),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ChallengeMarche()),
-                        );
+                        Navigator.pop(context);
                       },
                     ),
                   ),

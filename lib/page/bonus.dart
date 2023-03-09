@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:vienne_en_jeux/page/challenge_interface.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Bonus extends StatefulWidget {
   const Bonus({super.key});
@@ -10,8 +13,42 @@ class Bonus extends StatefulWidget {
 }
 
 class _BonusState extends State<Bonus> {
+
+  getDataBonusPalier(iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/getDataBonusPalier.php?iduser=$iduser&iddefi=$iddefi";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
+  setDataRecupBonusPalier(ligne, iddefi, iduser)async{
+    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=${ligne['id_bonus_marche']}";
+    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+  }
+
+  getDataBonusConnexion(iddefi, iduser)async{
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    String formattedDate = date.toString().replaceAll("00:00:00.000", "");
+    String theUrl = "http://172.20.10.7/my-app/getDataBonusConnexion.php?iduser=$iduser&iddefi=$iddefi&date='$formattedDate'";
+    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
+  setDataRecupBonusConnexion(ligne, iddefi, iduser)async{
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    String formattedDate = date.toString().replaceAll("00:00:00.000", "");
+    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?val=1&iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
+    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
@@ -50,10 +87,7 @@ class _BonusState extends State<Bonus> {
                     icon: const Icon(Icons.arrow_back ),
                     color: const Color(0xFF375E7E),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChallengeInterface()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -61,220 +95,249 @@ class _BonusState extends State<Bonus> {
             ),
           ),
 
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(50.0),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          FutureBuilder(
+            future: getDataBonusConnexion(args[0], args[1]),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              if(snapshot.connectionState == ConnectionState.done) {
+                if(snapshot.hasError){
+                  return Center(
+                    child: Text("ERROR fetching data"),
+                  );
+                }
+                List snap = snapshot.data;
+                return Container(
+                  margin: const EdgeInsets.all(10.10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                    child: Column(
-                      children:  [
-                        Text(
-                        "Connecte-toi",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
+                  child: leBonus(snap[0], false, args[0], args[1]),
+                );
+              }
+              else{
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
 
-                      Text(
-                        "connexion : 1/1",
-                        textAlign: TextAlign.center,
-                      ),
-
-                        Divider(
-                            color: Color(0xFF375E7E)
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF375E7E), // Background color
-                              foregroundColor: Colors.white, // Text Color (Foreground color)
-                            ),
-                            onPressed: () {  },
-                            child: const Text('Récupérer'),
+          Expanded(
+            child: FutureBuilder(
+              future: getDataBonusPalier(args[0], args[1]),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.connectionState == ConnectionState.done) {
+                  if(snapshot.hasError){
+                    return Center(
+                      child: Text("ERROR fetching data"),
+                    );
+                  }
+                  List snap = snapshot.data;
+                  return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snap.length,
+                      itemBuilder: (context,index){
+                        return Container(
+                          margin: const EdgeInsets.all(10.10),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-
-
-                  ],
-                ),
-                ),
-              ],
+                          child: leBonus(snap[index], true, args[0], args[1]),
+                        );
+                      },
+                  );
+                }
+                else{
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
         ],
       ),
     );
   }
-}
 
-/*class MyBonus extends StatefulWidget {
-  const MyBonus({super.key});
-
-  @override
-  MyBonusState createState() => MyBonusState();
-}
-
-class MyBonusState extends State<MyBonus> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: NavigationDrawerWidget(),
-      appBar: AppBar(
-        title: const Text('Accueil'),
-        elevation: 0,
+  leBonus(ligne, palier, iddefi, iduser) {
+    return Container(
+      margin: const EdgeInsets.all(0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
       ),
-      body: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Image(
-                  image: AssetImage('images/banniere_avec_logos.png'),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(50.0),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    "L'application Vienne en Jeux vous propose de participer à des challenges de marche / de course. Ces challenges se déroulent sur des périodes courtes. \nL'application comptabilise le nombre de pas grâce à un podomètre intégré. \n\nPour participer, créer un compte et rendez-vous dans l'onglet Challenges puis cliquez sur Challenge de marche.",
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+      child: Column(
+        children: afficheBonus(ligne, palier, iddefi, iduser),
       ),
     );
   }
-}*/
 
-    /*  child: Column(
+  afficheBonus(ligne, palier, iddefi, iduser){
+    if(palier){
+      return [
+        Text(
+          "Fais ${ligne['palier_pas']} pas",
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "Nombre de pas : ${ligne['nbre_pas']}/${ligne['palier_pas']}",
+          textAlign: TextAlign.center,
+        ),
+        GFProgressBar(
+          percentage: progressPercentage(ligne),
+          padding: const EdgeInsets.all(7.0),
+          radius: 100,
+          backgroundColor: Colors.grey,
+          progressBarColor: Color(0xFF375E7E),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: boutonRecuperer(ligne, palier, iddefi, iduser),
+        ),
+      ];
+    }
+    else{
+      return [
+        Text(
+          "Connecte toi",
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+
+        Text(
+          "Connexion : ${ligne['recupere']}/1",
+          textAlign: TextAlign.center,
+        ),
+
+        GFProgressBar(
+          percentage: double.parse(ligne['recupere']),
+          padding: const EdgeInsets.all(7.0),
+          radius: 100,
+          backgroundColor : Colors.grey,
+          progressBarColor: Color(0xFF375E7E),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: boutonRecuperer(ligne, palier, iddefi, iduser),
+        ),
+      ];
+    }
+  }
+
+  progressPercentage(ligne){
+    var nbPas = double.parse(ligne['nbre_pas'] + '.0');
+    var palierPas = double.parse(ligne['palier_pas'] + '.0');
+    if(nbPas<palierPas){
+      return nbPas/palierPas;
+    }
+    else{
+      return 1.0;
+    }
+  }
+
+  boutonRecuperer(ligne, palier, iddefi, iduser) {
+    if (palier) {
+      var nbPas = int.parse(ligne['nbre_pas']);
+      var palierPas = int.parse(ligne['palier_pas']);
+      if (ligne['recupere'] == '0' && nbPas >= palierPas) {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF375E7E), // Background color
+            foregroundColor: Colors.white, // Text Color (Foreground color)
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) =>
+                  _buildPopupDialog(context, ligne, palier, iddefi, iduser),
+            );
+          },
+          child: const Text('Récupérer'),
+        );
+      }
+      else {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF375E7E), // Background color
+            foregroundColor: Colors.white, // Text Color (Foreground color)
+          ),
+          onPressed: null,
+          child: const Text('Récupérer'),
+        );
+      }
+    }
+    else{
+      if (ligne['recupere'] == '0') {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF375E7E), // Background color
+            foregroundColor: Colors.white, // Text Color (Foreground color)
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) =>
+                  _buildPopupDialog(context, ligne, palier, iddefi, iduser),
+            );
+          },
+          child: const Text('Récupérer'),
+        );
+      }
+      else {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF375E7E), // Background color
+            foregroundColor: Colors.white, // Text Color (Foreground color)
+          ),
+          onPressed: null,
+          child: const Text('Récupéré'),
+        );
+      }
+    }
+  }
+
+  Widget _buildPopupDialog(BuildContext context, ligne, palier, iddefi, iduser) {
+    return AlertDialog(
+      title: const Text('Succès !'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-              margin: const EdgeInsets.all(50.0),
-              padding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Adresse mail*',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez saisir votre adresse mail';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Mot de passe*',
-
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez saisir votre mot de passe';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Connexion')),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF375E7E), // Background color
-                        foregroundColor: Colors.white, // Text Color (Foreground color)
-                      ),
-                      child: const Text('Connexion'),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF375E7E), // Background color
-                        foregroundColor: Colors.white, // Text Color (Foreground color)
-                      ),
-                      child: const Text('M\'inscrire'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF375E7E), // Background color
-                        foregroundColor: Colors.white, // Text Color (Foreground color)
-                      ),
-                      child: const Text('Mot de passe oublié ?'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF375E7E), // Background color
-                        foregroundColor: Colors.white, // Text Color (Foreground color)
-                      ),
-                      child: const Text('Valider mon compte'),
-                    ),
-                  ),
-                ],
-              )
-          )
+        children: const [
+          Text("Le bonus a bien été récupéré."),
         ],
-      ),*/
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF375E7E), // Background color
+            foregroundColor: Colors.white, // Text Color (Foreground color)
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+            if(palier){
+              setDataRecupBonusPalier(ligne, iddefi, iduser);
+              setState(() {
+                getDataBonusPalier(iddefi, iduser);
+              });
+            }
+            else{
+              setDataRecupBonusConnexion(ligne, iddefi, iduser);
+              setState(() {
+                getDataBonusConnexion(iddefi, iduser);
+              });
+            }
+          },
+          child: const Text('Récupérer'),
+        ),
+      ],
+    );
+  }
+
+}

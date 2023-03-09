@@ -1,18 +1,21 @@
+
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/page/mentions_legales.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/condition_generales_utilisation.dart';
-//<<<<<<< master
 import 'package:vienne_en_jeux/page/connexion.dart';
-=======
+import 'package:vienne_en_jeux/page/challenge_interface.dart';
+import 'package:vienne_en_jeux/page/bonus.dart';
+import 'package:vienne_en_jeux/page/Classement.dart';
+import 'package:vienne_en_jeux/page/Participants.dart';
+import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
+import 'package:vienne_en_jeux/page/Inscription.dart';
 import 'package:vienne_en_jeux/page/MdpOublie.dart';
 import 'package:vienne_en_jeux/page/Inscription.dart';
 import 'package:vienne_en_jeux/page/pedometer.dart';
-
-//>>>>>>> Chat
-// import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
+import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,13 +55,18 @@ class MyApp extends StatelessWidget {
         '/': (context) => MainPage(),
         '/Challenges': (context) => ChallengeMarche(),
         '/Connexion': (context) => Connexion(),
+        '/Inscription': (context) => Inscription(),
         '/CGU': (context) => PageCGU(),
         '/PolitiqueConf': (context) => PagePolitiqueConf(),
         '/MentionsLegales': (context) => PageMentionsLegales(),
+        '/Challenge_Aide': (context) => ChallengeMarcheAide(),
+        '/Challenge_Interface': (context) => ChallengeInterface(),
+        '/Bonus': (context) => Bonus(),
+        '/Classement': (context) => Classement(),
+        '/Participants': (context) => ChallengeParticipants(),
         '/MdpOublie': (context) => MdpOublie(),
         '/Inscription': (context) => Inscription(),
         '/Podometer': (context) => Podometer(),
-
       },
     );
   }
