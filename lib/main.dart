@@ -12,6 +12,10 @@ import 'package:vienne_en_jeux/page/Classement.dart';
 import 'package:vienne_en_jeux/page/Participants.dart';
 import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
 import 'package:vienne_en_jeux/page/Inscription.dart';
+import 'package:vienne_en_jeux/page/MdpOublie.dart';
+import 'package:vienne_en_jeux/page/Inscription.dart';
+import 'package:vienne_en_jeux/page/pedometer.dart';
+import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,6 +64,9 @@ class MyApp extends StatelessWidget {
         '/Bonus': (context) => Bonus(),
         '/Classement': (context) => Classement(),
         '/Participants': (context) => ChallengeParticipants(),
+        '/MdpOublie': (context) => MdpOublie(),
+        '/Inscription': (context) => Inscription(),
+        '/Podometer': (context) => Podometer(),
       },
     );
   }
