@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mailjet/mailjet.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'dart:convert' as JSON;
 import 'package:http/http.dart' as http;
@@ -69,7 +70,6 @@ class MyCustomFormState extends State<MyCustomForm> {
   TextEditingController mail_user = TextEditingController();
   TextEditingController mdp_user = TextEditingController();
   TextEditingController conf_mdp_user = TextEditingController();
-  // TextEditingController age_user = TextEditingController();
   TextEditingController textEditingController = TextEditingController();
 
   bool hidePassword = true;
@@ -79,7 +79,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 
 
   @override
-  void iniState() {
+  void initState() {
     error = false;
     sending = false;
     success = false;
@@ -97,21 +97,19 @@ class MyCustomFormState extends State<MyCustomForm> {
         "prenom_user": prenom_user.text,
         "mail_user": mail_user.text,
         "mdp_user": mdp_user.text,
-        // "age_user": age_user,
       });
 
       try{
         var data = JSON.jsonDecode(res.body);
-        print(data);
         if (data["error"]) {
           setState(() {
-            sending = false;
             error = true;
             msg = data["message"];
             Fluttertoast.showToast(msg: "Mauvais message");
           });
         }
         else {
+          sendMail(mail_user.text, nom_user.text, prenom_user.text, data['code']);
           login_user.text = "";
           nom_user.text = "";
           prenom_user.text = "";
@@ -120,8 +118,9 @@ class MyCustomFormState extends State<MyCustomForm> {
           conf_mdp_user.text = "";
           Fluttertoast.showToast(msg: "Compte créé");
 
+
+
           setState(() {
-            sending = false;
             success = true;
           });
           Navigator.pushNamed(context, '/');
@@ -134,6 +133,34 @@ class MyCustomFormState extends State<MyCustomForm> {
     else{
       Fluttertoast.showToast(msg: "Mots de passe discordant");
     }
+  }
+
+  sendMail(mail,nom, prenom, code) async{
+    String apiKey = "58152266460866e00be5762ff6757a4b";
+    String secretKey = "60d36681bbb300c4f674ddb9e9d602b6";
+
+    //TODO mettre l'adresse du CDOS pour le prod
+    String myEmail = 'vianney.souday@awa-solutions.fr';
+
+    MailJet mailJet = MailJet(
+      apiKey: apiKey,
+      secretKey: secretKey,
+    );
+
+    await mailJet.sendEmail(
+      subject: "Vérification de compte",
+      sender: Sender(
+        email: myEmail,
+        name: "$nom $prenom",
+      ),
+      reciepients: [
+        Recipient(
+          email: mail,
+          name: "$nom $prenom",
+        ),
+      ],
+      htmlEmail: "<h3>Voici votre code : $code !</h3><br />Merci de votre inscription!",
+    );
   }
 
   @override
@@ -279,22 +306,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     return null;
                   },
                 ),
-                // TextFormField(
-                //   controller: age_user,
-                //   keyboardType: TextInputType.numberWithOptions(decimal: false),
-                //   inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]')),],
-                //   autovalidateMode: AutovalidateMode.disabled,
-                //   decoration: const InputDecoration(
-                //     hintText: 'Age*',
-                //   ),
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Veuillez saisir votre âge';
-                //     }
-                //     return null;
-                //   },
-                // ),
-                Text('* sont des champs obligatoires'),
+                const Text('* sont des champs obligatoires'),
                 Padding(
                   padding:
                   const EdgeInsets.symmetric(vertical: 16.0),

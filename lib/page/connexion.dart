@@ -100,25 +100,8 @@ class MyCustomFormState extends State<MyCustomForm> {
 
 
   envoieMail(mail) async{
-    //TODO server smtp
+    //TODO envoie code?
 
-    // final Email email = Email(
-    //   body: 'Hello depuis flutter',
-    //   subject: 'Mail sender',
-    //   recipients: [mail],
-    //   isHTML: false,
-    // );
-    // String platformResponse;
-    // try {
-    //   await FlutterEmailSender.send(email);
-    //   platformResponse = 'success';
-    // } catch (error) {
-    //   print(error);
-    //   platformResponse = error.toString();
-    // }
-    // String username = YOUR_MAILGUN_USERNAME;
-    // String password = PASSWORD;
-    // final smtpServer = mailgun(username, password);
   }
 
 
@@ -232,6 +215,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                           Fluttertoast.showToast(msg: "Veuillez saisir une adresse mail valide");
                         }
                         else{
+                          //TODO décider de quoi envoyer par mail -> code? changement de mdp uniquement si code juste
                           envoieMail(mailUser.text);
                           Navigator.pushNamed(
                             context,
