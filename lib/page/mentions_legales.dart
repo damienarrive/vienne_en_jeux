@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+// import 'package:url_launcher/url_launcher_string.dart';
 
 class PageMentionsLegales extends StatefulWidget {
   const PageMentionsLegales({super.key});
@@ -94,7 +94,7 @@ class _PageMentionsLegalesState extends State<PageMentionsLegales> {
                 ),
                 data: _markdownData,
                 onTapLink: (text, url, title) {
-                  launchUrlString(url!);
+                  // launchUrlString(url!);
                 },
               ),
             ),

@@ -72,6 +72,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   // TextEditingController age_user = TextEditingController();
   TextEditingController textEditingController = TextEditingController();
 
+  bool hidePassword = true;
   late bool error, sending, success;
   late String msg;
 
@@ -89,7 +90,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   Future<void> sendData() async {
 
     if(mdp_user.text == conf_mdp_user.text) {
-      var phpurl = "http://172.20.10.7/my-app/Inscription.php";
+      var phpurl = "http://192.168.1.190/myApp/inscription.php";
       var res = await http.post(Uri.parse(phpurl), body: {
         "login_user": login_user.text,
         "nom_user": nom_user.text,
@@ -101,7 +102,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 
       try{
         var data = JSON.jsonDecode(res.body);
-        // print(data);
+        print(data);
         if (data["error"]) {
           setState(() {
             sending = false;
@@ -117,12 +118,13 @@ class MyCustomFormState extends State<MyCustomForm> {
           mail_user.text = "";
           mdp_user.text = "";
           conf_mdp_user.text = "";
-          Fluttertoast.showToast(msg: "Connexion reussie");
+          Fluttertoast.showToast(msg: "Compte créé");
 
           setState(() {
             sending = false;
             success = true;
           });
+          Navigator.pushNamed(context, '/');
         }
       }
       catch(e){
@@ -130,7 +132,7 @@ class MyCustomFormState extends State<MyCustomForm> {
       }
     }
     else{
-      Fluttertoast.showToast(msg: "mots de passe discordant");
+      Fluttertoast.showToast(msg: "Mots de passe discordant");
     }
   }
 
@@ -142,43 +144,6 @@ class MyCustomFormState extends State<MyCustomForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Container(
-          //     width: 300,
-          //     height: 174,
-          //     margin: const EdgeInsets.all(10.0),
-          //     padding:
-          //     const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          //     decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: BorderRadius.circular(10),
-          //     ),
-          //
-          //     child: Column(
-          //         children: [
-          //           Text(
-          //             " Cette inscription n'est pas destinée aux professeurs. Si vous souhaitez vous inscrire en tant que professeur, cliquez sur le bouton ci-dessous.",
-          //             textAlign: TextAlign.justify,
-          //           ),
-          //           Padding(
-          //             padding: const EdgeInsets.symmetric(vertical: 16.0),
-          //             child: ElevatedButton(
-          //               onPressed: () {
-          //                 if (_formKey.currentState!.validate()) {
-          //                   ScaffoldMessenger.of(context).showSnackBar(
-          //                     const SnackBar(content: Text('Processing Data')),
-          //                   );
-          //                 }
-          //               },
-          //               style: ElevatedButton.styleFrom(
-          //                 backgroundColor: Color(0xFF375E7E), // Background color
-          //                 foregroundColor: Colors.white, // Text Color (Foreground color)
-          //               ),
-          //               child: const Text('Accès inscription professeur'),
-          //             ),
-          //           ),
-          //         ]
-          //     )
-          // ),
           Container(
             width: 350,
             height: 650,
@@ -202,16 +167,29 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez saisir votre adresse mail';
                     }
+                    else if(!RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(value)){
+                      return 'Veuillez saisir une adresse mail valide';
+                    }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: mdp_user,
                   autovalidateMode: AutovalidateMode.disabled,
-                  obscureText: true,
+                  obscureText: hidePassword,
                   decoration: InputDecoration(
                     hintText: 'Mot de passe*',
                     constraints: BoxConstraints.tight(Size.fromHeight(60)),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        hidePassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                    ),
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) {
@@ -224,10 +202,20 @@ class MyCustomFormState extends State<MyCustomForm> {
                 TextFormField(
                   controller: conf_mdp_user,
                   autovalidateMode: AutovalidateMode.disabled,
-                  obscureText: true,
+                  obscureText: hidePassword,
                   decoration: InputDecoration(
                     hintText: 'Confirmation du Mot de passe*',
                     constraints: BoxConstraints.tight(Size.fromHeight(60)),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        hidePassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                    ),
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) {
@@ -251,7 +239,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez saisir votre prenom';
                     }
-                    if(value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_èéàëïöüêîôû0-9]'))){
+                    if(value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_0-9]'))){
                       return 'Votre prenom ne doit pas contenir de caractère spéciaux';
                     }
                     return null;
@@ -268,7 +256,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez saisir votre Nom';
                     }
-                    if(value.contains(RegExp(r'[!@#$%^&*(),.?":{}|_<>èéàëïöüêîôû0-9]'))){
+                    if(value.contains(RegExp(r'[!@#$%^&*(),.?":{}|_<>0-9]'))){
                       return 'Votre nom ne doit pas contenir de caractère spéciaux';
                     }
                     return null;
@@ -285,7 +273,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez saisir votre Identifiant';
                     }
-                    if(value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_èéàëïöüêîôû]'))){
+                    if(value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_]'))){
                       return 'Votre login ne doit pas contenir de caractère spéciaux';
                     }
                     return null;
@@ -311,6 +299,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding:
                   const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF375E7E), // Background color
+                      foregroundColor: Colors.white, // Text Color (Foreground color)
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         showDialog(

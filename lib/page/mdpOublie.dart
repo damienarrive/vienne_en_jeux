@@ -13,12 +13,14 @@ class _MdpOublieState extends State<MdpOublie> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text('Mot de passe oublie'),
         elevation: 0,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+      child: Column(
         children: [
           Container(
             alignment: Alignment.center,
@@ -37,6 +39,7 @@ class _MdpOublieState extends State<MdpOublie> {
           const MyCustomForm()
         ],
       ),
+    )
     );
   }
 }
@@ -61,13 +64,11 @@ class MyCustomFormState extends State<MyCustomForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-
           Container(
             width: 600,
-            height: 300,
+            height: 400,
             margin: const EdgeInsets.all(50.0),
-            padding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -111,54 +112,55 @@ class MyCustomFormState extends State<MyCustomForm> {
                   },
                 ),
                 Container(
-                    margin: const EdgeInsets.all(50.0),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    // margin: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                     decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     ),
-                          child: Row(
-                               children: [
-                                 Container(
-                                   padding: EdgeInsets.fromLTRB(50, 0, 30, 10),
-                                        child: ElevatedButton(
-                                                onPressed: () {
-                                                if (_formKey.currentState!.validate()) {
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text('Processing Data')),
-                                                );
-                                                }
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(0xFF375E7E), // Background color
-                                                foregroundColor: Colors.white, // Text Color (Foreground color)
-                                                ),
-                                                child: const Text('retour'),
-                                                ),
+                    child: Row(
+                         children: [
+                           Container(
+                             padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                             child: ElevatedButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Processing Data')),
+                                );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF375E7E), // Background color
+                                foregroundColor: Colors.white, // Text Color (Foreground color)
+                                ),
+                                child: const Text('Retour'),
+                             ),
 
-                                                ),
-                                 Container(
-                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                   child: ElevatedButton(
-                                     onPressed: () {
-                                       if (_formKey.currentState!.validate()) {
-                                         ScaffoldMessenger.of(context).showSnackBar(
-                                           const SnackBar(content: Text('Processing Data')),
-                                         );
-                                       }
-                                     },
-                                     style: ElevatedButton.styleFrom(
-                                       backgroundColor: Color(0xFF375E7E), // Background color
-                                       foregroundColor: Colors.white, // Text Color (Foreground color)
-                                     ),
-                                     child: const Text('Changer de mot de passe'),
-                                   ),
-
-                                 )
-                          ],
-                          ),
-                          )
+                           ),
+                           Container(
+                             width: 150,
+                             padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                             child: ElevatedButton(
+                               onPressed: () {
+                                 if (_formKey.currentState!.validate()) {
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                     const SnackBar(content: Text('Processing Data')),
+                                   );
+                                 }
+                               },
+                               style: ElevatedButton.styleFrom(
+                                 backgroundColor: Color(0xFF375E7E), // Background color
+                                 foregroundColor: Colors.white, // Text Color (Foreground color)
+                               ),
+                               child: const Text(
+                                     textAlign: TextAlign.center,
+                                     textDirection: TextDirection.ltr,
+                                     maxLines: 2,
+                                     'Changer de mot de passe'),
+                               ),
+                               )
+                    ],
+                    ),
+                    )
                   ],
                 ),
                 ),

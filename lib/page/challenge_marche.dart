@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,47 +12,76 @@ class ChallengeMarche extends StatefulWidget {
   @override
   _ChallengeMarcheState createState() => _ChallengeMarcheState();
 }
+
 class _ChallengeMarcheState extends State<ChallengeMarche> {
 
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController codePrive = TextEditingController();
+
+  var session = SessionManager();
+  String id = "";
+  String nom = "";
+  String prenom = "";
+  @override
+  void initState(){
+    super.initState();
+    _getSession();
+  }
+
+  _getSession() async{
+    var idUser = await session.get('userId');
+    var nomUser = await session.get('nom');
+    var prenomUser = await session.get('prenom');
+    setState(() {
+      id = idUser.toString();
+      nom = nomUser.toString();
+      prenom = prenomUser.toString();
+    });
+    // print(id);
+    // print(nom);
+    // print(prenom);
+  }
+
   getDataChallengeEnCours() async {
-    String theUrl = "http://192.168.218.231/myApp/getDataChallengeEncours.php";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataChallengeEncours.php";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getVerifChallengeCours() async {
-    String theUrl = "http://192.168.218.231/myApp/getVerifChallengeCours.php";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getVerifChallengeCours.php";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataChallengeInscription(ligne) async {
-    String theUrl = "http://192.168.218.231/myApp/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=50";
-    var res = await http.get(Uri.encodeFull(theUrl), headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
+    var res = await http.get(Uri.parse(theUrl), headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   setDataChallengeInscription(ligne) async {
-    String theUrl = "http://192.168.218.231/myApp/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=50";
-    //String theUrl = "http://172.20.10.7/my-app/setDataChallengeInscription.php";
-    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
+    //String theUrl = "http://192.168.1.190/myApp/setDataChallengeInscription.php";
+    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
   }
 
 
   //récupère les données des challenges en statut 'Termine'
   getDataAncienChallenge() async {
-    String theUrl = "http://192.168.218.231/myApp/getDataAncienChallenge.php";
-    var res = await http.get(Uri.encodeFull(theUrl), headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataAncienChallenge.php";
+    var res = await http.get(Uri.parse(theUrl), headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
   getVerifAncienChallenge() async {
-    String theUrl = "http://192.168.218.231/myApp/getVerifAncienChallenge.php";
+    String theUrl = "http://192.168.1.190/myApp/getVerifAncienChallenge.php";
     var res = await http.get(
-        Uri.encodeFull(theUrl), headers: {"Accept": "application/json"});
+        Uri.parse(theUrl), headers: {"Accept": "application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
@@ -109,60 +141,56 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
           ),
 
           //SAISIE CODE
-          Container(
-            child: FractionallySizedBox(
+          // Container(
+          //   child: FractionallySizedBox(
+          //     widthFactor: 1,
+          //     child: Container(
+          //       margin: const EdgeInsets.all(10.0),
+          //       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          //       decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(20),
+          //       ),
+          //       child: Column(
+          //         children: [
+          //           const TextField(
+          //             decoration: InputDecoration(
+          //               border: OutlineInputBorder(),
+          //               labelText: 'Code de challenge privé',
+          //             ),
+          //           ),
+          //           Container(
+          //             margin: EdgeInsets.all(5),
+          //             decoration: BoxDecoration(
+          //               color: const Color(0xFF375E7E),
+          //               borderRadius: BorderRadius.circular(20),
+          //             ),
+          //             child: MaterialButton(
+          //               onPressed: () { },
+          //               child: Text("Chercher"),
+          //               textColor: Colors.white,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
+          //CHALLENGE EN COURS
+          FractionallySizedBox(
               widthFactor: 1,
               child: Container(
                 margin: const EdgeInsets.all(10.0),
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    const TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Code de challenge privé',
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF375E7E),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: MaterialButton(
-                        onPressed: () { },
-                        child: Text("Chercher"),
-                        textColor: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          //CHALLENGE EN COURS
-          Container(
-              child: FractionallySizedBox(
-                  widthFactor: 1,
-                  child: Container(
-                    margin: const EdgeInsets.all(10.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: afficheChallengeEnCours(),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  child: afficheChallengeEnCours(),
               ),
           ),
-
-          Container(
-            child: FractionallySizedBox(
+          FractionallySizedBox(
               widthFactor: 1,
               child: Container(
                 margin: const EdgeInsets.all(10.0),
@@ -179,31 +207,10 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                         child: afficheAncienChallenges(),
                         ),
                       ),
-
-                    /*Container(
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF375E7E),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: MaterialButton(
-                        onPressed: () { },
-                        child: Text("Titre Challenge"),
-                        textColor: Colors.white,
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "Fini le [dateFin]",
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    )
-                  ],*/
-              ]
+                  ],
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -233,31 +240,24 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                   List snap = snapshot.data;
                   return Column(
                     children: [
-                      Container(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Challenge en cours",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 17),
-                              ),
-                              Container(
-                                child: afficheInscription(snap[0]),
-                              ),
-                            ],
-                          ),
+                       Align(
+                         alignment: Alignment.centerLeft,
+                         child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Challenge en cours",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 17),
+                            ),
+                            Container(
+                              child: afficheInscription(snap[0]),
+                            ),
+                          ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF375E7E),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
                         child: afficheBoutonChallengeEnCours(snap[0]),
                       ),
                       Container(
@@ -374,29 +374,138 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
           }
           List snap = snapshot.data;
           if(snap[0]['count'] == "1") {
-            return MaterialButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/Challenge_Interface',
-                  arguments: [ligne['id_defi_marche'], 50],
-                );
-              },
-              child: Text("${ligne['nom_defi_marche']}"),
-              textColor: Colors.white,
+            return Container(
+                decoration: BoxDecoration(
+                color: const Color(0xFF375E7E),
+                borderRadius: BorderRadius.circular(20),
+                ),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/Challenge_Interface',
+                      arguments: [ligne['id_defi_marche'], id],
+                    );
+                  },
+                  child: Text("${ligne['nom_defi_marche']}"),
+                  textColor: Colors.white,
+                )
             );
           }
           else{
-            return MaterialButton(
-              onPressed: () {
-                setDataChallengeInscription(ligne);
-                setState(() {
-                  getDataChallengeEnCours();
-                });
-              },
-              child: Text("S'insrire à ${ligne['nom_defi_marche']}"),
-              textColor: Colors.white,
-            );
+            if(id != "null"){
+              if(ligne['code_prive'] == null) {
+                return Container(
+                    decoration: BoxDecoration(
+                    color: const Color(0xFF375E7E),
+                    borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: MaterialButton(
+                      onPressed: () {
+                        setDataChallengeInscription(ligne);
+                        setState(() {
+                          getDataChallengeEnCours();
+                        });
+                      },
+                      child: Text("S'insrire à ${ligne['nom_defi_marche']}"),
+                      textColor: Colors.white,
+                    )
+                );
+              }
+              else{
+                return Form(
+                  key: _formKey,
+                    child:  FractionallySizedBox(
+                      widthFactor: 1,
+                        child: Container(
+                          margin: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  // hintText: 'Code de challenge privé',
+                                  // border: OutlineInputBorder(),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(width: 1, color: Colors.indigo),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(width: 1, color: Colors.grey),
+                                  ),
+                                  // fillColor: Colors.white,
+                                  // filled: true,
+                                  hintText: 'Code de challenge privé',
+                                ),
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                controller: codePrive,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Un code est nécessaire';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF375E7E),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if(codePrive.text == ligne['code_prive'].toString()){
+                                          setDataChallengeInscription(ligne);
+                                          setState(() {
+                                            getDataChallengeEnCours();
+                                          });
+                                        }
+                                        else{
+                                          Fluttertoast.showToast(msg: "Le code est incorrect");
+                                        }
+                                      }
+                                    },
+                                    child: Text("S\'inscrire"),
+                                    textColor: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ]
+                          ),
+                        )
+                      )
+                    );
+              }
+            }
+            else{
+              return Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF375E7E),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context,
+                          '/Inscription'
+                      );
+                    },
+                    child: Text("Créer un compte"),
+                    textColor: Colors.white,
+                  ),
+              );
+
+            }
           }
         }
         else{
@@ -419,31 +528,16 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
             );
           }
           List snap = snapshot.data;
-          if(snap[0]['count'] == "1") {
-            return MaterialButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/pedometer',
-                  //arguments: [ligne['id_defi_marche'], 50],
-                );
-              },
-              child: Text("${ligne['nom_defi_marche']}"),
-              textColor: Colors.white,
-            );
-          }
-          else{
-            return MaterialButton(
-              onPressed: () {
-                setDataChallengeInscription(ligne);
-                setState(() {
-                  getDataChallengeEnCours();
-                });
-              },
-              child: Text(" ${ligne['nom_defi_marche']}"),
-              textColor: Colors.white,
-            );
-          }
+          return MaterialButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/ClassementAncien',
+                arguments: [ligne['id_defi_marche'], id],
+              );
+            },
+            textColor: Colors.white,
+            child: Text("${ligne['nom_defi_marche']}"),
+          );
+
         }
         else{
           return Center(
@@ -507,9 +601,6 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 17),
                               ),
-                              // Container(
-                              //   child: afficheInscription(snap[0]),
-                              // ),
                             ],
                           ),
                         ),
@@ -525,7 +616,6 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                       Container(
                         child: afficheDateAncien(snap[0]['date_fin_marche']),
                       ),
-
                     ]
                   );
 

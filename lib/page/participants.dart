@@ -13,16 +13,16 @@ class ChallengeParticipants extends StatefulWidget {
 }
 
   getDataNbParticipants(iddefi)async{
-    String theUrl = "http://172.20.10.7/my-app/getDataNbParticipants.php?iddefi=$iddefi";
-    //String theUrl = "http://localhost/my-app/getData.php";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataNbParticipants.php?iddefi=$iddefi";
+    //String theUrl = "http://localhost/myApp/getData.php";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataNomEquipe(idequipe)async{
-    String theUrl = "http://172.20.10.7/my-app/getDataNomEquipe.php?idequipe=$idequipe";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataNomEquipe.php?idequipe=$idequipe";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
@@ -234,7 +234,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
   }
 
   afficheEquipe(idequipe){
-    if(idequipe.length > 0) {
+    if(idequipe != null && idequipe > 0  ) {
       return FutureBuilder(
         future: getDataNomEquipe(idequipe),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -258,7 +258,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
       );
     }
     else{
-      return Text("Aucune équie", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true);
+      return Text("Aucune équipe", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true);
     }
   }
 

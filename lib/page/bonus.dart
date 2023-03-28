@@ -15,23 +15,23 @@ class Bonus extends StatefulWidget {
 class _BonusState extends State<Bonus> {
 
   getDataBonusPalier(iddefi, iduser)async{
-    String theUrl = "http://172.20.10.7/my-app/getDataBonusPalier.php?iduser=$iduser&iddefi=$iddefi";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataBonusPalier.php?iduser=$iduser&iddefi=$iddefi";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   setDataRecupBonusPalier(ligne, iddefi, iduser)async{
-    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=${ligne['id_bonus_marche']}";
-    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=${ligne['id_bonus_marche']}";
+    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
   }
 
   getDataBonusConnexion(iddefi, iduser)async{
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
-    String theUrl = "http://172.20.10.7/my-app/getDataBonusConnexion.php?iduser=$iduser&iddefi=$iddefi&date='$formattedDate'";
-    var res = await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/getDataBonusConnexion.php?iduser=$iduser&iddefi=$iddefi&date='$formattedDate'";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
@@ -40,8 +40,8 @@ class _BonusState extends State<Bonus> {
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
-    String theUrl = "http://172.20.10.7/my-app/setDataRecupBonusConnexion.php?val=1&iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
-    await http.get(Uri.encodeFull(theUrl),headers: {"Accept":"application/json"});
+    String theUrl = "http://192.168.1.190/myApp/setDataRecupBonusConnexion.php?val=1&iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
+    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
   }
 
   @override
@@ -66,7 +66,7 @@ class _BonusState extends State<Bonus> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: const [
                 Image(
-                  image: AssetImage('images/banniere_avec_logos.png'),
+                  image: AssetImage('images/banniere_mobile.png'),
                 ),
               ],
             ),

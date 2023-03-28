@@ -1,21 +1,22 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
+import 'package:vienne_en_jeux/page/classementAncien.dart';
 import 'package:vienne_en_jeux/page/mentions_legales.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
+import 'package:vienne_en_jeux/page/verification.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:vienne_en_jeux/page/condition_generales_utilisation.dart';
 import 'package:vienne_en_jeux/page/connexion.dart';
 import 'package:vienne_en_jeux/page/challenge_interface.dart';
 import 'package:vienne_en_jeux/page/bonus.dart';
-import 'package:vienne_en_jeux/page/Classement.dart';
-import 'package:vienne_en_jeux/page/Participants.dart';
+import 'package:vienne_en_jeux/page/classement.dart';
+import 'package:vienne_en_jeux/page/participants.dart';
 import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
-import 'package:vienne_en_jeux/page/Inscription.dart';
-import 'package:vienne_en_jeux/page/MdpOublie.dart';
-import 'package:vienne_en_jeux/page/Inscription.dart';
+import 'package:vienne_en_jeux/page/inscription.dart';
+import 'package:vienne_en_jeux/page/mdpOublie.dart';
 import 'package:vienne_en_jeux/page/pedometer.dart';
-import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/Challenges': (context) => ChallengeMarche(),
         '/Connexion': (context) => Connexion(),
         '/Inscription': (context) => Inscription(),
+        '/Verification': (context) => Verification(),
         '/CGU': (context) => PageCGU(),
         '/PolitiqueConf': (context) => PagePolitiqueConf(),
         '/MentionsLegales': (context) => PageMentionsLegales(),
@@ -63,14 +65,15 @@ class MyApp extends StatelessWidget {
         '/Challenge_Interface': (context) => ChallengeInterface(),
         '/Bonus': (context) => Bonus(),
         '/Classement': (context) => Classement(),
+        '/ClassementAncien': (context) => ClassementAncien(),
         '/Participants': (context) => ChallengeParticipants(),
         '/MdpOublie': (context) => MdpOublie(),
-        '/Inscription': (context) => Inscription(),
-        '/Podometer': (context) => Podometer(),
+        '/Podometre': (context) => Podometre(),
       },
     );
   }
 }
+
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -80,6 +83,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  String text = "";
+  @override
+  void initState(){
+    super.initState();
+    _getSession();
+  }
+
+  _getSession() async{
+    dynamic user = await SessionManager().get('userId');
+    setState(() {
+      text = user.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,8 +127,7 @@ class _MainPageState extends State<MainPage> {
               children: [
                 Container(
                   margin: const EdgeInsets.all(50.0),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -121,6 +137,7 @@ class _MainPageState extends State<MainPage> {
                     textAlign: TextAlign.justify,
                   ),
                 ),
+                  Text(text),
               ],
             ),
           ),
@@ -128,4 +145,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+
 }

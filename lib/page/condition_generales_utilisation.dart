@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+// import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class PageCGU extends StatefulWidget {
@@ -134,7 +134,7 @@ class _PageCGUState extends State<PageCGU> {
                 ),
                 data: _markdownData,
                 onTapLink: (text, url, title) {
-                  launchUrlString(url!);
+                  // launchUrlString(url!);
                 },
               ),
             ),

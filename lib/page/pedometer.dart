@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 
-class Podometer extends StatefulWidget {
+class Podometre extends StatefulWidget {
   @override
-  _PodometerState createState() => _PodometerState();
+  _PodometreState createState() => _PodometreState();
 }
 
-class _PodometerState extends State<Podometer> {
+class _PodometreState extends State<Podometre> {
 
 
   late Stream<StepCount> _stepCountStream;

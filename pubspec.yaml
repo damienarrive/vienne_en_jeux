@@ -30,7 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   getwidget: ^ 2.0.4
-  http: ^0.12.2
+  http: ^0.13.4
   flutter:
     sdk: flutter
 
@@ -39,11 +39,18 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.6
   scaffold_gradient_background: ^1.0.3+1
-  url_launcher: ^6.1.7
+  url_launcher: ^6.0.5
   flutter_markdown: ^0.6.13
   syncfusion_flutter_datagrid: ^20.4.44
   convert: ^3.1.1
   fluttertoast: ^8.2.1
+  pedometer: ^3.0.0
+  font_awesome_flutter: ^10.4.0
+  percent_indicator: ^4.2.3
+  flutter_session_manager: ^1.0.3
+  flutter_email_sender: ^5.2.0
+  mailer: ^6.0.0
+  mailjet: ^1.0.3+3
 
 dev_dependencies:
   flutter_test:

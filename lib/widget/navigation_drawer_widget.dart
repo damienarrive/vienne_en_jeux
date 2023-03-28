@@ -1,9 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 
-class NavigationDrawerWidget extends StatelessWidget {
+class NavigationDrawerWidget extends StatefulWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
-
   NavigationDrawerWidget({super.key});
+
+  @override
+  _NavigationDrawerWidgetState createState() => _NavigationDrawerWidgetState();
+}
+
+
+class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
+  var session = SessionManager();
+  String id = "";
+  String nom = "";
+  String prenom = "";
+  @override
+  void initState(){
+    super.initState();
+    _getSession();
+  }
+
+  _getSession() async{
+    dynamic idUser = await session.get('userId');
+    dynamic nomUser = await session.get('nom');
+    dynamic prenomUser = await session.get('prenom');
+    setState(() {
+      id = idUser.toString();
+      nom = nomUser.toString();
+      prenom = prenomUser.toString();
+    });
+    // print(id.isNotEmpty);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,13 +56,13 @@ class NavigationDrawerWidget extends StatelessWidget {
                 //Corriger plus tard : peut-etre problemes pour fermer la page précédente ?
               },
             ),
-        ListTile(
-          leading: const Icon(Icons.info),
-          title: const Text("Podomètre"),
-          onTap: () {
-            Navigator.pushNamed(context, '/pedometer');
-          },
-        ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text("Podomètre"),
+              onTap: () {
+                Navigator.pushNamed(context, '/Podometre');
+              },
+            ),
             ExpansionTile(
               textColor: Colors.black,
               childrenPadding: EdgeInsets.only(left: 30),
@@ -47,61 +78,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                 ),
               ],
             ),
-            ExpansionTile(
-              textColor: Colors.black,
-              childrenPadding: EdgeInsets.only(left: 30),
-//<<<<<<< master
-              title: Text("Connexion"),
-=======
-              title: Text("podometer"),
-//>>>>>>> Chat
-              children: <Widget>[
-                ListTile(
-                  leading:
-                  const Icon(Icons.directions_run, color: Colors.black),
-//<<<<<<< master
-                  title: const Text('Connexion'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/Connexion');
-=======
-                  title: const Text('podometer'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/Podometer');
-                  },
-                ),
-              ],
-            ),
-            ExpansionTile(
-              textColor: Colors.black,
-              childrenPadding: EdgeInsets.only(left: 30),
-              title: Text("Inscription"),
-              children: <Widget>[
-                ListTile(
-                  leading:
-                  const Icon(Icons.directions_run, color: Colors.black),
-                  title: const Text('Inscription'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/Inscription');
-                  },
-                ),
-              ],
-            ),
-            ExpansionTile(
-              textColor: Colors.black,
-              childrenPadding: EdgeInsets.only(left: 30),
-              title: Text("MdpOublie"),
-              children: <Widget>[
-                ListTile(
-                  leading:
-                  const Icon(Icons.directions_run, color: Colors.black),
-                  title: const Text('MdpOublie'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/MdpOublie');
-//>>>>>>> Chat
-                  },
-                ),
-              ],
-            ),
+            Deconnexion(),
             ExpansionTile(
               textColor: Colors.black,
               childrenPadding: const EdgeInsets.only(left: 30),
@@ -129,10 +106,63 @@ class NavigationDrawerWidget extends StatelessWidget {
                   },
                 ),
               ],
-            )
+            ),
+
           ],
         ),
       ),
+    );
+  }
+
+
+  Deconnexion(){
+    return FutureBuilder(
+        future: _getSession(),
+        builder: (context, snapshot){
+            if(id != "null"){
+              return ExpansionTile(
+                textColor: Colors.black,
+                childrenPadding: EdgeInsets.only(left: 30),
+                title: Text("Deconnexion"),
+                children: <Widget>[
+                  ListTile(
+                    leading:
+                    const Icon(Icons.directions_run, color: Colors.black),
+                    title: const Text('Deconnexion'),
+                    onTap: () {
+                      session.destroy();
+                      Navigator.pushNamed(context, '/');
+                    },
+                  ),
+                ],
+              );
+            }
+            else{
+              return ExpansionTile(
+                textColor: Colors.black,
+                childrenPadding: EdgeInsets.only(left: 30),
+                title: Text("Connexion"),
+                children: <Widget>[
+                  ListTile(
+                    leading:
+                    const Icon(Icons.directions_run, color: Colors.black),
+                    title: const Text('Connexion'),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/Connexion');
+                    },
+                  ),
+                  ListTile(
+                    leading:
+                    const Icon(Icons.directions_run, color: Colors.black),
+                    title: const Text('Inscription'),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/Inscription');
+                    },
+                  ),
+                ],
+              );
+            }
+        }
     );
   }
 }

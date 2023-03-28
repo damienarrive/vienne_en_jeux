@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/mailgun.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as JSON;
@@ -20,7 +23,7 @@ class _ConnexionState extends State<Connexion> {
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
-        title: const Text('Page de connexion'),
+        title: const Text('Connexion'),
         elevation: 0,
       ),
       body: Column(
@@ -40,26 +43,6 @@ class _ConnexionState extends State<Connexion> {
             ),
           ),
           const MyCustomForm()
-          /*    Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(50.0),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    "Bonjour.",
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-              ],
-            ),
-          ),*/
         ],
       ),
     );
@@ -79,26 +62,32 @@ class MyCustomForm extends StatefulWidget {
 
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
+  bool hidePassword = true;
 
-  TextEditingController username = TextEditingController();
+  TextEditingController mailUser = TextEditingController();
   TextEditingController password = TextEditingController();
 
   Future login() async {
-    var urlLogin = "http://172.20.10.7/my-app/login.php";
+    var urlLogin = "http://192.168.1.190/myApp/login.php";
     var response = await http.post(Uri.parse(urlLogin), body: {
-      "mail_user" : username.text,
+      "mail_user" : mailUser.text,
       "mdp_user" : password.text,
     });
 
     try {
       var data = JSON.jsonDecode(response.body);
-      print(data);
 
       if (data['message'] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Connexion')),
         );
-
+      await SessionManager().set('userId', data['data'][0]['id']);
+      await SessionManager().set('nom', data['data'][0]['nom']);
+      await SessionManager().set('prenom', data['data'][0]['prenom']);
+      Navigator.pushNamed(context, '/');
+      }
+      else if(data['message'] == "Veuillez verifier votre compte"){
+        Fluttertoast.showToast(msg: "Veuillez verifier votre compte");
       }
       else { //if data == "error"
         Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");
@@ -110,8 +99,33 @@ class MyCustomFormState extends State<MyCustomForm> {
   }
 
 
+  envoieMail(mail) async{
+    //TODO server smtp
+
+    // final Email email = Email(
+    //   body: 'Hello depuis flutter',
+    //   subject: 'Mail sender',
+    //   recipients: [mail],
+    //   isHTML: false,
+    // );
+    // String platformResponse;
+    // try {
+    //   await FlutterEmailSender.send(email);
+    //   platformResponse = 'success';
+    // } catch (error) {
+    //   print(error);
+    //   platformResponse = error.toString();
+    // }
+    // String username = YOUR_MAILGUN_USERNAME;
+    // String password = PASSWORD;
+    // final smtpServer = mailgun(username, password);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+
     // Build a Form widget using the _formKey created above.
     return Form(
       key: _formKey,
@@ -136,7 +150,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   child: error? errmsg(errormsg): Container()
                 ),*/
                   TextFormField(
-                    controller: username,
+                    controller: mailUser,
                     decoration: const InputDecoration(
                       hintText: 'Adresse mail*',
                     ),
@@ -144,23 +158,35 @@ class MyCustomFormState extends State<MyCustomForm> {
                       if (value == null || value.isEmpty) {
                         return 'Veuillez saisir votre adresse mail';
                       }
+                      else if(!RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(value)){
+                        return 'Veuillez saisir une adresse mail valide';
+                      }
                       return null;
                     },
                   ),
 
                   TextFormField(
                     controller: password,
-                    obscureText: true,
-                    decoration: const InputDecoration(
+                    obscureText: hidePassword,
+                    decoration: InputDecoration(
                       hintText: 'Mot de passe*',
-
-                    ),
-                    validator: (value) {
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          hidePassword ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                        },
+                      ),
+                      ),
+                      validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Veuillez saisir votre mot de passe';
                       }
-                      return null;
-                    },
+                        return null;
+                      },
                   ),
 
                   Padding(
@@ -168,17 +194,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          /*ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Connexion')),
-                        );*/
                           login();
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF375E7E), // Background color
-                        foregroundColor: Colors.white, // Text Color (Foreground color)
+                      backgroundColor: Color(0xFF375E7E), // Background color
+                      foregroundColor: Colors.white, // Text Color (Foreground color)
                       ),
-                      child: const Text('Connexion'),
+                      child: const Text('Se connecter'),
                     ),
                   ),
 
@@ -202,6 +225,19 @@ class MyCustomFormState extends State<MyCustomForm> {
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: ElevatedButton(
                       onPressed: () {
+                        if(mailUser.text.isEmpty){
+                          Fluttertoast.showToast(msg: "Veuillez saisir une adresse mail");
+                        }
+                        else if(!RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(mailUser.text)){
+                          Fluttertoast.showToast(msg: "Veuillez saisir une adresse mail valide");
+                        }
+                        else{
+                          envoieMail(mailUser.text);
+                          Navigator.pushNamed(
+                            context,
+                            '/MdpOublie',
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF375E7E), // Background color
@@ -214,6 +250,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: ElevatedButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, '/Verification');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF375E7E), // Background color
