@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/mailgun.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -76,6 +74,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 
     try {
       var data = JSON.jsonDecode(response.body);
+      print(data);
 
       if (data['message'] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -84,6 +83,7 @@ class MyCustomFormState extends State<MyCustomForm> {
       await SessionManager().set('userId', data['data'][0]['id']);
       await SessionManager().set('nom', data['data'][0]['nom']);
       await SessionManager().set('prenom', data['data'][0]['prenom']);
+      await SessionManager().set('type_user', data['data'][0]['type_user']);
       Navigator.pushNamed(context, '/');
       }
       else if(data['message'] == "Veuillez verifier votre compte"){
@@ -181,8 +181,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF375E7E), // Background color
-                      foregroundColor: Colors.white, // Text Color (Foreground color)
+                        backgroundColor: Color(0xFF375E7E), // Background color
+                        foregroundColor: Colors.white, // Text Color (Foreground color)
                       ),
                       child: const Text('Se connecter'),
                     ),

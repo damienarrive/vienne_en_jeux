@@ -17,6 +17,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   String id = "";
   String nom = "";
   String prenom = "";
+  String role="";
   @override
   void initState(){
     super.initState();
@@ -27,10 +28,12 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
     dynamic idUser = await session.get('userId');
     dynamic nomUser = await session.get('nom');
     dynamic prenomUser = await session.get('prenom');
+    dynamic roleUser = await session.get('type_user');
     setState(() {
       id = idUser.toString();
       nom = nomUser.toString();
       prenom = prenomUser.toString();
+      role = roleUser.toString();
     });
     // print(id.isNotEmpty);
   }
@@ -74,6 +77,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                   title: const Text('Challenge de marche'),
                   onTap: () {
                     Navigator.pushNamed(context, '/Challenges');
+                  },
+                ),
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Gestion des challenges'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Gestion_Challenge');
                   },
                 ),
               ],

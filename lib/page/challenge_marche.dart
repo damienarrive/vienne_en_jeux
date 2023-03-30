@@ -119,63 +119,25 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
             margin: const EdgeInsets.all(10.0),
             child: Material(
               color: const Color(0xFF375E7E),
-              child: Container(
-                child: Ink(
-                  decoration: const ShapeDecoration(
-                    color: Colors.white70,
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.question_mark),
-                    color: const Color(0xFF375E7E),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/Challenge_Aide',
-                      );
-                    },
-                  ),
+              child: Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.white70,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.question_mark),
+                  color: const Color(0xFF375E7E),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/Challenge_Aide',
+                    );
+                  },
                 ),
               ),
             ),
           ),
 
-          //SAISIE CODE
-          // Container(
-          //   child: FractionallySizedBox(
-          //     widthFactor: 1,
-          //     child: Container(
-          //       margin: const EdgeInsets.all(10.0),
-          //       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         borderRadius: BorderRadius.circular(20),
-          //       ),
-          //       child: Column(
-          //         children: [
-          //           const TextField(
-          //             decoration: InputDecoration(
-          //               border: OutlineInputBorder(),
-          //               labelText: 'Code de challenge privé',
-          //             ),
-          //           ),
-          //           Container(
-          //             margin: EdgeInsets.all(5),
-          //             decoration: BoxDecoration(
-          //               color: const Color(0xFF375E7E),
-          //               borderRadius: BorderRadius.circular(20),
-          //             ),
-          //             child: MaterialButton(
-          //               onPressed: () { },
-          //               child: Text("Chercher"),
-          //               textColor: Colors.white,
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
 
           //CHALLENGE EN COURS
           FractionallySizedBox(
@@ -201,11 +163,9 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      child : Align(
-                        alignment: Alignment.centerLeft,
-                        child: afficheAncienChallenges(),
-                        ),
+                     Align(
+                      alignment: Alignment.centerLeft,
+                      child: afficheAncienChallenges(),
                       ),
                   ],
                 ),
@@ -427,6 +387,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                           child: Column(
                             children: [
                               TextFormField(
+                                controller: codePrive,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   // hintText: 'Code de challenge privé',
@@ -446,7 +407,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                controller: codePrive,
+
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Un code est nécessaire';
