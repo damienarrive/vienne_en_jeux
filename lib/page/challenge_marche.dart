@@ -347,8 +347,8 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                       arguments: [ligne['id_defi_marche'], id],
                     );
                   },
-                  child: Text("${ligne['nom_defi_marche']}"),
                   textColor: Colors.white,
+                  child: Text("${ligne['nom_defi_marche']}"),
                 )
             );
           }

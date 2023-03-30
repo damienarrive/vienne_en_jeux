@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import '../widget/navigation_drawer_widget.dart';
 
@@ -36,7 +37,7 @@ class _GestionChallengeState extends State<GestionChallenge> {
                   Container(
                       margin: const EdgeInsets.all(10.0),
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -45,17 +46,26 @@ class _GestionChallengeState extends State<GestionChallenge> {
                           children: [
                             Row(
                               children : [
-                                Text("Challenge ${item['statut_marche']}",
-                                style: const TextStyle(
-                                  fontWeight : FontWeight.bold,
-                                  fontSize: 18
-                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 10),
+                                  child: Text("Challenge ${item['statut_marche']}",
+                                    style: const TextStyle(
+                                        fontWeight : FontWeight.bold,
+                                        fontSize: 18
+                                    ),
+                                  ),
                                 ),
                               ]
                             ),
 
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 5),
+                              margin: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 10),
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                border: Border(bottom: BorderSide(width: 1.0, color: Colors.black))
+                              ),
                               child : Text(item['nom_defi_marche'],
                                 style: const TextStyle(
                                     fontSize: 22
@@ -63,10 +73,9 @@ class _GestionChallengeState extends State<GestionChallenge> {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 10),
                                   child : Text("Début : ${item['date_debut_marche']}",
                                     style: const TextStyle(
                                         fontSize: 16
@@ -74,26 +83,51 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 10),
                                   child : Text("Fin : ${item['date_fin_marche']}",
                                       style: const TextStyle(
                                       fontSize: 16
+                                      ),
                                   ),
                                 ),
-                                ),
-
                               ],
                             ),
-
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 5),
-                              child : Text("Taille maximum des équipes : ${item['taille_max_equipe']}",
-                                style: const TextStyle(
-                                    fontSize: 16
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal : 15, vertical: 10),
+                                  child : Text("Taille maximum d'équipe : ${item['taille_max_equipe']}",
+                                    style: const TextStyle(
+                                        fontSize: 16
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-
+                            Row(mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    padding: const EdgeInsets.symmetric(horizontal : 15),
+                                    child: MaterialButton(
+                                      onPressed: () {},
+                                      textColor: Colors.white,
+                                      color: const Color(0xFF375E7E),
+                                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                                      child: const Text('Modifier'),
+                                    )
+                                ),
+                                Container(
+                                    padding: const EdgeInsets.symmetric(horizontal : 15),
+                                    child: MaterialButton(
+                                      onPressed: () {},
+                                      textColor: Colors.white,
+                                      color: Colors.red,
+                                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0)),
+                                      child: const Text('Supprimer'),
+                                    )
+                                ),
+                              ],
+                            )
                           ]
                       )
                   )
