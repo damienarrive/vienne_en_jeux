@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/page/classementAncien.dart';
+import 'package:vienne_en_jeux/page/creation_challenge.dart';
 import 'package:vienne_en_jeux/page/gestion_challenge.dart';
 import 'package:vienne_en_jeux/page/mentions_legales.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
@@ -18,6 +18,7 @@ import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
 import 'package:vienne_en_jeux/page/inscription.dart';
 import 'package:vienne_en_jeux/page/mdpOublie.dart';
 import 'package:vienne_en_jeux/page/pedometer.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,6 +45,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('fr')
+      ],
       title: 'Accueil',
       theme: ThemeData(
         textTheme: Theme.of(context)
@@ -65,6 +73,7 @@ class MyApp extends StatelessWidget {
         '/Challenge_Aide': (context) => ChallengeMarcheAide(),
         '/Challenge_Interface': (context) => ChallengeInterface(),
         '/Gestion_Challenge': (context) => GestionChallenge(),
+        '/Creation_Challenge': (context) => CreationChallenge(),
         '/Bonus': (context) => Bonus(),
         '/Classement': (context) => Classement(),
         '/ClassementAncien': (context) => ClassementAncien(),

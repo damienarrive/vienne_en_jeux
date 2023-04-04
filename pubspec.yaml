@@ -51,6 +51,9 @@ dependencies:
   flutter_email_sender: ^5.2.0
   mailer: ^6.0.0
   mailjet: ^1.0.3+3
+  intl: ^0.17.0
+  localization: ^2.1.0
+  flutter_localization: ^0.1.10
 
 dev_dependencies:
   flutter_test:

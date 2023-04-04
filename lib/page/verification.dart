@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailjet/mailjet.dart';
@@ -182,6 +183,10 @@ class MyCustomFormState extends State<MyCustomForm> {
                     decoration: const InputDecoration(
                       hintText: 'code de vérification*',
                     ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Veuillez saisir le code de vérification';

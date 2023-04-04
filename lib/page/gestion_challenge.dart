@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import '../widget/navigation_drawer_widget.dart';
 
@@ -40,7 +39,7 @@ class _GestionChallengeState extends State<GestionChallenge> {
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
                           children: [
@@ -119,7 +118,52 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                 Container(
                                     padding: const EdgeInsets.symmetric(horizontal : 15),
                                     child: MaterialButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                AlertDialog(
+                                                  content: Text("Souhaitez vous réellement supprimer le challenge ${item['nom_defi_marche']}."),
+                                                  actions: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          margin: const EdgeInsets.all(10.0),
+                                                          child: Material(
+                                                            color: Colors.white70,
+                                                            child:  Ink(
+                                                              decoration: const ShapeDecoration(
+                                                                color: Color(0xFF375E7E),
+                                                                shape: CircleBorder(),
+                                                              ),
+                                                              child: IconButton(
+                                                                icon: const Icon(Icons.arrow_back),
+                                                                // color: const Color(0xFF375E7E),
+                                                                color: Colors.white,
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
+                                                            child: MaterialButton(
+                                                              onPressed: () {},
+                                                              textColor: Colors.white,
+                                                              color: Colors.red,
+                                                              shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                                                              child: const Text('Supprimer'),
+                                                            )
+                                                        )
+
+                                                      ],
+                                                    )
+
+                                                  ]
+                                                )
+                                        );
+                                      },
                                       textColor: Colors.white,
                                       color: Colors.red,
                                       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0)),
@@ -162,6 +206,36 @@ class _GestionChallengeState extends State<GestionChallenge> {
                       image: AssetImage('images/banniere_mobile.png'),
                     ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF375E7E),
+                        ),
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        onPressed: (){
+                          Navigator.pushNamed(context, '/Creation_Challenge');
+                        },
+                        label : const Text(
+                          'Créer un challenge',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  )
                 ),
               ),
               listChallenges(),

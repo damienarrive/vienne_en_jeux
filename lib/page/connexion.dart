@@ -40,7 +40,7 @@ class _ConnexionState extends State<Connexion> {
               ],
             ),
           ),
-          const MyCustomForm()
+          const FormConnexion()
         ],
       ),
     );
@@ -49,16 +49,16 @@ class _ConnexionState extends State<Connexion> {
 
 
 
-class MyCustomForm extends StatefulWidget {
-  const MyCustomForm({super.key});
+class FormConnexion extends StatefulWidget {
+  const FormConnexion({super.key});
 
   @override
-  MyCustomFormState createState() {
-    return MyCustomFormState();
+  FormConnexionState createState() {
+    return FormConnexionState();
   }
 }
 
-class MyCustomFormState extends State<MyCustomForm> {
+class FormConnexionState extends State<FormConnexion> {
   final _formKey = GlobalKey<FormState>();
   bool hidePassword = true;
 
@@ -99,7 +99,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   }
 
 
-  envoieMail(mail) async{
+  envoieMailMdpOublie(mail) async{
     //TODO envoie code?
 
   }
@@ -126,12 +126,6 @@ class MyCustomFormState extends State<MyCustomForm> {
 
               child: Column(
                 children: [
-
-/*                Container(
-                  margin: EdgeInsets.only(top:30),
-                  padding: EdgeInsets.only(top:10),
-                  child: error? errmsg(errormsg): Container()
-                ),*/
                   TextFormField(
                     controller: mailUser,
                     decoration: const InputDecoration(
@@ -216,7 +210,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                         }
                         else{
                           //TODO décider de quoi envoyer par mail -> code? changement de mdp uniquement si code juste
-                          envoieMail(mailUser.text);
+                          envoieMailMdpOublie(mailUser.text);
                           Navigator.pushNamed(
                             context,
                             '/MdpOublie',

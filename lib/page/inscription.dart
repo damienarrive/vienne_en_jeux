@@ -44,7 +44,7 @@ class _InscriptionState extends State<Inscription> {
                   ],
                 ),
               ),
-              const MyCustomForm()
+              const FormInscription()
             ],
           ),
         )
@@ -52,16 +52,16 @@ class _InscriptionState extends State<Inscription> {
   }
 }
 
-class MyCustomForm extends StatefulWidget {
-  const MyCustomForm({super.key});
+class FormInscription extends StatefulWidget {
+  const FormInscription({super.key});
 
   @override
-  MyCustomFormState createState() {
-    return MyCustomFormState();
+  FormInscriptionState createState() {
+    return FormInscriptionState();
   }
 }
 
-class MyCustomFormState extends State<MyCustomForm> {
+class FormInscriptionState extends State<FormInscription> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController login_user = TextEditingController();
@@ -331,8 +331,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                                     margin: const EdgeInsets.all(10.0),
                                     child: Material(
                                       color: Colors.white70,
-                                      child: Container(
-                                        child: Ink(
+                                      child:  Ink(
                                           decoration: const ShapeDecoration(
                                             color: Colors.white70,
                                             shape: CircleBorder(),
@@ -347,7 +346,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                                         ),
                                       ),
                                     ),
-                                  ),
 
                                   TextButton(
                                     child: Text('Créer un compte',
