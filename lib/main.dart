@@ -5,6 +5,7 @@ import 'package:vienne_en_jeux/page/classementAncien.dart';
 import 'package:vienne_en_jeux/page/creation_challenge.dart';
 import 'package:vienne_en_jeux/page/gestion_challenge.dart';
 import 'package:vienne_en_jeux/page/mentions_legales.dart';
+import 'package:vienne_en_jeux/page/modif_challenge.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
 import 'package:vienne_en_jeux/page/verification.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
         '/Challenge_Interface': (context) => ChallengeInterface(),
         '/Gestion_Challenge': (context) => GestionChallenge(),
         '/Creation_Challenge': (context) => CreationChallenge(),
+        '/Modif_Challenge' : (context) => ModifChallenge(),
         '/Bonus': (context) => Bonus(),
         '/Classement': (context) => Classement(),
         '/ClassementAncien': (context) => ClassementAncien(),

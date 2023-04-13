@@ -108,7 +108,9 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                 Container(
                                     padding: const EdgeInsets.symmetric(horizontal : 15),
                                     child: MaterialButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, '/Modif_Challenge', arguments: [item]);
+                                      },
                                       textColor: Colors.white,
                                       color: const Color(0xFF375E7E),
                                       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
