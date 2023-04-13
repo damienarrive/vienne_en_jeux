@@ -16,7 +16,6 @@ class _ClassementAncienState extends State<ClassementAncien> {
 
   getDataClassementAncien(iddefi)async{
     String theUrl = "http://192.168.1.190/myApp/getDataClassement.php?iddefi=$iddefi";
-    //String theUrl = "http://localhost/myApp/getData.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -24,7 +23,6 @@ class _ClassementAncienState extends State<ClassementAncien> {
 
   getDataMonClassement(iduser, iddefi)async{
     String theUrl = "http://192.168.1.190/myApp/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
-    //String theUrl = "http://localhost/myApp/getData.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -205,7 +203,7 @@ class _ClassementAncienState extends State<ClassementAncien> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(
-                        "Vous n'avez pas participé à ce challenge ou n'aviez pas d'équipe",
+                        "Vous n'avez pas participé à ce challenge",
                         textAlign: TextAlign.center,
                       ),
                     );

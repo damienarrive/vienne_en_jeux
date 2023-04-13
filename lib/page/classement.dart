@@ -16,7 +16,6 @@ class _ClassementState extends State<Classement> {
 
   getDataClassement(iddefi)async{
     String theUrl = "http://192.168.1.190/myApp/getDataClassement.php?iddefi=$iddefi";
-    //String theUrl = "http://localhost/myApp/getData.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -24,7 +23,6 @@ class _ClassementState extends State<Classement> {
 
   getDataMonClassement(iduser, iddefi)async{
     String theUrl = "http://192.168.1.190/myApp/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
-    //String theUrl = "http://localhost/myApp/getData.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -33,7 +31,6 @@ class _ClassementState extends State<Classement> {
   //pour vérifier si utilisateur dans équipe
   getDataChallengeInterface(iddefi, iduser)async{
     String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
-    //String theUrl = "http://localhost/myApp/getData.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -73,19 +70,6 @@ class _ClassementState extends State<Classement> {
                 ),
             ),
           ),
-          // Container(
-          //   margin: const EdgeInsets.all(10.10),
-          //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          //   width: double.infinity,
-          //   decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: BorderRadius.circular(20),
-          //   ),
-          //   child: const Text(
-          //     "Ce classement est mis à jour toutes les heures",
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
 
 
 

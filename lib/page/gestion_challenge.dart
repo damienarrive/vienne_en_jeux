@@ -19,6 +19,11 @@ class _GestionChallengeState extends State<GestionChallenge> {
     return responseBody;
   }
 
+  supprDataChallenge(iddefi) async{
+    String theUrl = "http://192.168.1.190/myApp/supprDataChallenge.php?iddefi=$iddefi";
+    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+  }
+
   listChallenges(){
     return FutureBuilder(
       future: getDataChallenges(),
@@ -151,7 +156,13 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                                         ),
                                                         Padding(padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
                                                             child: MaterialButton(
-                                                              onPressed: () {},
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+                                                                supprDataChallenge(item['id_defi_marche']);
+                                                                setState(() {
+                                                                  getDataChallenges();
+                                                                });
+                                                              },
                                                               textColor: Colors.white,
                                                               color: Colors.red,
                                                               shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),

@@ -31,7 +31,6 @@ class _ModifChallengeState extends State<ModifChallenge> {
   }
 
   bool _predicate(DateTime day) {
-    print(enAttente);
     for (var i in enAttente) {
       if ((day.compareTo(DateTime(int.parse(i['anneeD']), int.parse(i['moisD']),
           int.parse(i['jourD']))) == 0 ||
@@ -172,7 +171,6 @@ class _ModifChallengeState extends State<ModifChallenge> {
       dateDebut.text = args[0]['date_debut_marche'];
       dateFin.text = args[0]['date_fin_marche'];
       tailleMaxEquipe.text = args[0]['taille_max_equipe'].toString();
-      print(args[0]['code_prive']);
       if(args[0]['code_prive'] == null){
         codePrive.text = "";
       }
@@ -242,7 +240,6 @@ formModifChallenge(args) {
                       );
                     }
                     enAttente = JSON.jsonDecode(snapshot.data);
-                    // print(enAttente);
                     return Form(
                       key: _formKey,
                       child: Column(

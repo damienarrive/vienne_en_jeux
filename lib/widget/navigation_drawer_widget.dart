@@ -66,30 +66,8 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 Navigator.pushNamed(context, '/Podometre');
               },
             ),
-            ExpansionTile(
-              textColor: Colors.black,
-              childrenPadding: EdgeInsets.only(left: 30),
-              title: Text("Challenges"),
-              children: <Widget>[
-                ListTile(
-                  leading:
-                      const Icon(Icons.directions_run, color: Colors.black),
-                  title: const Text('Challenge de marche'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/Challenges');
-                  },
-                ),
-                ListTile(
-                  leading:
-                  const Icon(Icons.directions_run, color: Colors.black),
-                  title: const Text('Gestion des challenges'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/Gestion_Challenge');
-                  },
-                ),
-              ],
-            ),
-            Deconnexion(),
+            challenge(),
+            deconnexion(),
             ExpansionTile(
               textColor: Colors.black,
               childrenPadding: const EdgeInsets.only(left: 30),
@@ -118,7 +96,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 ),
               ],
             ),
-
           ],
         ),
       ),
@@ -126,7 +103,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }
 
 
-  Deconnexion(){
+  deconnexion(){
     return FutureBuilder(
         future: _getSession(),
         builder: (context, snapshot){
@@ -173,6 +150,56 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 ],
               );
             }
+        }
+    );
+  }
+
+  challenge() {
+    return FutureBuilder(
+        future: _getSession(),
+        builder: (context, snapshot) {
+          if (id != "null" && role == '4') {
+            return ExpansionTile(
+              textColor: Colors.black,
+              childrenPadding: EdgeInsets.only(left: 30),
+              title: Text("Challenges"),
+              children: <Widget>[
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Challenge de marche'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Challenges');
+                  },
+                ),
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Gestion des challenges'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Gestion_Challenge');
+                  },
+                ),
+              ],
+            );
+          }
+          else{
+            return ExpansionTile(
+              textColor: Colors.black,
+              childrenPadding: EdgeInsets.only(left: 30),
+              title: Text("Challenges"),
+              children: <Widget>[
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Challenge de marche'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Challenges');
+                  },
+                ),
+              ],
+            );
+          }
         }
     );
   }

@@ -38,9 +38,6 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
       nom = nomUser.toString();
       prenom = prenomUser.toString();
     });
-    // print(id);
-    // print(nom);
-    // print(prenom);
   }
 
   getDataChallengeEnCours() async {
