@@ -180,6 +180,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     Navigator.pushNamed(context, '/Gestion_Challenge');
                   },
                 ),
+                ListTile(
+                  leading:
+                  const Icon(Icons.directions_run, color: Colors.black),
+                  title: const Text('Gestion des bonus'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Gestion_Bonus');
+                  },
+                ),
               ],
             );
           }

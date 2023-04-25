@@ -3,6 +3,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/page/classementAncien.dart';
 import 'package:vienne_en_jeux/page/creation_challenge.dart';
+import 'package:vienne_en_jeux/page/gestion_bonus.dart';
 import 'package:vienne_en_jeux/page/gestion_challenge.dart';
 import 'package:vienne_en_jeux/page/mentions_legales.dart';
 import 'package:vienne_en_jeux/page/modif_challenge.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         '/Creation_Challenge': (context) => CreationChallenge(),
         '/Modif_Challenge' : (context) => ModifChallenge(),
         '/Bonus': (context) => Bonus(),
+        '/Gestion_Bonus': (context) => GestionBonus(),
         '/Classement': (context) => Classement(),
         '/ClassementAncien': (context) => ClassementAncien(),
         '/Participants': (context) => ChallengeParticipants(),

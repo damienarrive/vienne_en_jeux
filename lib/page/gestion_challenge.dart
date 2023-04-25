@@ -108,7 +108,8 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                 ),
                               ],
                             ),
-                            Row(mainAxisAlignment: MainAxisAlignment.center,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                     padding: const EdgeInsets.symmetric(horizontal : 15),
@@ -229,7 +230,8 @@ class _GestionChallengeState extends State<GestionChallenge> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(

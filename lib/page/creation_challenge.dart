@@ -172,8 +172,8 @@ class FormCreateChallengeState extends State<FormCreateChallenge> {
     DateTime date2 = DateFormat('dd/MM/yyyy').parse(dateFin.text);
 
     if(date1.compareTo(date2) < 0){
-      var phpurl = "http://192.168.1.190/myApp/addChallenge.php";
-      var res = await http.post(Uri.parse(phpurl), body: {
+      var theUrl = "http://192.168.1.190/myApp/addChallenge.php";
+      var res = await http.post(Uri.parse(theUrl), body: {
         "id_defi_marche": enAttenteID.last['id_defi_marche'].toString(),
         "nom_defi_marche": nomChall.text,
         "date_debut_marche": DateFormat('yyyy-MM-dd').format(date1),

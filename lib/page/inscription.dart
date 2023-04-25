@@ -90,8 +90,8 @@ class FormInscriptionState extends State<FormInscription> {
   Future<void> sendData() async {
 
     if(mdp_user.text == conf_mdp_user.text) {
-      var phpurl = "http://192.168.1.190/myApp/inscription.php";
-      var res = await http.post(Uri.parse(phpurl), body: {
+      var theUrl = "http://192.168.1.190/myApp/inscription.php";
+      var res = await http.post(Uri.parse(theUrl), body: {
         "login_user": login_user.text,
         "nom_user": nom_user.text,
         "prenom_user": prenom_user.text,
