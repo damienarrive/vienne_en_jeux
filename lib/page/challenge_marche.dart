@@ -41,42 +41,48 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
   }
 
   getDataChallengeEnCours() async {
-    String theUrl = "http://192.168.1.190/myApp/getDataChallengeEncours.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDataChallengeEnCours.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataChallengeEnCours.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getVerifChallengeCours() async {
-    String theUrl = "http://192.168.1.190/myApp/getVerifChallengeCours.php";
+    // String theUrl = "http://192.168.1.190/myApp/getVerifChallengeCours.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getVerifChallengeCours.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataChallengeInscription(ligne) async {
-    String theUrl = "http://192.168.1.190/myApp/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
+    // String theUrl = "http://192.168.1.190/myApp/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
     var res = await http.get(Uri.parse(theUrl), headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   setDataChallengeInscription(ligne) async {
-    String theUrl = "http://192.168.1.190/myApp/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
-    //String theUrl = "http://192.168.1.190/myApp/setDataChallengeInscription.php";
+    // String theUrl = "http://192.168.1.190/myApp/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setDataChallengeInscription.php?iddefi=${ligne['id_defi_marche']}&iduser=$id";
     await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
   }
 
 
   //récupère les données des challenges en statut 'Termine'
   getDataAncienChallenge() async {
-    String theUrl = "http://192.168.1.190/myApp/getDataAncienChallenge.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDataAncienChallenge.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataAncienChallenge.php";
     var res = await http.get(Uri.parse(theUrl), headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
+
   getVerifAncienChallenge() async {
-    String theUrl = "http://192.168.1.190/myApp/getVerifAncienChallenge.php";
+    // String theUrl = "http://192.168.1.190/myApp/getVerifAncienChallenge.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getVerifAncienChallenge.php";
     var res = await http.get(
         Uri.parse(theUrl), headers: {"Accept": "application/json"});
     var responseBody = json.decode(res.body);
@@ -262,7 +268,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "Pas de challenges terminés "),
+                                "Pas de challenges en cours"),
                           ]
                       ),
 

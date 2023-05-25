@@ -15,14 +15,16 @@ class Classement extends StatefulWidget {
 class _ClassementState extends State<Classement> {
 
   getDataClassement(iddefi)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataClassement.php?iddefi=$iddefi";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataClassement.php?iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/getDataClassement.php?iddefi=$iddefi";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataMonClassement(iduser, iddefi)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
@@ -30,7 +32,8 @@ class _ClassementState extends State<Classement> {
 
   //pour vérifier si utilisateur dans équipe
   getDataChallengeInterface(iddefi, iduser)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
+    // String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;

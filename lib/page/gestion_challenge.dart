@@ -13,14 +13,16 @@ class GestionChallenge extends StatefulWidget {
 class _GestionChallengeState extends State<GestionChallenge> {
 
   getDataChallenges() async{
-    String theUrl = "http://192.168.1.190/myApp/getDataChallenges.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataChallenges.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDataChallenges.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   supprDataChallenge(iddefi) async{
-    String theUrl = "http://192.168.1.190/myApp/supprDataChallenge.php?iddefi=$iddefi";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/supprDataChallenge.php?iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/supprDataChallenge.php?iddefi=$iddefi";
     await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
   }
 
@@ -108,84 +110,86 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                 ),
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.symmetric(horizontal : 15),
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/Modif_Challenge', arguments: [item]);
-                                      },
-                                      textColor: Colors.white,
-                                      color: const Color(0xFF375E7E),
-                                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
-                                      child: const Text('Modifier'),
-                                    )
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.symmetric(horizontal : 15),
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                AlertDialog(
-                                                  content: Text("Souhaitez vous réellement supprimer le challenge ${item['nom_defi_marche']}."),
-                                                  actions: [
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          margin: const EdgeInsets.all(10.0),
-                                                          child: Material(
-                                                            color: Colors.white70,
-                                                            child:  Ink(
-                                                              decoration: const ShapeDecoration(
-                                                                color: Color(0xFF375E7E),
-                                                                shape: CircleBorder(),
-                                                              ),
-                                                              child: IconButton(
-                                                                icon: const Icon(Icons.arrow_back),
-                                                                // color: const Color(0xFF375E7E),
-                                                                color: Colors.white,
-                                                                onPressed: () {
-                                                                  Navigator.pop(context);
-                                                                },
+                            if(item['statut_marche'] == 'En cours')...[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(horizontal : 15),
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, '/Modif_Challenge', arguments: [item]);
+                                        },
+                                        textColor: Colors.white,
+                                        color: const Color(0xFF375E7E),
+                                        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                                        child: const Text('Modifier'),
+                                      )
+                                  ),
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(horizontal : 15),
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  AlertDialog(
+                                                    content: Text("Souhaitez vous réellement supprimer le challenge ${item['nom_defi_marche']}."),
+                                                    actions: [
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            margin: const EdgeInsets.all(10.0),
+                                                            child: Material(
+                                                              color: Colors.white70,
+                                                              child:  Ink(
+                                                                decoration: const ShapeDecoration(
+                                                                  color: Color(0xFF375E7E),
+                                                                  shape: CircleBorder(),
+                                                                ),
+                                                                child: IconButton(
+                                                                  icon: const Icon(Icons.arrow_back),
+                                                                  // color: const Color(0xFF375E7E),
+                                                                  color: Colors.white,
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        Padding(padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
-                                                            child: MaterialButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(context);
-                                                                supprDataChallenge(item['id_defi_marche']);
-                                                                setState(() {
-                                                                  getDataChallenges();
-                                                                });
-                                                              },
-                                                              textColor: Colors.white,
-                                                              color: Colors.red,
-                                                              shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
-                                                              child: const Text('Supprimer'),
-                                                            )
-                                                        )
+                                                          Padding(padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
+                                                              child: MaterialButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                  supprDataChallenge(item['id_defi_marche']);
+                                                                  setState(() {
+                                                                    getDataChallenges();
+                                                                  });
+                                                                },
+                                                                textColor: Colors.white,
+                                                                color: Colors.red,
+                                                                shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                                                                child: const Text('Supprimer'),
+                                                              )
+                                                          )
 
-                                                      ],
-                                                    )
+                                                        ],
+                                                      )
 
-                                                  ]
-                                                )
-                                        );
-                                      },
-                                      textColor: Colors.white,
-                                      color: Colors.red,
-                                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0)),
-                                      child: const Text('Supprimer'),
-                                    )
-                                ),
-                              ],
-                            )
+                                                    ]
+                                                  )
+                                          );
+                                        },
+                                        textColor: Colors.white,
+                                        color: Colors.red,
+                                        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0)),
+                                        child: const Text('Supprimer'),
+                                      )
+                                  ),
+                                ],
+                              )
+                            ]
                           ]
                       )
                   )

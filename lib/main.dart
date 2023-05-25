@@ -1,5 +1,7 @@
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:pedometer/pedometer.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/page/classementAncien.dart';
 import 'package:vienne_en_jeux/page/creation_challenge.dart';
@@ -21,6 +23,9 @@ import 'package:vienne_en_jeux/page/inscription.dart';
 import 'package:vienne_en_jeux/page/mdpOublie.dart';
 import 'package:vienne_en_jeux/page/pedometer.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'dart:convert' as JSON;
+import 'package:http/http.dart' as http;
+
 
 void main() {
   runApp(const MyApp());
@@ -83,7 +88,6 @@ class MyApp extends StatelessWidget {
         '/ClassementAncien': (context) => ClassementAncien(),
         '/Participants': (context) => ChallengeParticipants(),
         '/MdpOublie': (context) => MdpOublie(),
-        '/Podometre': (context) => Podometre(),
       },
     );
   }
@@ -99,10 +103,18 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   String text = "";
+
+  //variables
+  late Stream<StepCount> _stepCountStream;
+  String _steps = "";
+  String _lastSteps = "";
+
   @override
   void initState(){
     super.initState();
     _getSession();
+    getSteps();
+    fonctionCRON();
   }
 
   _getSession() async{
@@ -110,6 +122,94 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       text = user.toString();
     });
+  }
+
+
+  fonctionCRON(){
+    final cron = Cron();
+
+    //environ toutes les minutes (pas tres précis j'ai l'impression)
+    cron.schedule(Schedule.parse('1 * * * * *'), () async{
+      dynamic user = await SessionManager().get('userId');
+      if(user!=null) {
+        await modifLastSteps(user);
+        print("Hello CRON");
+      }
+      else{
+        print('aucun user');
+      }
+    });
+  }
+
+  //PODOMETRE
+  void _onData(StepCount receivedData) async{
+    // print("receivedData : $receivedData");
+    _steps = receivedData.steps.toString();
+    // print("steps : $_steps");
+  }
+
+//PODOMETRE
+  void _onError(err) {
+    print('[Pedometer] Error: $err');
+  }
+
+//PODOMETRE
+  void _onDone() {
+    print('[Pedometer] Done');
+  }
+
+//PODOMETRE
+  getSteps(){
+    _stepCountStream = Pedometer.stepCountStream;
+    _stepCountStream.listen(
+        _onData,
+        onError: _onError,
+        onDone: _onDone,
+        cancelOnError: true
+    );
+  }
+
+  compteurPas(nbPas, idUser) async{
+    print('pas : $nbPas');
+    print('user : $idUser');
+    var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/updateStepsMarche.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
+      "pas" : nbPas.toString(),
+      "idUser" : idUser.toString(),
+    });
+    try{
+      var data = JSON.jsonDecode(response.body);
+      print(data);
+    }
+    catch(e){
+      print(e);
+    }
+  }
+
+  modifLastSteps(user) async{
+    var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/modifLastSteps.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
+      "idUser" : user.toString(),
+      "steps" : _steps,
+    });
+    try{
+      var data = JSON.jsonDecode(response.body);
+
+      if(data['message'] == "success pas"){
+        // on vérifie si l'ancien nb de pas enregistré est null ou nn
+        if(data['ancien_pas'] != "NULL"){// si nn on vérifie que l'ancien nb est inférieur au nouveau
+          _lastSteps = data['ancien_pas'];
+          if(int.parse(_lastSteps) < int.parse(_steps)){// si oui on compte le nombre de pas
+            int nbPas = int.parse(_steps) - int.parse(_lastSteps);
+            compteurPas(nbPas, user);
+          }
+        }
+
+      }
+    }
+    catch(e){
+      print(e);
+    }
   }
 
   @override

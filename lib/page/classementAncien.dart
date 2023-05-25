@@ -15,14 +15,16 @@ class ClassementAncien extends StatefulWidget {
 class _ClassementAncienState extends State<ClassementAncien> {
 
   getDataClassementAncien(iddefi)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataClassement.php?iddefi=$iddefi";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataClassement.php?iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/getDataClassement.php?iddefi=$iddefi";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataMonClassement(iduser, iddefi)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/getDataMonClassement.php?iduser=$iduser&iddefi=$iddefi";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;

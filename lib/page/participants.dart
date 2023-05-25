@@ -13,15 +13,16 @@ class ChallengeParticipants extends StatefulWidget {
 }
 
   getDataNbParticipants(iddefi)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataNbParticipants.php?iddefi=$iddefi";
-    //String theUrl = "http://localhost/myApp/getData.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataNbParticipants.php?iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/getDataNbParticipants.php?iddefi=$iddefi";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataNomEquipe(idequipe)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataNomEquipe.php?idequipe=$idequipe";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataNomEquipe.php?idequipe=$idequipe";
+    // String theUrl = "http://192.168.1.190/myApp/getDataNomEquipe.php?idequipe=$idequipe";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;

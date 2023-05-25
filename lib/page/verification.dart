@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +66,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   TextEditingController code_user = TextEditingController();
 
   Future verif() async {
-    String urlVerif = "http://192.168.1.190/myApp/verification.php";
+    String urlVerif = "http://dev.vienneenjeux.fr/PHP_files/verification.php";
+    // String urlVerif = "http://192.168.1.190/myApp/verification.php";
     var response = await http.post(Uri.parse(urlVerif), body: {
       "mail_user" : mailUser.text,
       "code_user" : code_user.text,
@@ -93,7 +92,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   }
 
   Future findMail() async{
-    String urlFind = "http://192.168.1.190/myApp/findMail.php";
+    String urlFind = "http://dev.vienneenjeux.fr/PHP_files/findMail.php";
+    // String urlFind = "http://192.168.1.190/myApp/findMail.php";
     var response = await http.post(Uri.parse(urlFind),body: {
       "mail_user" : mailUser.text,
     }, headers: {"Accept": "application/json"});

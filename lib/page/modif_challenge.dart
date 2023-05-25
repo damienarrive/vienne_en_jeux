@@ -71,7 +71,8 @@ class _ModifChallengeState extends State<ModifChallenge> {
   getDateChallengesEnAttente(dateDebutChall, dateFinChall) async {
     dateDebutChall = DateFormat('dd/MM/yyyy').parse(dateDebutChall).toString().replaceAll(" 00:00:00.000", "");
     dateFinChall = DateFormat('dd/MM/yyyy').parse(dateFinChall).toString().replaceAll(" 00:00:00.000", "");
-    String theUrl = "http://192.168.1.190/myApp/getDateChallengesEnAttenteModif.php?dateD=$dateDebutChall&dateF=$dateFinChall";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDateChallengesEnAttenteModif.php?dateD=$dateDebutChall&dateF=$dateFinChall";
+    // String theUrl = "http://192.168.1.190/myApp/getDateChallengesEnAttenteModif.php?dateD=$dateDebutChall&dateF=$dateFinChall";
     var res = await http.get(
         Uri.parse(theUrl), headers: {"Accept": "application/json"});
     var responseBody = json.encode(json.decode(res.body));
@@ -80,7 +81,8 @@ class _ModifChallengeState extends State<ModifChallenge> {
 
 
   getDateChallengeEnCours() async {
-    String theUrl = "http://192.168.1.190/myApp/getDateChallengeEnCours.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDateChallengeEnCours.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDateChallengeEnCours.php";
     var res = await http.get(
         Uri.parse(theUrl), headers: {"Accept": "application/json"});
     var responseBody = json.decode(res.body);
@@ -88,12 +90,17 @@ class _ModifChallengeState extends State<ModifChallenge> {
   }
 
   datepicker(date, jour, mois, annee) async {
+    DateTime initialD;
+    if(enAttente.isEmpty){
+      initialD = DateTime(annee, mois, jour+1);
+    }
+    else{
+      initialD = DateTime(int.parse(enAttente.last['anneeF']), int.parse(enAttente.last['moisF']), int.parse(enAttente.last['jourF'])+1);
+    }
     DateTime? pickedDate = await showDatePicker(
       context: context,
       locale: const Locale("fr", "FR"),
-      initialDate: DateTime(int.parse(enAttente.last['anneeF']),
-          int.parse(enAttente.last['moisF']),
-          int.parse(enAttente.last['jourF']) + 1),
+      initialDate: initialD,
       firstDate: DateTime(annee, mois, jour + 1),
       //DateTime.now() - not to allow to choose before today.
       lastDate: DateTime(2101),
@@ -131,7 +138,8 @@ class _ModifChallengeState extends State<ModifChallenge> {
     DateTime date2 = DateFormat('dd/MM/yyyy').parse(dateFin.text);
 
     if (date1.compareTo(date2) < 0) {
-      var theUrl = "http://192.168.1.190/myApp/updateDataChallengeModif.php";
+      var theUrl = "http://dev.vienneenjeux.fr/PHP_files/updateDataChallengeModif.php";
+      // var theUrl = "http://192.168.1.190/myApp/updateDataChallengeModif.php";
       var res = await http.post(Uri.parse(theUrl), body: {
         "id_defi_marche": id.toString(),
         "nom_defi_marche": nomChall.text,
@@ -184,7 +192,7 @@ class _ModifChallengeState extends State<ModifChallenge> {
         resizeToAvoidBottomInset: false,
         drawer: NavigationDrawerWidget(),
         appBar: AppBar(
-          title: const Text('Création de Challenge'),
+          title: const Text('Modification de Challenge'),
           elevation: 0,
         ),
         body: SingleChildScrollView(

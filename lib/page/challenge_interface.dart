@@ -1,3 +1,4 @@
+import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,27 +13,32 @@ class ChallengeInterface extends StatefulWidget {
 }
 
   getDataChallengeInterface(iddefi, iduser)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
+    // String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface.php?iddefi=$iddefi&iduser=$iduser";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
-  getDataChallengeInterface_Equipe(iddefi, iduser)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface_Equipe.php?iddefi=$iddefi&iduser=$iduser";
+  getDataChallengeInterfaceEquipe(iddefi, iduser)async{
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataChallengeInterface_Equipe.php?iddefi=$iddefi&iduser=$iduser";
+    // String theUrl = "http://192.168.1.190/myApp/getDataChallengeInterface_Equipe.php?iddefi=$iddefi&iduser=$iduser";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   getDataNbParticipants(iddefi)async{
-    String theUrl = "http://192.168.1.190/myApp/getDataNbParticipants.php?iddefi=$iddefi";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataNbParticipants.php?iddefi=$iddefi";
+    // String theUrl = "http://192.168.1.190/myApp/getDataNbParticipants.php?iddefi=$iddefi";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
 class _ChallengeInterfaceState extends State<ChallengeInterface> {
+  String searchValue = '';
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute
@@ -124,9 +130,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                             ),
                           ),
 
-                          Flexible(
-                            child: rechercheJoueur(snap[0], args[0], args[1]),
-                          ),
+                          //TODO
+                          // Flexible(
+                          //   child: rechercheJoueur(snap[0], args[0], args[1]),
+                          // ),
 
                           //BOUTON AIDE
                           Container(
@@ -235,7 +242,6 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                                       Icons.format_list_bulleted, size: 30),
                                   color: const Color(0xFF375E7E),
                                   onPressed: () {
-                                    print([args[0], args[1]]);
                                     Navigator.pushNamed(
                                       context,
                                       '/Classement',
@@ -326,7 +332,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
   affichagePoint(ligne, iddefi, iduser) {
     if (ligne['id_equipe_marche'] != null) {
       return FutureBuilder(
-        future: getDataChallengeInterface_Equipe(iddefi, iduser),
+        future: getDataChallengeInterfaceEquipe(iddefi, iduser),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -434,7 +440,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
   rechercheJoueur(ligne, iddefi, iduser) {
     if (ligne['id_equipe_marche'] != null) {
       return FutureBuilder(
-        future: getDataChallengeInterface_Equipe(iddefi, iduser),
+        future: getDataChallengeInterfaceEquipe(iddefi, iduser),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -468,79 +474,10 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
       );
     }
     else {
-      return Container();
-      //     margin: const EdgeInsets.all(10.0),
-      //     padding: const EdgeInsets.symmetric(
-      //         horizontal: 10, vertical: 5),
-      //     decoration: BoxDecoration(
-      //       color: Colors.white,
-      //       borderRadius: BorderRadius.circular(20),
-      //     ),
-      // child: Flexible(
-      //   child: const TextField(
-      //     decoration: InputDecoration(
-      //       prefixIcon: const Icon(Icons.search),
-      //       border: OutlineInputBorder(),
-      //       hintText: 'Recherche joueur',
-      //     ),
-      //   ),
-      // ),
-      // );
-      /*
-        FutureBuilder(
-        future: getDataNbParticipants(iddefi),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("ERROR fetching data"),
-              );
-            }
-            List snap = snapshot.data;
-            return Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(10.0),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Flexible(
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(),
-                        hintText: 'Recherche joueur',
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                      itemCount: snap.length,
-                      itemBuilder: (context, index) {
-                        final result = snap[index];
-
-                        return ListTile(
-                          //TODO : https://www.google.com/search?q=flutter+search+bar+with+listview&rlz=1C1GCEA_enFR1006FR1006&oq=flutter+search+bar+wi&aqs=chrome.1.69i57j0i512l2j0i22i30i625l4j0i22i30j0i22i30i625j0i22i30.10228j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7MX4Y7qjKrKVxc8Pt_-csA0_27
-                        );
-                      },
-                    ),
-                )
-              ],
-            );
-          }
-          else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+      return EasySearchBar(
+          title: Text('Recherche joueur'),
+          onSearch: (value) => setState(() => searchValue = value)
       );
-      */
-
     }
   }
 }

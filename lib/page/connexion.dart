@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:pedometer/pedometer.dart';
 import 'dart:convert' as JSON;
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
@@ -14,7 +15,6 @@ class Connexion extends StatefulWidget {
 }
 
 class _ConnexionState extends State<Connexion> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +59,25 @@ class FormConnexion extends StatefulWidget {
 }
 
 class FormConnexionState extends State<FormConnexion> {
+  late Stream<StepCount> _stepCountStream;
+  String _steps = "";
+  String _lastSteps = "";
+
   final _formKey = GlobalKey<FormState>();
   bool hidePassword = true;
 
   TextEditingController mailUser = TextEditingController();
   TextEditingController password = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    getSteps();
+  }
+
   Future login() async {
-    var urlLogin = "http://192.168.1.190/myApp/login.php";
+    // var urlLogin = "http://192.168.1.190/myApp/login.php";
+    var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/login.php";
     var response = await http.post(Uri.parse(urlLogin), body: {
       "mail_user" : mailUser.text,
       "mdp_user" : password.text,
@@ -80,10 +91,15 @@ class FormConnexionState extends State<FormConnexion> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Connexion')),
         );
+      await getSteps();
       await SessionManager().set('userId', data['data'][0]['id']);
       await SessionManager().set('nom', data['data'][0]['nom']);
       await SessionManager().set('prenom', data['data'][0]['prenom']);
       await SessionManager().set('type_user', data['data'][0]['type_user']);
+
+
+      modifLastSteps();
+
       Navigator.pushNamed(context, '/');
       }
       else if(data['message'] == "Veuillez verifier votre compte"){
@@ -93,6 +109,78 @@ class FormConnexionState extends State<FormConnexion> {
         Fluttertoast.showToast(msg: "Mauvaise combinaison mail/mdp");
       }
     }// end try
+    catch(e){
+      print(e);
+    }
+  }
+
+
+  //PODOMETRE
+  void _onData(StepCount receivedData) async{
+    print("receivedData : $receivedData");
+    _steps = receivedData.steps.toString();
+    print("steps : $_steps");
+  }
+
+  //PODOMETRE
+  void _onError(err) {
+    print('[Pedometer] Error: $err');
+  }
+
+  //PODOMETRE
+  void _onDone() {
+    print('[Pedometer] Done');
+  }
+
+  //PODOMETRE
+  getSteps(){
+    _stepCountStream = Pedometer.stepCountStream;
+    _stepCountStream.listen(
+        _onData,
+        onError: _onError,
+        onDone: _onDone,
+        cancelOnError: true
+    );
+  }
+
+  compteurPas(nbPas, idUser) async{
+    var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/updateStepsMarche.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
+      "pas" : nbPas.toString(),
+      "idUser" : idUser.toString(),
+    });
+    try{
+      var data = JSON.jsonDecode(response.body);
+      print(data);
+    }
+    catch(e){
+      print(e);
+    }
+  }
+
+  modifLastSteps() async{
+    dynamic user = await SessionManager().get('userId');
+    var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/modifLastSteps.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
+      "idUser" : user.toString(),
+      "steps" : _steps,
+    });
+    try{
+      var data = JSON.jsonDecode(response.body);
+      print(data);
+
+      if(data['message'] == "success pas"){
+        // on vérifie si l'ancien nb de pas enregistré est null ou nn
+        if(data['ancien_pas'] != "NULL"){// si nn on vérifie que l'ancien nb est inférieur au nouveau
+          _lastSteps = data['ancien_pas'];
+          if(int.parse(_lastSteps) < int.parse(_steps)){// si oui on compte le nombre de pas
+            int nbPas = int.parse(_steps) - int.parse(_lastSteps);
+            compteurPas(nbPas, user);
+          }
+        }
+
+      }
+    }
     catch(e){
       print(e);
     }

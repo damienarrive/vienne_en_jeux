@@ -110,14 +110,16 @@ class FormCreateChallengeState extends State<FormCreateChallenge> {
   }
 
   getDateChallengesEnAttente() async{
-    String theUrl = "http://192.168.1.190/myApp/getDateChallengesEnAttente.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDateChallengesEnAttente.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDateChallengesEnAttente.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(json.encode(res.body));
     return responseBody;
   }
 
   getDateChallengesEnAttenteId() async{
-    String theUrl = "http://192.168.1.190/myApp/getDateChallengesEnAttenteId.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDateChallengesEnAttenteId.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDateChallengesEnAttenteId.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(json.encode(res.body));
     return responseBody;
@@ -125,17 +127,26 @@ class FormCreateChallengeState extends State<FormCreateChallenge> {
 
 
   getDateLastChallenge() async{
-    String theUrl = "http://192.168.1.190/myApp/getDateChallengeEnCours.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDateChallengeEnCours.php";
+    // String theUrl = "http://192.168.1.190/myApp/getDateChallengeEnCours.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
   datepicker(date, jour, mois, annee) async{
+    DateTime initialD;
+    if(enAttente.isEmpty){
+      initialD = DateTime(annee, mois, jour+1);
+    }
+    else{
+      initialD = DateTime(int.parse(enAttente.last['anneeF']), int.parse(enAttente.last['moisF']), int.parse(enAttente.last['jourF'])+1);
+    }
     DateTime? pickedDate = await showDatePicker(
       context: context,
       locale : const Locale("fr","FR"),
-      initialDate: DateTime(int.parse(enAttente.last['anneeF']), int.parse(enAttente.last['moisF']), int.parse(enAttente.last['jourF'])+1),
+      initialDate: initialD,
+      // initialDate: DateTime(int.parse(enAttente.last['anneeF']), int.parse(enAttente.last['moisF']), int.parse(enAttente.last['jourF'])+1),
       firstDate: DateTime(annee, mois, jour+1), //DateTime.now() - not to allow to choose before today.
       lastDate: DateTime(2101),
       selectableDayPredicate: _predicate,
@@ -170,9 +181,10 @@ class FormCreateChallengeState extends State<FormCreateChallenge> {
   Future<void> addChallenge(enAttenteID) async{
     DateTime date1 = DateFormat('dd/MM/yyyy').parse(dateDebut.text);
     DateTime date2 = DateFormat('dd/MM/yyyy').parse(dateFin.text);
+    print(enAttenteID.last['id_defi_marche']);
 
     if(date1.compareTo(date2) < 0){
-      var theUrl = "http://192.168.1.190/myApp/addChallenge.php";
+      var theUrl = "http://dev.vienneenjeux.fr/PHP_files/addChallenge.php";
       var res = await http.post(Uri.parse(theUrl), body: {
         "id_defi_marche": enAttenteID.last['id_defi_marche'].toString(),
         "nom_defi_marche": nomChall.text,
@@ -319,7 +331,7 @@ class FormCreateChallengeState extends State<FormCreateChallenge> {
                                       readOnly: true,
                                       onTap: () async {
                                         if(snap.isEmpty){
-                                          datepicker(dateDebut, DateTime.now().day, DateTime.now().month, DateTime.now().year);
+                                          datepicker(dateFin, DateTime.now().day, DateTime.now().month, DateTime.now().year);
                                         }
                                         else{
                                           datepicker(dateFin,  int.parse(snap[0]['jour']), int.parse(snap[0]['mois']), int.parse(snap[0]['annee']));

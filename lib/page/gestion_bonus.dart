@@ -26,21 +26,24 @@ class _GestionBonusState extends State<GestionBonus> {
 
 
   getBonusConnexion() async{
-    String theUrl = "http://192.168.1.190/myApp/getBonusConnexion.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getBonusConnexion.php";
+    // String theUrl = "http://192.168.1.190/myApp/getBonusConnexion.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = JSON.jsonDecode(res.body);
     return responseBody;
   }
 
   getBonusPalier() async{
-    String theUrl = "http://192.168.1.190/myApp/getBonusPalier.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getBonusPalier.php";
+    // String theUrl = "http://192.168.1.190/myApp/getBonusPalier.php";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     var responseBody = JSON.jsonDecode(res.body);
     return responseBody;
   }
 
   addBonusPalier() async{
-    String theUrl = "http://192.168.1.190/myApp/addBonusPalier.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/addBonusPalier.php";
+    // String theUrl = "http://192.168.1.190/myApp/addBonusPalier.php";
     var res = await http.post(Uri.parse(theUrl), body: {
       "palier_pas": palierBonus.text,
       "bonus": nbBonus.text,
@@ -55,14 +58,16 @@ class _GestionBonusState extends State<GestionBonus> {
   }
 
   setBonusConnexion() async{
-    String theUrl = "http://192.168.1.190/myApp/setBonusConnexion.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setBonusConnexion.php";
+    // String theUrl = "http://192.168.1.190/myApp/setBonusConnexion.php";
     await http.post(Uri.parse(theUrl), body: {
       "bonus": points.text,
     });
   }
 
   setBonusPalier(id) async{
-    String theUrl = "http://192.168.1.190/myApp/setBonusPalier.php";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setBonusPalier.php";
+    // String theUrl = "http://192.168.1.190/myApp/setBonusPalier.php";
     var res = await http.post(Uri.parse(theUrl), body: {
       "id_bonus": id.toString(),
       "palier": pointsPalier.text,
@@ -79,7 +84,8 @@ class _GestionBonusState extends State<GestionBonus> {
   }
 
   deleteBonus(idbonus) async{
-    String theUrl = "http://192.168.1.190/myApp/deleteBonus.php?idbonus=$idbonus";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/deleteBonus.php?idbonus=$idbonus";
+    // String theUrl = "http://192.168.1.190/myApp/deleteBonus.php?idbonus=$idbonus";
     var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
     try {
       var data = JSON.jsonDecode(res.body);

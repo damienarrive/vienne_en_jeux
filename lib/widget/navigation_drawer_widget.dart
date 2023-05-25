@@ -59,13 +59,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 //Corriger plus tard : peut-etre problemes pour fermer la page précédente ?
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text("Podomètre"),
-              onTap: () {
-                Navigator.pushNamed(context, '/Podometre');
-              },
-            ),
             challenge(),
             deconnexion(),
             ExpansionTile(
