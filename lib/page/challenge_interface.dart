@@ -1,5 +1,6 @@
-import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -38,6 +39,9 @@ class ChallengeInterface extends StatefulWidget {
 
 class _ChallengeInterfaceState extends State<ChallengeInterface> {
   String searchValue = '';
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +51,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
         .arguments as List;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text('Challenge Interface'),
@@ -131,9 +136,11 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                           ),
 
                           //TODO
-                          // Flexible(
-                          //   child: rechercheJoueur(snap[0], args[0], args[1]),
-                          // ),
+                          SizedBox(
+                            width : 250,
+                            child : rechercheJoueur(snap[0], args[0], args[1]),
+                          ),
+
 
                           //BOUTON AIDE
                           Container(
@@ -329,6 +336,8 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
     );
   }
 
+
+
   affichagePoint(ligne, iddefi, iduser) {
     if (ligne['id_equipe_marche'] != null) {
       return FutureBuilder(
@@ -433,14 +442,54 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
     var valDateFin = ligne['date_fin_marche'].split('-');
     return Text(
       "Du ${valDateDeb[2]}/${valDateDeb[1]}/${valDateDeb[0]} au ${valDateFin[2]}/${valDateFin[1]}/${valDateFin[0]} inclus.",
-      // style: TextStyle(),
     );
   }
 
+
+  getDataEquipe(idequipe) async{
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataEquipe.php?idequipe=$idequipe";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
+  getDataSearch(iddefi, iduser) async{
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataSearch.php?iddefi=$iddefi&iduser=$iduser";
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    var responseBody = json.decode(res.body);
+    return responseBody;
+  }
+
+  addTeammate(idequipe, login, iduser, iddefi) async{
+    idequipe = idequipe.toString();
+    print(login);
+    print(iduser);
+    print(iddefi);
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/addTeammates.php";
+    var res = await http.post(Uri.parse(theUrl),headers: {"Accept":"application/json"}, body: {
+      "idequipe" : idequipe,
+      "iduser": iduser,
+      "iddefi": iddefi,
+      "login": login
+    });
+    try{
+      var responseBody = json.decode(res.body);
+      if(responseBody['message'] == 'Success'){
+        setState(() {
+          getDataChallengeInterface(iddefi, iduser);
+        });
+      }
+      print(responseBody);
+    }
+    catch(e){
+      print(e);
+    }
+
+  }
+
   rechercheJoueur(ligne, iddefi, iduser) {
-    if (ligne['id_equipe_marche'] != null) {
-      return FutureBuilder(
-        future: getDataChallengeInterfaceEquipe(iddefi, iduser),
+    return FutureBuilder(
+        future : getDataEquipe(ligne['id_equipe_marche']),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -448,36 +497,146 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                 child: Text("ERROR fetching data"),
               );
             }
-            List snap = snapshot.data;
-            return Container(
-              margin: const EdgeInsets.all(10.0),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                "${snap[0]['nom_equipe']}",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
-                ),
-              ),
-            );
+            List infoEquipe = snapshot.data;
+            //Si on a une équipe mais complète
+            if (ligne['id_equipe_marche'] != null && int.parse(infoEquipe[0]['nbEquipier']) >= int.parse(ligne['taille_max'])) {
+              return FutureBuilder(
+                future: getDataChallengeInterfaceEquipe(iddefi, iduser),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("ERROR fetching data"),
+                      );
+                    }
+                    List snap = snapshot.data;
+                    return Container(
+                      margin: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "Nom d'équipe : ${snap[0]['nom_equipe']}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                        ),
+                      ),
+                    );
+                  }
+                  else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              );
+            }
+            else {
+              return FutureBuilder(
+                future: getDataSearch(iddefi, iduser),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("ERROR fetching data"),
+                      );
+                    }
+                    List resultSearch = snapshot.data;
+                    List<String> str = resultSearch.map((e) => e.toString()).toList();
+                    return Form(
+                        key: _formKey,
+                        child: Row(
+                          children : [
+                            Container(
+                              width: 170,
+                              decoration : const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                              ),
+                              child : SearchField(
+                              controller: _searchController,
+                              suggestions: str
+                                  .map((e) => SearchFieldListItem(e))
+                                  .toList(),
+                              suggestionState: Suggestion.expand,
+                              textInputAction: TextInputAction.next,
+                              hint: 'Chercher un joueur',
+                              searchStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                              validator: (value) {
+                                if (!str.contains(value) || value!.isEmpty) {
+                                  return 'Le nom doit etre complet';
+                                }
+                                return null;
+                              },
+                              suggestionsDecoration: SuggestionDecoration(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                              ),
+                              searchInputDecoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.8),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                  // borderSide: BorderSide(color: Colors.red),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+                                ),
+                              ),
+                              maxSuggestionsInViewPort: 6,
+                              itemHeight: 40,
+                              // onTap: (x) {},
+                            ),
+                            ),
+                            Container(
+                              width: 80,
+                              height: 60,
+                              decoration : BoxDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                borderRadius: const BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
+                              ),
+                              child :ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
+                                      )
+                                ),
+                                onPressed: () {
+                                  //TODO fonction addTeammates()
+                                  if(_formKey.currentState!.validate()){
+                                    if(_searchController.text != "null"){
+                                      addTeammate(ligne['id_equipe_marche'], _searchController.text, iduser, iddefi);
+                                    }
+                                  }
+                                  else{
+                                    Fluttertoast.showToast(msg: "Veuillez remplir tous les champs correctement");
+                                  }
+                                },
+                                child: Text('Ajouter')
+                              ),
+                            ),
+
+                        ]
+                        )
+                    );
+                  }
+                  else {
+                    return Text('Votre équipe est complète');
+                  }
+                }
+                );
+            }
           }
           else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Text('Equipe complète');
           }
-        },
-      );
-    }
-    else {
-      return EasySearchBar(
-          title: Text('Recherche joueur'),
-          onSearch: (value) => setState(() => searchValue = value)
-      );
-    }
+        }
+        );
   }
 }

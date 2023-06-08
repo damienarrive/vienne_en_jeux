@@ -56,6 +56,7 @@ dependencies:
   flutter_localization: ^0.1.10
   easy_search_bar: ^2.5.0
   cron: ^0.5.1
+  searchfield: ^0.8.3
 
 dev_dependencies:
   flutter_test:

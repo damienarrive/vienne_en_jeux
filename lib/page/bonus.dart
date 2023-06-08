@@ -43,7 +43,7 @@ class _BonusState extends State<Bonus> {
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String formattedDate = date.toString().replaceAll("00:00:00.000", "");
-    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setDataRecupBonusConnexion.php?val=1&iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setDataRecupBonusConnexion.php?iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
     // String theUrl = "http://192.168.1.190/myApp/setDataRecupBonusConnexion.php?val=1&iddefi=$iddefi&iduser=$iduser&date='$formattedDate'";
     await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
   }

@@ -314,7 +314,7 @@ class FormCreateChallengeState extends State<FormCreateChallenge> {
                                       },
                                     ),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width: 200,
                                     // margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                                     child: TextFormField(
