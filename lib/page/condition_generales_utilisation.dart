@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 // import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
@@ -108,6 +109,9 @@ class _PageCGUState extends State<PageCGU> {
       appBar: AppBar(
         title: const Text('CGU'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
       body: Column(
         children: [

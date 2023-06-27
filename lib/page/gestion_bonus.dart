@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import '../widget/navigation_drawer_widget.dart';
 
 class GestionBonus extends StatefulWidget {
@@ -395,6 +396,9 @@ class _GestionBonusState extends State<GestionBonus> {
         appBar: AppBar(
           title: const Text('Gestion Bonus'),
           elevation: 0,
+            actions : <Widget>[
+              ConnexionButtonWidget(),
+            ]
         ),
         body: SingleChildScrollView(
           child : Column(

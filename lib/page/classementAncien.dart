@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -49,6 +50,9 @@ class _ClassementAncienState extends State<ClassementAncien> {
       appBar: AppBar(
         title: const Text('Classement'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailjet/mailjet.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:convert' as JSON;
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
@@ -19,6 +20,7 @@ class _ConnexionState extends State<Connexion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text('Connexion'),
@@ -186,10 +188,47 @@ class FormConnexionState extends State<FormConnexion> {
     }
   }
 
+  genererCode(mailUser) async{
+    var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/genererCode.php";
+    var response = await http.post(Uri.parse(urlLogin), body: {
+      "mailUser" : mailUser,
+    });
+    try{
+      var data = JSON.jsonDecode(response.body);
+      print(data);
+      envoieMailMdpOublie(mailUser, data['code'], data['nom'], data['prenom']);
+    }
+    catch(e){
+      print(e);
+    }
+  }
 
-  envoieMailMdpOublie(mail) async{
-    //TODO envoie code?
+  envoieMailMdpOublie(mail, code, nom, prenom) async{
+    String apiKey = "58152266460866e00be5762ff6757a4b";
+    String secretKey = "60d36681bbb300c4f674ddb9e9d602b6";
 
+    //TODO mettre l'adresse du CDOS pour le prod
+    String myEmail = 'vianney.souday@awa-solutions.fr';
+
+    MailJet mailJet = MailJet(
+      apiKey: apiKey,
+      secretKey: secretKey,
+    );
+
+    await mailJet.sendEmail(
+      subject: "Vérification de compte",
+      sender: Sender(
+        email: myEmail,
+        name: "NePasRepondre",
+      ),
+      reciepients: [
+        Recipient(
+          email: mail,
+          name: "$nom $prenom",
+        ),
+      ],
+      htmlEmail: "<h3>Voici votre code pour changer de mot de passe : $code !</h3>",
+    );
   }
 
 
@@ -298,7 +337,7 @@ class FormConnexionState extends State<FormConnexion> {
                         }
                         else{
                           //TODO décider de quoi envoyer par mail -> code? changement de mdp uniquement si code juste
-                          envoieMailMdpOublie(mailUser.text);
+                          genererCode(mailUser.text);
                           Navigator.pushNamed(
                             context,
                             '/MdpOublie',

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import '../widget/navigation_drawer_widget.dart';
 
 class GestionChallenge extends StatefulWidget {
@@ -208,6 +209,9 @@ class _GestionChallengeState extends State<GestionChallenge> {
         appBar: AppBar(
           title: const Text('Gestion Challenges'),
           elevation: 0,
+            actions : <Widget>[
+              ConnexionButtonWidget(),
+            ]
         ),
         body: SingleChildScrollView(
           child : Column(

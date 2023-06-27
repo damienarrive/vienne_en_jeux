@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -40,8 +41,10 @@ class ChallengeInterface extends StatefulWidget {
 class _ChallengeInterfaceState extends State<ChallengeInterface> {
   String searchValue = '';
   final _formKey = GlobalKey<FormState>();
+  final _formNom = GlobalKey<FormState>();
 
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _nomEquipe = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +59,12 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
       appBar: AppBar(
         title: const Text('Challenge Interface'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
-      body: Column(
+      body: SingleChildScrollView(
+      child : Column(
         children: [
           //BANNIERE
           Container(
@@ -75,29 +82,59 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
             ),
           ),
 
-          //BOUTON RETOUR
-          Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.all(10.0),
-            child: Material(
-              color: const Color(0xFF375E7E),
-              child: Container(
-                child: Ink(
-                  decoration: const ShapeDecoration(
-                    color: Colors.white70,
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    color: const Color(0xFF375E7E),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //BOUTON RETOUR
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.all(10.0),
+                child: Material(
+                  color: const Color(0xFF375E7E),
+                  child: Container(
+                    child: Ink(
+                      decoration: const ShapeDecoration(
+                        color: Colors.white70,
+                        shape: CircleBorder(),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color(0xFF375E7E),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsets.all(10.0),
+                child: Material(
+                  color: const Color(0xFF375E7E),
+                  child: Ink(
+                    decoration: const ShapeDecoration(
+                      color: Colors.white70,
+                      shape: CircleBorder(),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                          Icons.question_mark, size: 30),
+                      color: const Color(0xFF375E7E),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/Challenge_Aide',
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
+
 
           FutureBuilder(
             future: getDataChallengeInterface(args[0], args[1]),
@@ -113,60 +150,12 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                   Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.all(10.0),
-                            child: Material(
-                              color: const Color(0xFF375E7E),
-                              child: Ink(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.white70,
-                                  shape: CircleBorder(),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                      Icons.question_mark, size: 30),
-                                  color: const Color(0xFF375E7E),
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ),
-                          ),
 
-                          //TODO
                           SizedBox(
-                            width : 250,
+                            width : 300,
                             child : rechercheJoueur(snap[0], args[0], args[1]),
-                          ),
-
-
-                          //BOUTON AIDE
-                          Container(
-                            alignment: Alignment.centerRight,
-                            margin: const EdgeInsets.all(10.0),
-                            child: Material(
-                              color: const Color(0xFF375E7E),
-                              child: Ink(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.white70,
-                                  shape: CircleBorder(),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                      Icons.card_giftcard, size: 30),
-                                  color: const Color(0xFF375E7E),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/Bonus',
-                                      arguments: [args[0], args[1]],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
                           ),
 
                         ],
@@ -175,7 +164,6 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.all(10.0),
@@ -226,14 +214,12 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                               ),
                             ),
                           ),
-
                         ],
                       ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.all(10.0),
@@ -252,6 +238,32 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                                     Navigator.pushNamed(
                                       context,
                                       '/Classement',
+                                      arguments: [args[0], args[1]],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          //BOUTON Bonus
+                          Container(
+                            alignment: Alignment.centerRight,
+                            margin: const EdgeInsets.all(10.0),
+                            child: Material(
+                              color: const Color(0xFF375E7E),
+                              child: Ink(
+                                decoration: const ShapeDecoration(
+                                  color: Colors.white70,
+                                  shape: CircleBorder(),
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(
+                                      Icons.card_giftcard, size: 30),
+                                  color: const Color(0xFF375E7E),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/Bonus',
                                       arguments: [args[0], args[1]],
                                     );
                                   },
@@ -332,6 +344,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
             },
           ),
         ],
+      ),
       ),
     );
   }
@@ -487,6 +500,11 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
 
   }
 
+  modifNomEquipe(idequipe, nomequipe) async{
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setNomEquipe.php?idequipe=$idequipe&nomequipe=$nomequipe";
+    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+  }
+
   rechercheJoueur(ligne, iddefi, iduser) {
     return FutureBuilder(
         future : getDataEquipe(ligne['id_equipe_marche']),
@@ -517,13 +535,95 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(
-                        "Nom d'équipe : ${snap[0]['nom_equipe']}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20
-                        ),
+                      child: Column(
+                        children: [
+                          Row(
+                          children: [
+                              IconButton(
+                                  color: Colors.blue,
+                                  onPressed: (){
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            scrollable: true,
+                                            title: const Text('Modification du nom d\'équipe'),
+                                            content: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Form(
+                                                key: _formNom,
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    TextFormField(
+                                                      controller : _nomEquipe,
+                                                      decoration: InputDecoration(
+                                                        labelText: 'Nouveau nom',
+                                                      ),
+                                                      validator: (value){
+                                                        if(value == null || value.isEmpty){
+                                                          return "Veuillez entrer un nom";
+                                                        }
+                                                        return null;
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: const Color(0xFF375E7E),
+                                                      ),
+                                                      child: Text("Modifier",
+                                                        style: TextStyle(color: Colors.white),
+                                                      ),
+                                                      onPressed: () {
+                                                        if(_formNom.currentState!.validate()) {
+                                                          modifNomEquipe(ligne['id_equipe_marche'], _nomEquipe.text);
+                                                          Navigator.pop(context);
+                                                          setState(() {
+                                                            getDataChallengeInterfaceEquipe(iddefi, iduser);
+                                                          });
+                                                        }
+                                                      })
+                                                ],
+                                              )
+
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  icon: const Icon(Icons.edit)
+                              ),
+                              const Text(
+                                "Equipe :",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "${snap[0]['nom_equipe']}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20
+                                ),
+                              ),
+                            ],
+                          )
+
+                        ],
                       ),
+
                     );
                   }
                   else {

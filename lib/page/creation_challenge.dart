@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import '../widget/navigation_drawer_widget.dart';
 import 'dart:convert' as JSON;
 
@@ -24,6 +25,9 @@ class _CreationChallengeState extends State<CreationChallenge> {
         appBar: AppBar(
           title: const Text('Création de Challenge'),
           elevation: 0,
+            actions : <Widget>[
+              ConnexionButtonWidget(),
+            ]
         ),
         body: SingleChildScrollView(
           child : Column(

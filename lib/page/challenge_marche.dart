@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -96,6 +97,9 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
       appBar: AppBar(
         title: const Text('Challenge Marche'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
       body: Column(
         children: [
@@ -221,6 +225,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                         ),
                       ),
                       Container(
+                        margin: const EdgeInsets.all(10),
                         child: afficheBoutonChallengeEnCours(snap[0]),
                       ),
                       Container(
@@ -570,7 +575,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: const Color(0xFF375E7E),
                           borderRadius: BorderRadius.circular(20),

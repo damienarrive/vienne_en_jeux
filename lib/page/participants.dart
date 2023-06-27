@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -35,29 +36,33 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
     final args = ModalRoute.of(context)!.settings.arguments as List;
 
     return Scaffold(
-      drawer: NavigationDrawerWidget(),
-      appBar: AppBar(
-        title: const Text('Participants'),
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-
+        resizeToAvoidBottomInset: false,
+        drawer: NavigationDrawerWidget(),
+        appBar: AppBar(
+          title: const Text('Participants'),
+          elevation: 0,
+            actions : <Widget>[
+              ConnexionButtonWidget(),
+            ]
+        ),
+        body: SingleChildScrollView(
+        child : Column(
+          children: [
           //BANNIERE
-          Container(
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Image(
+                    image: AssetImage('images/banniere_mobile.png'),
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Image(
-                  image: AssetImage('images/banniere_mobile.png'),
-                ),
-              ],
-            ),
-          ),
 
           //BOUTON RETOUR
           Container(
@@ -196,19 +201,29 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
         ),
         ]
       )
-    );
+    ));
   }
 
   List<DataColumn> _createColumns(){
     return [
-      DataColumn(label: Text(
-          'Participant', textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-      )),
-      DataColumn(label: Text(
-          'Equipe', textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-      )),
+      const DataColumn(
+          label: Expanded(
+            child: Text(
+                'Participant',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            )
+          )
+      ),
+      const DataColumn(
+          label: Expanded(
+            child: Text(
+              'Equipe',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            ),
+        )
+      ),
     ];
   }
 
@@ -235,7 +250,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
   }
 
   afficheEquipe(idequipe){
-    if(idequipe != null && idequipe > 0  ) {
+    if(idequipe != "NULL") {
       return FutureBuilder(
         future: getDataNomEquipe(idequipe),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

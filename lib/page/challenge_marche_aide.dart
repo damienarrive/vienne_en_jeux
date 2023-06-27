@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class ChallengeMarcheAide extends StatefulWidget {
@@ -16,6 +17,9 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
         appBar: AppBar(
           title: const Text('Challenges de marche'),
           elevation: 0,
+            actions : <Widget>[
+              ConnexionButtonWidget(),
+            ]
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +29,6 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
               margin: const EdgeInsets.all(10.0),
               child: Material(
                 color: const Color(0xFF375E7E),
-                child: Container(
                   child: Ink(
                     decoration: const ShapeDecoration(
                       color: Colors.white70,
@@ -39,7 +42,6 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
                       },
                     ),
                   ),
-                ),
               ),
         ),
             Container(
@@ -51,7 +53,7 @@ class _ChallengeMarcheAideState extends State<ChallengeMarcheAide> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Text(
-                "Le challenge de marche vous met au défi de réaliser le maximum de pas (marche ou course) sur une période donnée, seul ou en équipe. \nPour participer, il vous faut ouvrir un compte, vous connecter sur Vienne en Jeux, et vous inscrire au Challenge. \nPour fonctionner, Vienne en Jeux utilise les informations sur le nombre de pas récoltés par l'application Santé de votre téléphone. Vous devrez pour cela autoriser Vienne en Jeux à lire ces données dans l'application Santé.\n \nVienne en Jeux n'utilise aucune autre donnée personnelle de l'application Santé ou de toute autre application présente sur votre téléphone",
+                "Le challenge de marche vous met au défi de réaliser le maximum de pas (marche ou course) sur une période donnée, seul ou en équipe. \nPour participer, il vous faut ouvrir un compte, vous connecter sur Vienne en Jeux, et vous inscrire au Challenge. \nPour fonctionner, Vienne en Jeux utilise les informations sur le nombre de pas récoltés par le podomètre de votre téléphone.",
                 textAlign: TextAlign.justify,
               ),
             ),

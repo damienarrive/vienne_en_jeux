@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -23,9 +23,16 @@ class _BonusState extends State<Bonus> {
   }
 
   setDataRecupBonusPalier(idbonus, iddefi, iduser)async{
-    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=$idbonus}";
+    String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=$idbonus";
     // String theUrl = "http://192.168.1.190/myApp/setDataRecupBonus.php?true=true&iddefi=$iddefi&iduser=$iduser&idbonus=${ligne['id_bonus_marche']}";
-    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    try {
+      var responseBody = json.decode(res.body);
+      print(responseBody);
+    }
+    catch(e) {
+      print(e);
+    }
   }
 
   getDataBonusConnexion(iddefi, iduser)async{
@@ -59,6 +66,9 @@ class _BonusState extends State<Bonus> {
       appBar: AppBar(
         title: const Text('Bonus'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -214,6 +224,9 @@ class _BonusState extends State<Bonus> {
                                         ),
                                         onPressed: () {
                                           setDataRecupBonusPalier(item['id_bonus'], args[0], args[1]);
+                                          setState(() {
+                                            getDataBonusPalier(args[0], args[1]);
+                                          });
                                         },
                                         child: const Text(
                                           'Récupérer',

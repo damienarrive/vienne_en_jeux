@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -49,6 +50,9 @@ class _ClassementState extends State<Classement> {
       appBar: AppBar(
         title: const Text('Classement'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -149,23 +153,24 @@ class _ClassementState extends State<Classement> {
                                 .spaceBetween,
                             children: [
                               SizedBox(
-                                width: 50,
+                                width: 35,
                                 child: Text(
                                     "${snap[0]['classement']}",
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: true),
                               ),
+                               SizedBox(
+                                  width: 80,
+                                  child: Text(
+                                      "${snap[0]['nom_equipe']}",
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true),
+                               ),
+
                               SizedBox(
-                                width: 50,
-                                child: Text(
-                                    "${snap[0]['nom_equipe']}",
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true),
-                              ),
-                              SizedBox(
-                                width: 50,
+                                width: 35,
                                 child: Text(
                                     "${snap[0]['score_equipe']}",
                                     textAlign: TextAlign.center,
@@ -208,7 +213,6 @@ class _ClassementState extends State<Classement> {
     );
   }
 
-  //TODO probleme d'Expanded quelque part dans le fichier
 
   List<DataColumn> _createColumns(){
     return [
@@ -216,10 +220,11 @@ class _ClassementState extends State<Classement> {
           'Rang', textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
       )),
-      const DataColumn(label: Text(
+      const DataColumn(label: Expanded(
+          child : Text(
           'Nom', textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-      )),
+      ))),
       const DataColumn(label: Text(
           'Score', textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
@@ -233,19 +238,19 @@ class _ClassementState extends State<Classement> {
         var ligne = DataRow(cells: [
           DataCell(
             SizedBox(
-              width: 50,
+              width: 35,
               child: Text("${snap[i]['classement']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
             ),
           ),
           DataCell(
               SizedBox(
-                width: 50,
+                width: 80,
                 child: Text("${snap[i]['nom_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
               ),
           ),
           DataCell(
               SizedBox(
-                width: 50,
+                width: 35,
                 child: Text("${snap[i]['score_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
               ),
           ),

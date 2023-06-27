@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailjet/mailjet.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 
 class Verification extends StatefulWidget {
@@ -24,6 +25,9 @@ class _VerificationState extends State<Verification> {
       appBar: AppBar(
         title: const Text('Vérification'),
         elevation: 0,
+          actions : <Widget>[
+            ConnexionButtonWidget(),
+          ]
       ),
       body: Column(
         children: [
@@ -165,6 +169,19 @@ class MyCustomFormState extends State<MyCustomForm> {
 
               child: Column(
                 children: [
+                  Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF375E7E),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Text("Vous avez normalement reçu un mail contenant un code vous permettant de vérifier votre compte et ainsi d'accéder à toutes les fonctionnalités !",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.justify,
+                        ),
+                      )
+                  ),
                   TextFormField(
                     controller: mailUser,
                     decoration: const InputDecoration(

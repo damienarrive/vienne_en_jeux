@@ -12,6 +12,7 @@ import 'package:vienne_en_jeux/page/modif_challenge.dart';
 import 'package:vienne_en_jeux/page/politique_confidentialite.dart';
 import 'package:vienne_en_jeux/page/verification.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/page/condition_generales_utilisation.dart';
 import 'package:vienne_en_jeux/page/connexion.dart';
 import 'package:vienne_en_jeux/page/challenge_interface.dart';
@@ -21,7 +22,6 @@ import 'package:vienne_en_jeux/page/participants.dart';
 import 'package:vienne_en_jeux/page/challenge_marche_aide.dart';
 import 'package:vienne_en_jeux/page/inscription.dart';
 import 'package:vienne_en_jeux/page/mdpOublie.dart';
-import 'package:vienne_en_jeux/page/pedometer.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:convert' as JSON;
 import 'package:http/http.dart' as http;
@@ -219,6 +219,9 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: const Text('Accueil'),
         elevation: 0,
+        actions : <Widget>[
+          ConnexionButtonWidget(),
+        ]
       ),
       body: Column(
         children: [

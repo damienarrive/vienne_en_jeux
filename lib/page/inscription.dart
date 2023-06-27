@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mailjet/mailjet.dart';
+import 'package:vienne_en_jeux/widget/connexion_button_widget.dart';
 import 'package:vienne_en_jeux/widget/navigation_drawer_widget.dart';
 import 'dart:convert' as JSON;
 import 'package:http/http.dart' as http;
@@ -26,6 +27,9 @@ class _InscriptionState extends State<Inscription> {
         appBar: AppBar(
           title: const Text('Inscription'),
           elevation: 0,
+            actions : <Widget>[
+              ConnexionButtonWidget(),
+            ]
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -103,11 +107,7 @@ class FormInscriptionState extends State<FormInscription> {
       try{
         var data = JSON.jsonDecode(res.body);
         if (data["error"]) {
-          setState(() {
-            error = true;
-            msg = data["message"];
-            Fluttertoast.showToast(msg: "Mauvais message");
-          });
+            Fluttertoast.showToast(msg: "${data["message"]}");
         }
         else {
           sendMail(mail_user.text, nom_user.text, prenom_user.text, data['code']);
@@ -118,13 +118,7 @@ class FormInscriptionState extends State<FormInscription> {
           mdp_user.text = "";
           conf_mdp_user.text = "";
           Fluttertoast.showToast(msg: "Compte créé");
-
-
-
-          setState(() {
-            success = true;
-          });
-          Navigator.pushNamed(context, '/');
+          Navigator.pushNamed(context, '/Verification');
         }
       }
       catch(e){
@@ -152,7 +146,7 @@ class FormInscriptionState extends State<FormInscription> {
       subject: "Vérification de compte",
       sender: Sender(
         email: myEmail,
-        name: "$nom $prenom",
+        name: "NePasRepondre",
       ),
       reciepients: [
         Recipient(
@@ -160,7 +154,7 @@ class FormInscriptionState extends State<FormInscription> {
           name: "$nom $prenom",
         ),
       ],
-      htmlEmail: "<h3>Voici votre code : $code !</h3><br />Merci de votre inscription!",
+      htmlEmail: "<h3>Voici votre code permettant la vérification de votre compte : $code !</h3><br />Merci de votre inscription!",
     );
   }
 
