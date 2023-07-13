@@ -487,33 +487,14 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
   }
 
   afficheBoutonAncienChallenge(ligne){
-    return FutureBuilder(
-      future: getDataAncienChallenge(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
-        if(snapshot.connectionState == ConnectionState.done) {
-          if(snapshot.hasError){
-            return Center(
-              child: Text("ERROR fetching data"),
-            );
-          }
-          List snap = snapshot.data;
-          return MaterialButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/ClassementAncien',
-                arguments: [ligne['id_defi_marche'], id],
-              );
-            },
-            textColor: Colors.white,
-            child: Text("${ligne['nom_defi_marche']}"),
-          );
-
-        }
-        else{
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    return MaterialButton(
+      onPressed: () {
+        Navigator.pushNamed(context, '/ClassementAncien',
+          arguments: [ligne['id_defi_marche'], id],
+        );
       },
+      textColor: Colors.white,
+      child: Text("${ligne['nom_defi_marche']}"),
     );
   }
 
@@ -558,8 +539,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                   List snap = snapshot.data;
                   return Column(
                     children: [
-                      Container(
-                        child: Align(
+                      Align(
                           alignment: Alignment.centerLeft,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -573,7 +553,6 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                             ],
                           ),
                         ),
-                      ),
                       Container(
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -600,8 +579,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
           else{
             return Column(
               children: [
-                Container(
-              child: Align(
+                Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -618,25 +596,21 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
                   ],
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-            child: Align(
-            alignment: Alignment.center,
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        Text(
-        "Pas de challenges terminés "),
-        ]
-        ),
-
-
-        ),
-        )
-
-    ]
+              Container(
+                margin: EdgeInsets.all(10),
+                child: Align(
+                alignment: Alignment.center,
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Text(
+                  "Pas de challenges terminés "),
+                  ]
+                  ),
+                ),
+              )
+              ]
             );
           }
         }

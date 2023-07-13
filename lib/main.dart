@@ -215,6 +215,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text('Accueil'),

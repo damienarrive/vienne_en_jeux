@@ -58,7 +58,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
               },
             ),
             challenge(),
-            deconnexion(),
             ExpansionTile(
               textColor: Colors.black,
               childrenPadding: const EdgeInsets.only(left: 30),
@@ -90,58 +89,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
           ],
         ),
       ),
-    );
-  }
-
-
-  deconnexion(){
-    return FutureBuilder(
-        future: _getSession(),
-        builder: (context, snapshot){
-            if(id != "null"){
-              return ExpansionTile(
-                textColor: Colors.black,
-                childrenPadding: EdgeInsets.only(left: 30),
-                title: Text("Deconnexion"),
-                children: <Widget>[
-                  ListTile(
-                    leading:
-                    const Icon(Icons.directions_run, color: Colors.black),
-                    title: const Text('Deconnexion'),
-                    onTap: () {
-                      session.destroy();
-                      Navigator.pushNamed(context, '/');
-                    },
-                  ),
-                ],
-              );
-            }
-            else{
-              return ExpansionTile(
-                textColor: Colors.black,
-                childrenPadding: EdgeInsets.only(left: 30),
-                title: Text("Connexion"),
-                children: <Widget>[
-                  ListTile(
-                    leading:
-                    const Icon(Icons.directions_run, color: Colors.black),
-                    title: const Text('Connexion'),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/Connexion');
-                    },
-                  ),
-                  ListTile(
-                    leading:
-                    const Icon(Icons.directions_run, color: Colors.black),
-                    title: const Text('Inscription'),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/Inscription');
-                    },
-                  ),
-                ],
-              );
-            }
-        }
     );
   }
 

@@ -45,8 +45,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
               ConnexionButtonWidget(),
             ]
         ),
-        body: SingleChildScrollView(
-        child : Column(
+        body: Column(
           children: [
           //BANNIERE
             Container(
@@ -201,7 +200,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
         ),
         ]
       )
-    ));
+    );
   }
 
   List<DataColumn> _createColumns(){
@@ -250,7 +249,8 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
   }
 
   afficheEquipe(idequipe){
-    if(idequipe != "NULL") {
+    print(idequipe);
+    if(idequipe != null) {
       return FutureBuilder(
         future: getDataNomEquipe(idequipe),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

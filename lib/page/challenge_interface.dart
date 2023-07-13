@@ -368,14 +368,14 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
               crossAxisAlignment: CrossAxisAlignment
                   .start,
               children: [
-                Container(
-                  margin: const EdgeInsets.all(7.0),
-                  child: const Text(
-                    "VOTRE ÉQUIPE EST COMPLÈTE !",
-                    style: TextStyle(color: Colors.grey,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+                // Container(
+                //   margin: const EdgeInsets.all(7.0),
+                //   child: const Text(
+                //     "VOTRE ÉQUIPE EST COMPLÈTE !",
+                //     style: TextStyle(color: Colors.grey,
+                //         fontWeight: FontWeight.bold),
+                //   ),
+                // ),
                 Container(
                   margin: const EdgeInsets.all(7.0),
                   child: Text(
@@ -517,7 +517,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
             }
             List infoEquipe = snapshot.data;
             //Si on a une équipe mais complète
-            if (ligne['id_equipe_marche'] != null && int.parse(infoEquipe[0]['nbEquipier']) >= int.parse(ligne['taille_max'])) {
+            if (ligne['id_equipe_marche'] != null && infoEquipe[0]['nbEquipier'] >= ligne['taille_max']) {
               return FutureBuilder(
                 future: getDataChallengeInterfaceEquipe(iddefi, iduser),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -540,6 +540,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                           Row(
                           children: [
                               IconButton(
+                                padding: const EdgeInsets.only(left: 50, right: 5),
                                   color: Colors.blue,
                                   onPressed: (){
                                     showDialog(
@@ -649,6 +650,7 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
                     return Form(
                         key: _formKey,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children : [
                             Container(
                               width: 170,

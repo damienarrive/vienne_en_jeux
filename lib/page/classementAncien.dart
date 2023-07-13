@@ -169,7 +169,7 @@ class _ClassementAncienState extends State<ClassementAncien> {
                               .spaceBetween,
                           children: [
                             SizedBox(
-                              width: 50,
+                              width: 35,
                               child: Text(
                                   "${snap[0]['classement']}",
                                   textAlign: TextAlign.center,
@@ -177,7 +177,7 @@ class _ClassementAncienState extends State<ClassementAncien> {
                                   softWrap: true),
                             ),
                             SizedBox(
-                              width: 50,
+                              width: 80,
                               child: Text(
                                   "${snap[0]['nom_equipe']}",
                                   textAlign: TextAlign.center,
@@ -185,7 +185,7 @@ class _ClassementAncienState extends State<ClassementAncien> {
                                   softWrap: true),
                             ),
                             SizedBox(
-                              width: 50,
+                              width: 35,
                               child: Text(
                                   "${snap[0]['score_equipe']}",
                                   textAlign: TextAlign.center,
@@ -253,19 +253,19 @@ class _ClassementAncienState extends State<ClassementAncien> {
       var ligne = DataRow(cells: [
         DataCell(
           SizedBox(
-            width: 50,
+            width: 35,
             child: Text("${snap[i]['classement']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
           ),
         ),
         DataCell(
           SizedBox(
-            width: 50,
+            width: 80,
             child: Text("${snap[i]['nom_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
           ),
         ),
         DataCell(
           SizedBox(
-            width: 50,
+            width: 35,
             child: Text("${snap[i]['score_equipe']}", textAlign: TextAlign.center, overflow: TextOverflow.ellipsis, softWrap: true),
           ),
         ),
