@@ -39,7 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.6
   scaffold_gradient_background: ^1.0.3+1
-  url_launcher: ^6.0.5
+  url_launcher: ^6.1.12
   flutter_markdown: ^0.6.13
   syncfusion_flutter_datagrid: ^20.4.44
   convert: ^3.1.1
@@ -51,7 +51,7 @@ dependencies:
   flutter_email_sender: ^5.2.0
   mailer: ^6.0.0
   mailjet: ^1.0.3+3
-  intl: ^0.17.0
+  intl: ^0.18.0
   localization: ^2.1.0
   flutter_localization: ^0.1.10
   easy_search_bar: ^2.5.0
