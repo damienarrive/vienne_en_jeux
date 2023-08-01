@@ -159,7 +159,7 @@ class _MainPageState extends State<MainPage> {
   }
 
 //PODOMETRE
-  getSteps(){
+  getSteps() async{
     _stepCountStream = Pedometer.stepCountStream;
     _stepCountStream.listen(
         _onData,
@@ -170,8 +170,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   compteurPas(nbPas, idUser) async{
-    print('pas : $nbPas');
-    print('user : $idUser');
+    // print('pas : $nbPas');
+    // print('user : $idUser');
     var urlLogin = "https://dev.vienneenjeux.fr/PHP_files/updateStepsMarche.php";
     var response = await http.post(Uri.parse(urlLogin), body: {
       "pas" : nbPas.toString(),
@@ -194,12 +194,15 @@ class _MainPageState extends State<MainPage> {
     });
     try{
       var data = JSON.jsonDecode(response.body);
-
+      print(data);
       if(data['message'] == "success pas"){
+
         // on vérifie si l'ancien nb de pas enregistré est null ou nn
         if(data['ancien_pas'] != "NULL"){// si nn on vérifie que l'ancien nb est inférieur au nouveau
-          _lastSteps = data['ancien_pas'];
+          _lastSteps = data['ancien_pas'].toString();
           if(int.parse(_lastSteps) < int.parse(_steps)){// si oui on compte le nombre de pas
+            print("ici");
+
             int nbPas = int.parse(_steps) - int.parse(_lastSteps);
             compteurPas(nbPas, user);
           }
@@ -264,6 +267,8 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+
 
 
 }

@@ -249,8 +249,7 @@ class _ChallengeParticipantsState extends State<ChallengeParticipants> {
   }
 
   afficheEquipe(idequipe){
-    print(idequipe);
-    if(idequipe != null) {
+    if(idequipe.isNotEmpty) {
       return FutureBuilder(
         future: getDataNomEquipe(idequipe),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

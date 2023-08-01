@@ -362,7 +362,7 @@ class _ChallengeMarcheState extends State<ChallengeMarche> {
           }
           else{
             if(id != "null"){
-              if(ligne['code_prive'] == null) {
+              if(ligne['code_prive'] == null || ligne['code_prive'].isEmpty) {
                 return Container(
                     decoration: BoxDecoration(
                     color: const Color(0xFF375E7E),

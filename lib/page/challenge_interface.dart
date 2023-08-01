@@ -57,302 +57,300 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
       resizeToAvoidBottomInset: false,
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
-        title: const Text('Challenge Interface'),
-        elevation: 0,
-          actions : <Widget>[
+          title: const Text('Challenge Interface'),
+          elevation: 0,
+          actions: <Widget>[
             ConnexionButtonWidget(),
           ]
       ),
       body: SingleChildScrollView(
-      child : Column(
-        children: [
-          //BANNIERE
-          Container(
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+        child: Column(
+          children: [
+            //BANNIERE
+            Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Image(
+                    image: AssetImage('images/banniere_mobile.png'),
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Image(
-                  image: AssetImage('images/banniere_mobile.png'),
-                ),
-              ],
-            ),
-          ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              //BOUTON RETOUR
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.all(10.0),
-                child: Material(
-                  color: const Color(0xFF375E7E),
-                  child: Container(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //BOUTON RETOUR
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.all(10.0),
+                  child: Material(
+                    color: const Color(0xFF375E7E),
+                    child: Container(
+                      child: Ink(
+                        decoration: const ShapeDecoration(
+                          color: Colors.white70,
+                          shape: CircleBorder(),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          color: const Color(0xFF375E7E),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  margin: const EdgeInsets.all(10.0),
+                  child: Material(
+                    color: const Color(0xFF375E7E),
                     child: Ink(
                       decoration: const ShapeDecoration(
                         color: Colors.white70,
                         shape: CircleBorder(),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.arrow_back),
+                        icon: const Icon(
+                            Icons.question_mark, size: 30),
                         color: const Color(0xFF375E7E),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            context,
+                            '/Challenge_Aide',
+                          );
                         },
                       ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                margin: const EdgeInsets.all(10.0),
-                child: Material(
-                  color: const Color(0xFF375E7E),
-                  child: Ink(
-                    decoration: const ShapeDecoration(
-                      color: Colors.white70,
-                      shape: CircleBorder(),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(
-                          Icons.question_mark, size: 30),
-                      color: const Color(0xFF375E7E),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          '/Challenge_Aide',
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
 
-          FutureBuilder(
-            future: getDataChallengeInterface(args[0], args[1]),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
+            FutureBuilder(
+              future: getDataChallengeInterface(args[0], args[1]),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("ERROR fetching data"),
+                    );
+                  }
+                  List snap = snapshot.data;
+                  return
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 300,
+                              child: rechercheJoueur(snap[0], args[0], args[1]),
+                            ),
+
+                          ],
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              margin: const EdgeInsets.all(10.0),
+                              child: Material(
+                                color: const Color(0xFF375E7E),
+                                child: Ink(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.white70,
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                        Icons.people_outlined, size: 30),
+                                    color: const Color(0xFF375E7E),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/Participants',
+                                        arguments: [args[0], args[1]],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            //BOUTON AIDE
+                            Container(
+                              alignment: Alignment.centerRight,
+                              margin: const EdgeInsets.all(10.0),
+                              child: Material(
+                                color: const Color(0xFF375E7E),
+                                child: Ink(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.white70,
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.refresh, size: 30),
+                                    color: const Color(0xFF375E7E),
+                                    onPressed: () {
+                                      setState(() {
+                                        getDataChallengeInterface(
+                                            args[0], args[1]);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              margin: const EdgeInsets.all(10.0),
+                              child: Material(
+                                color: const Color(0xFF375E7E),
+                                child: Ink(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.white70,
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                        Icons.format_list_bulleted, size: 30),
+                                    color: const Color(0xFF375E7E),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/Classement',
+                                        arguments: [args[0], args[1]],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //BOUTON Bonus
+                            Container(
+                              alignment: Alignment.centerRight,
+                              margin: const EdgeInsets.all(10.0),
+                              child: Material(
+                                color: const Color(0xFF375E7E),
+                                child: Ink(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.white70,
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                        Icons.card_giftcard, size: 30),
+                                    color: const Color(0xFF375E7E),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/Bonus',
+                                        arguments: [args[0], args[1]],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        FractionallySizedBox(
+                          widthFactor: 1,
+                          child: Container(
+                            margin: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "${snap[0]['nom_defi_marche']}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: afficheDate(snap[0]),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        FractionallySizedBox(
+                          widthFactor: 1,
+                          child: Container(
+                            margin: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: affichagePoint(
+                                      snap[0], args[0], args[1]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                }
+                else {
                   return Center(
-                    child: Text("ERROR fetching data"),
+                    child: CircularProgressIndicator(),
                   );
                 }
-                List snap = snapshot.data;
-                return
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-
-                          SizedBox(
-                            width : 300,
-                            child : rechercheJoueur(snap[0], args[0], args[1]),
-                          ),
-
-                        ],
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.all(10.0),
-                            child: Material(
-                              color: const Color(0xFF375E7E),
-                              child: Ink(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.white70,
-                                  shape: CircleBorder(),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                      Icons.people_outlined, size: 30),
-                                  color: const Color(0xFF375E7E),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/Participants',
-                                      arguments: [args[0], args[1]],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //BOUTON AIDE
-                          Container(
-                            alignment: Alignment.centerRight,
-                            margin: const EdgeInsets.all(10.0),
-                            child: Material(
-                              color: const Color(0xFF375E7E),
-                              child: Ink(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.white70,
-                                  shape: CircleBorder(),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(Icons.refresh, size: 30),
-                                  color: const Color(0xFF375E7E),
-                                  onPressed: () {
-                                    setState(() {
-                                      getDataChallengeInterface(
-                                          args[0], args[1]);
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.all(10.0),
-                            child: Material(
-                              color: const Color(0xFF375E7E),
-                              child: Ink(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.white70,
-                                  shape: CircleBorder(),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                      Icons.format_list_bulleted, size: 30),
-                                  color: const Color(0xFF375E7E),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/Classement',
-                                      arguments: [args[0], args[1]],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                          //BOUTON Bonus
-                          Container(
-                            alignment: Alignment.centerRight,
-                            margin: const EdgeInsets.all(10.0),
-                            child: Material(
-                              color: const Color(0xFF375E7E),
-                              child: Ink(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.white70,
-                                  shape: CircleBorder(),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                      Icons.card_giftcard, size: 30),
-                                  color: const Color(0xFF375E7E),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/Bonus',
-                                      arguments: [args[0], args[1]],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      FractionallySizedBox(
-                        widthFactor: 1,
-                        child: Container(
-                          margin: const EdgeInsets.all(5.0),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.all(5.0),
-                                      child: Text(
-                                        "${snap[0]['nom_defi_marche']}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.all(5.0),
-                                      child: afficheDate(snap[0]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      FractionallySizedBox(
-                        widthFactor: 1,
-                        child: Container(
-                          margin: const EdgeInsets.all(5.0),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: affichagePoint(
-                                    snap[0], args[0], args[1]),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-              }
-              else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
-        ],
-      ),
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
 
-
   affichagePoint(ligne, iddefi, iduser) {
-    if (ligne['id_equipe_marche'] != null) {
+    if (ligne['id_equipe_marche'].isNotEmpty) {
       return FutureBuilder(
         future: getDataChallengeInterfaceEquipe(iddefi, iduser),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -368,14 +366,6 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
               crossAxisAlignment: CrossAxisAlignment
                   .start,
               children: [
-                // Container(
-                //   margin: const EdgeInsets.all(7.0),
-                //   child: const Text(
-                //     "VOTRE ÉQUIPE EST COMPLÈTE !",
-                //     style: TextStyle(color: Colors.grey,
-                //         fontWeight: FontWeight.bold),
-                //   ),
-                // ),
                 Container(
                   margin: const EdgeInsets.all(7.0),
                   child: Text(
@@ -459,286 +449,336 @@ class _ChallengeInterfaceState extends State<ChallengeInterface> {
   }
 
 
-  getDataEquipe(idequipe) async{
+  getDataEquipe(idequipe) async {
     String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataEquipe.php?idequipe=$idequipe";
-    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    var res = await http.get(
+        Uri.parse(theUrl), headers: {"Accept": "application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
-  getDataSearch(iddefi, iduser) async{
+  getDataSearch(iddefi, iduser) async {
     String theUrl = "http://dev.vienneenjeux.fr/PHP_files/getDataSearch.php?iddefi=$iddefi&iduser=$iduser";
-    var res = await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    var res = await http.get(
+        Uri.parse(theUrl), headers: {"Accept": "application/json"});
     var responseBody = json.decode(res.body);
     return responseBody;
   }
 
-  addTeammate(idequipe, login, iduser, iddefi) async{
+  addTeammate(idequipe, login, iduser, iddefi) async {
     idequipe = idequipe.toString();
-    print(login);
-    print(iduser);
-    print(iddefi);
     String theUrl = "http://dev.vienneenjeux.fr/PHP_files/addTeammates.php";
-    var res = await http.post(Uri.parse(theUrl),headers: {"Accept":"application/json"}, body: {
-      "idequipe" : idequipe,
+    var res = await http.post(
+        Uri.parse(theUrl), headers: {"Accept": "application/json"}, body: {
+      "idequipe": idequipe,
       "iduser": iduser,
       "iddefi": iddefi,
       "login": login
     });
-    try{
+    try {
       var responseBody = json.decode(res.body);
-      if(responseBody['message'] == 'Success'){
+      if (responseBody['message'] == 'Success') {
         setState(() {
           getDataChallengeInterface(iddefi, iduser);
+          _searchController.text = "";
         });
       }
       print(responseBody);
     }
-    catch(e){
+    catch (e) {
       print(e);
     }
-
   }
 
-  modifNomEquipe(idequipe, nomequipe) async{
+  modifNomEquipe(idequipe, nomequipe) async {
     String theUrl = "http://dev.vienneenjeux.fr/PHP_files/setNomEquipe.php?idequipe=$idequipe&nomequipe=$nomequipe";
-    await http.get(Uri.parse(theUrl),headers: {"Accept":"application/json"});
+    await http.get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
   }
 
   rechercheJoueur(ligne, iddefi, iduser) {
+    if (ligne['id_equipe_marche'].isNotEmpty) {
+      return FutureBuilder(
+          future: getDataEquipe(ligne['id_equipe_marche']),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("ERROR fetching data"),
+                );
+              }
+              List infoEquipe = snapshot.data;
+              //Si on a une équipe mais complète
+              if (int.parse(infoEquipe[0]['nbEquipier']) >=
+                  int.parse(ligne['taille_max'])) {
+                return FutureBuilder(
+                    future: getDataChallengeInterfaceEquipe(iddefi, iduser),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text("ERROR fetching data"),
+                          );
+                        }
+                        List snap = snapshot.data;
+                        return Container(
+                          margin: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                      padding: const EdgeInsets.only(
+                                          left: 50, right: 5),
+                                      color: Colors.blue,
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                scrollable: true,
+                                                title: const Text(
+                                                    'Modification du nom d\'équipe'),
+                                                content: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      8.0),
+                                                  child: Form(
+                                                    key: _formNom,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        TextFormField(
+                                                          controller: _nomEquipe,
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Nouveau nom',
+                                                          ),
+                                                          validator: (value) {
+                                                            if (value == null ||
+                                                                value.isEmpty) {
+                                                              return "Veuillez entrer un nom";
+                                                            }
+                                                            return null;
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment
+                                                        .center,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor: const Color(
+                                                                0xFF375E7E),
+                                                          ),
+                                                          child: Text(
+                                                            "Modifier",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          onPressed: () {
+                                                            if (_formNom
+                                                                .currentState!
+                                                                .validate()) {
+                                                              modifNomEquipe(
+                                                                  ligne['id_equipe_marche'],
+                                                                  _nomEquipe
+                                                                      .text);
+                                                              Navigator.pop(
+                                                                  context);
+                                                              setState(() {
+                                                                getDataChallengeInterfaceEquipe(
+                                                                    iddefi,
+                                                                    iduser);
+                                                              });
+                                                            }
+                                                          })
+                                                    ],
+                                                  )
+
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      icon: const Icon(Icons.edit)
+                                  ),
+                                  const Text(
+                                    "Equipe :",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "${snap[0]['nom_equipe']}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20
+                                    ),
+                                  ),
+                                ],
+                              )
+
+                            ],
+                          ),
+                        );
+                      }
+                      else{
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    }
+                    );
+              }
+              else{
+                return SearchTeamates(ligne, iddefi, iduser);
+              }
+            }
+            else{
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }
+
+          );
+      }
+      else {
+        return SearchTeamates(ligne, iddefi, iduser);
+      }
+  }
+
+  SearchTeamates(ligne, iddefi, iduser){
     return FutureBuilder(
-        future : getDataEquipe(ligne['id_equipe_marche']),
+        future: getDataSearch(iddefi, iduser),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text("ERROR fetching data"),
               );
             }
-            List infoEquipe = snapshot.data;
-            //Si on a une équipe mais complète
-            if (ligne['id_equipe_marche'] != null && infoEquipe[0]['nbEquipier'] >= ligne['taille_max']) {
-              return FutureBuilder(
-                future: getDataChallengeInterfaceEquipe(iddefi, iduser),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("ERROR fetching data"),
-                      );
-                    }
-                    List snap = snapshot.data;
-                    return Container(
-                      margin: const EdgeInsets.all(10.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                          children: [
-                              IconButton(
-                                padding: const EdgeInsets.only(left: 50, right: 5),
-                                  color: Colors.blue,
-                                  onPressed: (){
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            scrollable: true,
-                                            title: const Text('Modification du nom d\'équipe'),
-                                            content: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Form(
-                                                key: _formNom,
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    TextFormField(
-                                                      controller : _nomEquipe,
-                                                      decoration: InputDecoration(
-                                                        labelText: 'Nouveau nom',
-                                                      ),
-                                                      validator: (value){
-                                                        if(value == null || value.isEmpty){
-                                                          return "Veuillez entrer un nom";
-                                                        }
-                                                        return null;
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            actions: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  ElevatedButton(
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: const Color(0xFF375E7E),
-                                                      ),
-                                                      child: Text("Modifier",
-                                                        style: TextStyle(color: Colors.white),
-                                                      ),
-                                                      onPressed: () {
-                                                        if(_formNom.currentState!.validate()) {
-                                                          modifNomEquipe(ligne['id_equipe_marche'], _nomEquipe.text);
-                                                          Navigator.pop(context);
-                                                          setState(() {
-                                                            getDataChallengeInterfaceEquipe(iddefi, iduser);
-                                                          });
-                                                        }
-                                                      })
-                                                ],
-                                              )
-
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  icon: const Icon(Icons.edit)
-                              ),
-                              const Text(
-                                "Equipe :",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),
-                              ),
-                            ],
+            List resultSearch = snapshot.data;
+            List<String> str = resultSearch.map((e) => e.toString())
+                .toList();
+            return Form(
+                key: _formKey,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 170,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5),
+                              bottomLeft: Radius.circular(5)),
+                        ),
+                        child: SearchField(
+                          controller: _searchController,
+                          suggestions: str
+                              .map((e) => SearchFieldListItem(e))
+                              .toList(),
+                          suggestionState: Suggestion.expand,
+                          textInputAction: TextInputAction.next,
+                          hint: 'Chercher un joueur',
+                          searchStyle: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black.withOpacity(0.8),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${snap[0]['nom_equipe']}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),
+                          validator: (value) {
+                            if (!str.contains(value) ||
+                                value!.isEmpty) {
+                              return 'Le nom doit etre complet';
+                            }
+                            return null;
+                          },
+                          suggestionsDecoration: SuggestionDecoration(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15),
+                          ),
+                          searchInputDecoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white.withOpacity(
+                                    0.8),
                               ),
-                            ],
-                          )
-
-                        ],
+                            ),
+                            border: const OutlineInputBorder(
+                              // borderSide: BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5)),
+                            ),
+                          ),
+                          maxSuggestionsInViewPort: 6,
+                          itemHeight: 40,
+                          // onTap: (x) {},
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                        ),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(5),
+                                      bottomRight: Radius.circular(
+                                          5)),
+                                )
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState!
+                                  .validate()) {
+                                if (_searchController.text !=
+                                    "null") {
+                                  addTeammate(
+                                      ligne['id_equipe_marche'],
+                                      _searchController.text,
+                                      iduser,
+                                      iddefi);
+                                }
+                              }
+                              else {
+                                Fluttertoast.showToast(
+                                    msg: "Veuillez remplir tous les champs correctement");
+                              }
+                            },
+                            child: Text('Ajouter')
+                        ),
                       ),
 
-                    );
-                  }
-                  else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              );
-            }
-            else {
-              return FutureBuilder(
-                future: getDataSearch(iddefi, iduser),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("ERROR fetching data"),
-                      );
-                    }
-                    List resultSearch = snapshot.data;
-                    List<String> str = resultSearch.map((e) => e.toString()).toList();
-                    return Form(
-                        key: _formKey,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children : [
-                            Container(
-                              width: 170,
-                              decoration : const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                              ),
-                              child : SearchField(
-                              controller: _searchController,
-                              suggestions: str
-                                  .map((e) => SearchFieldListItem(e))
-                                  .toList(),
-                              suggestionState: Suggestion.expand,
-                              textInputAction: TextInputAction.next,
-                              hint: 'Chercher un joueur',
-                              searchStyle: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                              validator: (value) {
-                                if (!str.contains(value) || value!.isEmpty) {
-                                  return 'Le nom doit etre complet';
-                                }
-                                return null;
-                              },
-                              suggestionsDecoration: SuggestionDecoration(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                              ),
-                              searchInputDecoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white.withOpacity(0.8),
-                                  ),
-                                ),
-                                border: const OutlineInputBorder(
-                                  // borderSide: BorderSide(color: Colors.red),
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
-                                ),
-                              ),
-                              maxSuggestionsInViewPort: 6,
-                              itemHeight: 40,
-                              // onTap: (x) {},
-                            ),
-                            ),
-                            Container(
-                              width: 80,
-                              height: 60,
-                              decoration : BoxDecoration(
-                                color: Colors.white.withOpacity(0.8),
-                                borderRadius: const BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
-                              ),
-                              child :ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
-                                      )
-                                ),
-                                onPressed: () {
-                                  //TODO fonction addTeammates()
-                                  if(_formKey.currentState!.validate()){
-                                    if(_searchController.text != "null"){
-                                      addTeammate(ligne['id_equipe_marche'], _searchController.text, iduser, iddefi);
-                                    }
-                                  }
-                                  else{
-                                    Fluttertoast.showToast(msg: "Veuillez remplir tous les champs correctement");
-                                  }
-                                },
-                                child: Text('Ajouter')
-                              ),
-                            ),
-
-                        ]
-                        )
-                    );
-                  }
-                  else {
-                    return Text('Votre équipe est complète');
-                  }
-                }
-                );
-            }
+                    ]
+                )
+            );
           }
           else {
-            return Text('Equipe complète');
+            return Text('Votre équipe est complète');
           }
         }
-        );
+    );
   }
 }
