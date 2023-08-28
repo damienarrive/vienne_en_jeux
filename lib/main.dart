@@ -179,7 +179,7 @@ class _MainPageState extends State<MainPage> {
     });
     try{
       var data = JSON.jsonDecode(response.body);
-      print(data);
+      // print(data);
     }
     catch(e){
       print(e);
@@ -194,14 +194,16 @@ class _MainPageState extends State<MainPage> {
     });
     try{
       var data = JSON.jsonDecode(response.body);
-      print(data);
+      // print(data['message'] == "success pas");
       if(data['message'] == "success pas"){
 
+        // print("ou there ?");
         // on vérifie si l'ancien nb de pas enregistré est null ou nn
         if(data['ancien_pas'] != "NULL"){// si nn on vérifie que l'ancien nb est inférieur au nouveau
+          // print('là');
           _lastSteps = data['ancien_pas'].toString();
           if(int.parse(_lastSteps) < int.parse(_steps)){// si oui on compte le nombre de pas
-            print("ici");
+            // print("ici");
 
             int nbPas = int.parse(_steps) - int.parse(_lastSteps);
             compteurPas(nbPas, user);
