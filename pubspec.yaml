@@ -58,6 +58,7 @@ dependencies:
   cron: ^0.5.1
   searchfield: ^0.8.3
   flutter_activity_recognition: ^2.0.0
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:

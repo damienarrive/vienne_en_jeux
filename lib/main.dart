@@ -1,7 +1,10 @@
+
+
 import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:vienne_en_jeux/page/challenge_marche.dart';
 import 'package:vienne_en_jeux/page/classementAncien.dart';
 import 'package:vienne_en_jeux/page/creation_challenge.dart';
@@ -113,8 +116,7 @@ class _MainPageState extends State<MainPage> {
   void initState(){
     super.initState();
     _getSession();
-    getSteps();
-    fonctionCRON();
+
   }
 
   _getSession() async{
@@ -122,8 +124,22 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       text = user.toString();
     });
+    permissionRequest();
   }
 
+  permissionRequest() async{
+    await Permission.activityRecognition.request();
+    if (await Permission.activityRecognition
+        .request()
+        .isGranted) {
+      getSteps();
+      fonctionCRON();
+    }
+    else if(await Permission.activityRecognition.status.isGranted){
+      getSteps();
+      fonctionCRON();
+    }
+  }
 
   fonctionCRON(){
     final cron = Cron();
@@ -261,7 +277,7 @@ class _MainPageState extends State<MainPage> {
                     textAlign: TextAlign.justify,
                   ),
                 ),
-                  Text(text),
+                  // Text(text),
               ],
             ),
           ),

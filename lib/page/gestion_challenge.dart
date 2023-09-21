@@ -111,7 +111,7 @@ class _GestionChallengeState extends State<GestionChallenge> {
                                 ),
                               ],
                             ),
-                            if(item['statut_marche'] == 'En cours')...[
+                            if(item['statut_marche'] != 'En cours')...[
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
